@@ -581,7 +581,6 @@ const decoHTML=()=>skin()==='berserk'?BLADE:skin()==='rocky'?'<span class="deco 
 
 /* ---------- state & storage ---------- */
 let S=null,SAMPLE=null,AI_OFF=false,DL=null;
-const CLAUDE_URL='https://claude.ai/artifact/No3DNPPqBCqDA3nvGD8LgM';
 const store={mode:'local',db:null,uid:null,dirty:new Set(),timer:null,chain:Promise.resolve(),ready:false,known:new Set()};
 const blankProfile=()=>({name:'',sex:'m',age:30,height:178,activity:1.55,goal:'keep',level:'beg',goalWeight:75,place:'home',days:[1,3,5],minutes:40,eq:[]});
 const blankSettings=()=>({sound:true,voice:true,skin:'berserk'});
@@ -894,7 +893,7 @@ function vBuilder(){
       <div class="stack"><span class="flabel">Уровень</span><div class="seg">${['beg','mid','adv'].map(l=>`<button data-act="b-lv" data-v="${l}" aria-pressed="${b.lv===l}">${lvName(l)}</button>`).join('')}</div></div></div>
     <div class="row"><button class="btn primary big" data-act="b-gen">${ic('dice',18)} Собрать тренировку</button>${aiOn()?`<button class="btn big" data-act="b-ai" ${ui.ai.busy?'disabled':''}>${ic('spark',18)} ИИ-тренер</button>`:''}</div>
     ${aiStatus('draft')}
-    <p class="small muted" style="max-width:70ch">Каждый раз получается новая тренировка: упражнения из последних занятий попадаются реже.${aiOn()?' ИИ-тренер составит программу с учётом вашей истории — нужен интернет.':(window.claude?' ИИ-тренер недоступен в этом просмотре — работает встроенный генератор.':` ИИ-тренер работает в <a href="${CLAUDE_URL}" target="_blank" rel="noopener">версии Claude</a> (нужен вход в Claude и интернет); здесь — встроенный генератор, он работает и без сети.`)} Дома учитывается инвентарь из профиля${(S.profile.eq||[]).length?': '+EQUIP.filter(e=>S.profile.eq.includes(e[0])).map(e=>e[1].toLowerCase()).join(', '):' — сейчас без инвентаря'}.</p>
+    <p class="small muted" style="max-width:70ch">Каждый раз получается новая тренировка: упражнения из последних занятий попадаются реже.${aiOn()?' ИИ-тренер составит программу с учётом вашей истории — нужен интернет.':' Здесь работает встроенный генератор: он каждый раз собирает новую тренировку и не требует интернета.'} Дома учитывается инвентарь из профиля${(S.profile.eq||[]).length?': '+EQUIP.filter(e=>S.profile.eq.includes(e[0])).map(e=>e[1].toLowerCase()).join(', '):' — сейчас без инвентаря'}.</p>
   </section>${ui.draft?vDraft():''}`;
 }
 function vDraft(){const w=ui.draft;
@@ -1158,7 +1157,7 @@ function vProfile(){
     <label class="switch"><span>Звуковые сигналы и гонг</span><input type="checkbox" data-st="sound" ${S.settings.sound?'checked':''}></label>
     <label class="switch"><span>Голосовые подсказки: раунды, комбинации, упражнения</span><input type="checkbox" data-st="voice" ${S.settings.voice?'checked':''}></label>
     <h3>Данные</h3><p class="small muted">${store.mode==='db'?'Записи хранятся в вашем личном разделе этого приложения — они видны только вам и доступны с любого устройства.':'Записи хранятся на этом устройстве. Время от времени скачивайте резервную копию.'}</p>
-    <p class="small muted">Копия переносит все записи между версиями: скачайте её в одной и загрузите в другой (например, из приложения на телефоне в версию Claude).</p>
+    <p class="small muted">Копия переносит все записи на другое устройство: скачайте её на одном и загрузите на другом.</p>
     <div class="row">${DL||!window.claude?`<button class="btn" data-act="export">Скачать резервную копию</button>`:''}<button class="btn" data-act="import">Загрузить копию</button><input type="file" id="imp" accept="application/json,.json" hidden></div>
     <button class="btn danger" style="align-self:flex-start" data-act="reset-ask">${ic('trash',16)} Удалить все записи</button></div></section>
   <details class="panel"><summary style="cursor:pointer;font-weight:700">Источники фотографий</summary><p class="small muted">Фото упражнений для дома и зала — Free Exercise DB (github.com/yuhonas/free-exercise-db), общественное достояние. Фото единоборств — Wikimedia Commons:</p>
