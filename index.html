@@ -161,15 +161,23 @@ button.chip{cursor:pointer}
 
 /* photos */
 .ph{position:relative;aspect-ratio:3/2;width:100%;border-radius:var(--r-img);overflow:hidden;background:var(--surface2);border:1px solid var(--line)}
-.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;filter:var(--photo-filter)}
-.ph img.b,.ph .tag.b{animation:phb 3s infinite}
-.ph .tag.a{animation:pha 3s infinite}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;filter:var(--photo-filter);animation:phzoom 6s ease-in-out infinite alternate}
+.ph img.b{animation:phzoomB 6s ease-in-out infinite alternate,phb 3.2s cubic-bezier(.6,0,.4,1) infinite}
+.ph img.a{animation:phzoom 6s ease-in-out infinite alternate,pha 3.2s cubic-bezier(.6,0,.4,1) infinite}
+.ph .tag.b{animation:phb 3.2s cubic-bezier(.6,0,.4,1) infinite}
+.ph .tag.a{animation:pha 3.2s cubic-bezier(.6,0,.4,1) infinite}
 .ph.one .tag{animation:none}
-.ph .tag{position:absolute;left:8px;bottom:8px;font:800 10px/1 var(--f-body);letter-spacing:.1em;text-transform:uppercase;padding:5px 8px;border-radius:4px;background:rgba(8,8,10,.78);color:#fff}
+.ph .tag{position:absolute;left:8px;bottom:8px;font:800 10px/1 var(--f-body);letter-spacing:.1em;text-transform:uppercase;padding:5px 8px;border-radius:4px;background:rgba(8,8,10,.78);color:#fff;z-index:2}
 .ph.sm .tag{display:none}
-@keyframes phb{0%,40%{opacity:0}50%,90%{opacity:1}100%{opacity:0}}
-@keyframes pha{0%,40%{opacity:1}50%,90%{opacity:0}100%{opacity:1}}
-@media (prefers-reduced-motion: reduce){.ph img.b,.ph .tag.b{animation:none;opacity:0}.ph .tag.a{animation:none}}
+.ph .scrub{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.22);z-index:2}
+.ph.sm .scrub,.ph.one .scrub{display:none}
+.ph .scrub i{display:block;height:100%;width:100%;background:var(--accent);transform-origin:left;animation:scrub 3.2s cubic-bezier(.6,0,.4,1) infinite}
+@keyframes phb{0%,42%{opacity:0}50%,92%{opacity:1}100%{opacity:0}}
+@keyframes pha{0%,42%{opacity:1}50%,92%{opacity:0}100%{opacity:1}}
+@keyframes phzoom{0%{transform:scale(1)}100%{transform:scale(1.055)}}
+@keyframes phzoomB{0%{transform:scale(1.055)}100%{transform:scale(1)}}
+@keyframes scrub{0%{transform:scaleX(0)}92%{transform:scaleX(1)}100%{transform:scaleX(1)}}
+@media (prefers-reduced-motion: reduce){.ph img{animation:none!important}.ph img.b,.ph .tag.b{opacity:0}.ph .tag.a{opacity:1}.ph .scrub{display:none}}
 .frames{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .frames.one{grid-template-columns:1fr}
 .frames figure{margin:0;display:flex;flex-direction:column;gap:6px;min-width:0}
@@ -1047,7 +1055,7 @@ function funFact(w){const v=w.vol||0;if(v>=1500)return`Ты поднял ${fmt(v
 
 /* ---------- photos ---------- */
 const photo=(id,cls='')=>EX[id].one?`<div class="ph one ${cls}" role="img" aria-label="${esc(EX[id].name)}"><img src="img/${id}-0.jpg" alt="" decoding="async"><span class="tag">${esc(EX[id].grp[0])}</span></div>`
-  :`<div class="ph ${cls}" role="img" aria-label="${esc(EX[id].name)}: исходное и конечное положение"><img src="img/${id}-0.jpg" alt="" decoding="async"><img class="b" src="img/${id}-1.jpg" alt="" decoding="async"><span class="tag a">1 · старт</span><span class="tag b">2 · финиш</span></div>`;
+  :`<div class="ph ${cls}" role="img" aria-label="${esc(EX[id].name)}: исходное и конечное положение"><img class="a" src="img/${id}-0.jpg" alt="" decoding="async"><img class="b" src="img/${id}-1.jpg" alt="" decoding="async"><span class="tag a">1 · старт</span><span class="tag b">2 · финиш</span><span class="scrub"><i></i></span></div>`;
 const frames=id=>EX[id].one?`<div class="frames one"><figure><img src="img/${id}-0.jpg" alt="${esc(EX[id].name)}">${CREDITS[id]?`<figcaption>Фото: ${esc(CREDITS[id][1])} · ${esc(CREDITS[id][2])} · <a href="${esc(CREDITS[id][3])}" target="_blank" rel="noopener">источник</a></figcaption>`:''}</figure></div>`
   :`<div class="frames"><figure><img src="img/${id}-0.jpg" alt="${esc(EX[id].name)} — исходное положение"><figcaption>1 · Исходное положение</figcaption></figure><figure><img src="img/${id}-1.jpg" alt="${esc(EX[id].name)} — конечное положение"><figcaption>2 · Конечное положение</figcaption></figure></div>`;
 
