@@ -184,6 +184,24 @@ button.chip{cursor:pointer}
 .frames img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:var(--r-img);display:block;filter:var(--photo-filter);border:1px solid var(--line)}
 .frames figcaption{font-size:12px;font-weight:700;color:var(--muted)}
 .thumb{width:72px;flex:none}
+.vbadge{position:absolute;right:8px;top:8px;z-index:2;display:inline-flex;align-items:center;gap:4px;font:800 10px/1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;padding:5px 8px;border-radius:4px;background:var(--accent);color:var(--on-accent)}
+.ph.sm .vbadge{display:none}
+.vidwrap{display:flex;flex-direction:column;gap:8px}
+.vidwrap video{width:100%;border-radius:var(--r-img);border:1px solid var(--line);background:#000;display:block;aspect-ratio:4/3;object-fit:contain}
+.vidmore summary::-webkit-details-marker{display:none}
+.pthumb{display:flex;flex-direction:column;gap:6px;background:none;border:1px solid var(--line);border-radius:var(--r);padding:6px;text-align:center;font:inherit;color:var(--ink)}
+.pthumb:hover{border-color:var(--accent)}
+.pthumb img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:calc(var(--r-img) - 2px);display:block;background:var(--surface2)}
+.pthumb span{font-size:11px;color:var(--muted);font-weight:700}
+.pcompare{position:relative;width:100%;aspect-ratio:3/4;max-width:420px;margin:0 auto;border-radius:var(--r-img);overflow:hidden;border:1px solid var(--line);background:var(--surface2)}
+.pcompare>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pcompare .after{position:absolute;inset:0;overflow:hidden;clip-path:inset(0 0 0 50%)}
+.pcompare .after img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pc-line{position:absolute;top:0;bottom:0;left:50%;width:3px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.3);pointer-events:none;transform:translateX(-50%)}
+.pc-line::after{content:"↔";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:32px;height:32px;background:#fff;color:#111;border-radius:50%;display:grid;place-items:center;font-size:16px;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+#pc-slider{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;-webkit-appearance:none;appearance:none}
+.pc-tag{position:absolute;bottom:8px;font:800 10px/1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;padding:5px 8px;border-radius:4px;background:rgba(8,8,10,.72);color:#fff}
+.pc-tag.a{left:8px}.pc-tag.b{right:8px}
 
 /* quote */
 .quote{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:start;margin:0}
@@ -662,6 +680,33 @@ const EPITHETS={
   space:['Обратный отсчёт','Стыковка','Выход в открытый космос','Орбитальный виток','Разгон','Коррекция курса','Приземление','Дальний рубеж'],
   classic:['Тренировка','Сессия','Комплекс']
 };
+const VIDEO=new Set(["bbBench", "bbCurl", "bbRow", "bbSquat", "bench", "cableRow", "calf", "crunch", "dbCurl", "deadlift", "hangRaise", "inclinePress", "legCurl", "legExt", "legPress", "legRaise", "milPress", "ohp", "pullup", "pushdown", "pushup", "squat", "superman"]);
+const VIDEO_CREDITS={
+  bbBench:['Bench press - exercise demonstration video','FitnessScape','CC BY 3.0','https://commons.wikimedia.org/wiki/File%3ABench%20press%20-%20exercise%20demonstration%20video.webm'],
+  bbCurl:['Muscle Strengthening at the Gym - Bicep Machine','Centers for Disease Control and Prevention','Общественное достояние','https://commons.wikimedia.org/wiki/File%3AMuscle%20Strengthening%20at%20the%20Gym%20-%20Bicep%20Machine.webm'],
+  bbRow:['Bent-over row - exercise demonstration video','FitnessScape','CC BY 3.0','https://commons.wikimedia.org/wiki/File%3ABent-over%20row%20-%20exercise%20demonstration%20video.webm'],
+  bbSquat:['Squat - exercise demonstration video','FitnessScape','CC BY 3.0','https://commons.wikimedia.org/wiki/File%3ASquat%20-%20exercise%20demonstration%20video.webm'],
+  bench:['Muscle Strengthening at the Gym - Chest Press','Centers for Disease Control and Prevention','Общественное достояние','https://commons.wikimedia.org/wiki/File%3AMuscle%20Strengthening%20at%20the%20Gym%20-%20Chest%20Press.webm'],
+  cableRow:['Muscle Strengthening at the Gym - Row Machine','Centers for Disease Control and Prevention','Общественное достояние','https://commons.wikimedia.org/wiki/File%3AMuscle%20Strengthening%20at%20the%20Gym%20-%20Row%20Machine.webm'],
+  calf:['Muscle Strengthening at Home - Toe Lift','Centers for Disease Control and Prevention','Общественное достояние','https://commons.wikimedia.org/wiki/File%3AMuscle%20Strengthening%20at%20Home%20-%20Toe%20Lift.webm'],
+  crunch:['Muscle Strengthening at Home - Sit-ups','Centers for Disease Control and Prevention','Общественное достояние','https://commons.wikimedia.org/wiki/File%3AMuscle%20Strengthening%20at%20Home%20-%20Sit-ups.webm'],
+  dbCurl:['Muscle Strengthening at Home - Bicep Curls','Centers for Disease Control and Prevention','Общественное достояние','https://commons.wikimedia.org/wiki/File%3AMuscle%20Strengthening%20at%20Home%20-%20Bicep%20Curls.webm'],
+  deadlift:['Deadlift - exercise demonstration video','FitnessScape','CC BY 3.0','https://commons.wikimedia.org/wiki/File%3ADeadlift%20-%20exercise%20demonstration%20video.webm'],
+  hangRaise:['Hanging crunches - exercise demonstration video','FitnessScape','CC BY 3.0','https://commons.wikimedia.org/wiki/File%3AHanging%20crunches%20-%20exercise%20demonstration%20video.webm'],
+  inclinePress:['Incline press - exercise demonstration video','FitnessScape','CC BY 3.0','https://commons.wikimedia.org/wiki/File%3AIncline%20press%20-%20exercise%20demonstration%20video.webm'],
+  legCurl:['Muscle Strengthening at the Gym - Leg Curl','Centers for Disease Control and Prevention','Общественное достояние','https://commons.wikimedia.org/wiki/File%3AMuscle%20Strengthening%20at%20the%20Gym%20-%20Leg%20Curl.webm'],
+  legExt:['Muscle Strengthening at the Gym - Leg Extension','Centers for Disease Control and Prevention','Общественное достояние','https://commons.wikimedia.org/wiki/File%3AMuscle%20Strengthening%20at%20the%20Gym%20-%20Leg%20Extension.webm'],
+  legPress:['Muscle Strengthening at the Gym - Seated Leg Press','Centers for Disease Control and Prevention','Общественное достояние','https://commons.wikimedia.org/wiki/File%3AMuscle%20Strengthening%20at%20the%20Gym%20-%20Seated%20Leg%20Press.webm'],
+  legRaise:['Leg raises - exercise demonstration video','FitnessScape','CC BY 3.0','https://commons.wikimedia.org/wiki/File%3ALeg%20raises%20-%20exercise%20demonstration%20video.webm'],
+  milPress:['Muscle Strengthening at the Gym - Overhead Press','Centers for Disease Control and Prevention','Общественное достояние','https://commons.wikimedia.org/wiki/File%3AMuscle%20Strengthening%20at%20the%20Gym%20-%20Overhead%20Press.webm'],
+  ohp:['Muscle Strengthening at Home - Overhead Press','Centers for Disease Control and Prevention','Общественное достояние','https://commons.wikimedia.org/wiki/File%3AMuscle%20Strengthening%20at%20Home%20-%20Overhead%20Press.webm'],
+  pullup:['Pull-ups - exercise demonstration video','FitnessScape','CC BY 3.0','https://commons.wikimedia.org/wiki/File%3APull-ups%20-%20exercise%20demonstration%20video.webm'],
+  pushdown:['Muscle Strengthening at the Gym - Arm Extension','Centers for Disease Control and Prevention','Общественное достояние','https://commons.wikimedia.org/wiki/File%3AMuscle%20Strengthening%20at%20the%20Gym%20-%20Arm%20Extension.webm'],
+  pushup:['Muscle Strengthening at Home - Push-ups','Centers for Disease Control and Prevention','Общественное достояние','https://commons.wikimedia.org/wiki/File%3AMuscle%20Strengthening%20at%20Home%20-%20Push-ups.webm'],
+  squat:['Muscle Strengthening at Home - Half squat','Centers for Disease Control and Prevention','Общественное достояние','https://commons.wikimedia.org/wiki/File%3AMuscle%20Strengthening%20at%20Home%20-%20Half%20squat.webm'],
+  superman:['Muscle Strengthening at Home - Superman','Centers for Disease Control and Prevention','Общественное достояние','https://commons.wikimedia.org/wiki/File%3AMuscle%20Strengthening%20at%20Home%20-%20Superman.webm'],
+};
+
 const CREDITS={shadow:['James J. Corbett with punching bag','Paul Thompson','общественное достояние','https://commons.wikimedia.org/wiki/File:James_J._Corbett_with_punching_bag_cph.19131.jpg'],
   jabCross:['All-Army Boxing','Tim Hipps','общественное достояние','https://commons.wikimedia.org/wiki/File:Staff_Sgt._Andrew_Shepherd_delivers_a_left_jab_while_loading_an_overhand_right_Germany%27s_Erken_Teper.jpg'],
   hook:['Field Manual 3-25.150, Hook','U.S. Army','общественное достояние','https://commons.wikimedia.org/wiki/File:Field_Manual_No._3-25.150_Combatives_Hook.jpg'],
@@ -806,8 +851,17 @@ const BLADE='<svg class="deco blade" viewBox="0 0 360 12" aria-hidden="true"><pa
 const decoHTML=()=>sk()==='berserk'?BLADE:sk()==='rocky'?'<span class="deco stripes" aria-hidden="true"></span>':'';
 
 /* ---------- state & storage ---------- */
-let S=null,SAMPLE=null,AI_OFF=false,DL=null,UBG=null;
+let S=null,SAMPLE=null,AI_OFF=false,DL=null,UBG=null,PHOTOS=[];
 try{UBG=localStorage.getItem('podhod:ubg')}catch(e){}
+try{PHOTOS=JSON.parse(localStorage.getItem('podhod:photos')||'[]')}catch(e){PHOTOS=[]}
+function savePhotos(){try{localStorage.setItem('podhod:photos',JSON.stringify(PHOTOS))}catch(e){toast('Не удалось сохранить — на устройстве мало места. Удалите старые фото.')}}
+function addPhotoFile(f){if(!f||!/^image\//.test(f.type)){toast('Выберите картинку');return}
+  const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>{
+    const k=Math.min(1,1100/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);
+    c.getContext('2d').drawImage(img,0,0,c.width,c.height);const url=c.toDataURL('image/jpeg',.84);
+    PHOTOS.push({id:newId(),d:todayKey(),img:url});PHOTOS.sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:0);savePhotos();
+    if(PHOTOS.length===1)ui.pcCompare=false;else{ui.pcA=PHOTOS[0].id;ui.pcB=PHOTOS[PHOTOS.length-1].id}
+    render();toast('Фото добавлено')};img.onerror=()=>toast('Не удалось открыть картинку');img.src=r.result};r.readAsDataURL(f)}
 function applyUbg(){const el=document.getElementById('ubg');if(!el)return;const on=!!(UBG&&S&&S.settings.ubgPage);el.hidden=!on;if(on)el.style.backgroundImage=`url("${UBG}")`}
 function setUbgFile(f){if(!f||!/^image\//.test(f.type)){toast('Выберите картинку');return}const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>{const k=Math.min(1,1280/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);const url=c.toDataURL('image/jpeg',.82);UBG=url;try{localStorage.setItem('podhod:ubg',url);toast('Фон установлен')}catch(e){toast('Фон установлен, но на устройстве мало места — после перезапуска он пропадёт')}render()};img.onerror=()=>toast('Не удалось открыть картинку');img.src=r.result};r.readAsDataURL(f)}
 const store={mode:'local',db:null,uid:null,dirty:new Set(),timer:null,chain:Promise.resolve(),ready:false,known:new Set()};
@@ -877,10 +931,11 @@ async function boot(){
 }
 async function resetAll(){
   const keys=[...new Set([...store.known,...Object.keys(split())])];
-  const keepP=S.demo?blankProfile():S.profile,keepS=S.settings;
+  const keepP=S.demo?blankProfile():S.profile,keepS=S.settings,wasDemo=S.demo;
   S=blank();S.profile=keepP;S.settings=keepS;
   for(const k of keys)if(k!=='main')await removeDoc(k);
   store.known=new Set(['main']);touch('main');
+  if(!wasDemo){PHOTOS=[];try{localStorage.removeItem('podhod:photos')}catch(e){}}
   ui.tab='profile';render();toast('Готово. Заполните профиль — от него считаются нормы и тренировки.');
 }
 
@@ -1099,10 +1154,20 @@ function achievements(){
 function funFact(w){const v=w.vol||0;if(v>=1500)return`Ты поднял ${fmt(v/1000,1)} т — это примерно ${fmt(v/950,1)} «Жигулей».`;if(v>=300)return`Суммарно ${fmt(v)} кг — как ${fmt(v/350,1)} концертного рояля.`;if(v>0)return`${fmt(v)} кг — это примерно ${Math.max(1,Math.round(v/8))} арбузов.`;const m=Math.round(w.dur/60);return`${m} мин работы — это ${Math.max(1,Math.round(m/3))} боксёрских раундов по 3 минуты.`}
 
 /* ---------- photos ---------- */
-const photo=(id,cls='')=>EX[id].one?`<div class="ph one ${cls}" role="img" aria-label="${esc(EX[id].name)}"><img src="img/${id}-0.jpg" alt="" decoding="async"><span class="tag">${esc(EX[id].grp[0])}</span></div>`
-  :`<div class="ph ${cls}" role="img" aria-label="${esc(EX[id].name)}: исходное и конечное положение"><img class="a" src="img/${id}-0.jpg" alt="" decoding="async"><img class="b" src="img/${id}-1.jpg" alt="" decoding="async"><span class="tag a">1 · старт</span><span class="tag b">2 · финиш</span><span class="scrub"><i></i></span></div>`;
-const frames=id=>EX[id].one?`<div class="frames one"><figure><img src="img/${id}-0.jpg" alt="${esc(EX[id].name)}">${CREDITS[id]?`<figcaption>Фото: ${esc(CREDITS[id][1])} · ${esc(CREDITS[id][2])} · <a href="${esc(CREDITS[id][3])}" target="_blank" rel="noopener">источник</a></figcaption>`:''}</figure></div>`
-  :`<div class="frames"><figure><img src="img/${id}-0.jpg" alt="${esc(EX[id].name)} — исходное положение"><figcaption>1 · Исходное положение</figcaption></figure><figure><img src="img/${id}-1.jpg" alt="${esc(EX[id].name)} — конечное положение"><figcaption>2 · Конечное положение</figcaption></figure></div>`;
+const hasVideo=id=>typeof VIDEO!=='undefined'&&VIDEO.has(id);
+const photo=(id,cls='')=>{const vid=hasVideo(id)&&!cls.includes('sm')?`<span class="vbadge">${ic('play',12)} видео</span>`:'';
+  return EX[id].one?`<div class="ph one ${cls}" role="img" aria-label="${esc(EX[id].name)}">${vid}<img src="img/${id}-0.jpg" alt="" decoding="async"><span class="tag">${esc(EX[id].grp[0])}</span></div>`
+  :`<div class="ph ${cls}" role="img" aria-label="${esc(EX[id].name)}: исходное и конечное положение">${vid}<img class="a" src="img/${id}-0.jpg" alt="" decoding="async"><img class="b" src="img/${id}-1.jpg" alt="" decoding="async"><span class="tag a">1 · старт</span><span class="tag b">2 · финиш</span><span class="scrub"><i></i></span></div>`};
+function frames(id){
+  const ex=EX[id],photoCap=CREDITS[id]?`<figcaption>Фото: ${esc(CREDITS[id][1])} · ${esc(CREDITS[id][2])} · <a href="${esc(CREDITS[id][3])}" target="_blank" rel="noopener">источник</a></figcaption>`:'';
+  const photosHTML=ex.one?`<div class="frames one"><figure><img src="img/${id}-0.jpg" alt="${esc(ex.name)}">${photoCap}</figure></div>`
+    :`<div class="frames"><figure><img src="img/${id}-0.jpg" alt="${esc(ex.name)} — исходное положение"><figcaption>1 · Исходное положение</figcaption></figure><figure><img src="img/${id}-1.jpg" alt="${esc(ex.name)} — конечное положение"><figcaption>2 · Конечное положение</figcaption></figure></div>`;
+  if(!hasVideo(id))return photosHTML;
+  const vc=VIDEO_CREDITS[id];
+  return `<div class="vidwrap"><video controls playsinline preload="none" poster="img/${id}-0.jpg" src="video/${id}.webm">Видео не поддерживается браузером.</video>
+    <p class="small muted">Настоящая запись выполнения. ${vc?`Источник: ${esc(vc[0])} — ${esc(vc[1])}, ${esc(vc[2])} — <a href="${esc(vc[3])}" target="_blank" rel="noopener">страница файла</a>.`:''} Требует интернет при первом просмотре, затем доступно офлайн.</p></div>
+    <details class="vidmore"><summary class="btn sm ghost" style="width:fit-content">Показать фото исходного и конечного положения</summary><div style="margin-top:10px">${photosHTML}</div></details>`;
+}
 
 /* ---------- ui state ---------- */
 const ui={q:null,artSeed:null,tab:'today',trainSub:'build',b:null,draft:null,ai:{busy:false},libPlace:'all',libGrp:'Все',libQ:'',foodDate:null,fa:null,progSub:'body',wRange:60,rRange:'week',exSel:null,egg:0};
@@ -1365,10 +1430,10 @@ function faCalc(){const f=allFoods().find(x=>x.n===ui.fa.pick);if(!f)return '<sp
 
 /* ---------- Прогресс ---------- */
 function vProgress(){
-  const subs=[['body','Тело'],['exercises','Упражнения'],['report','Отчёт'],['history','История'],['awards','Ранги']];
-  return header('Прогресс','Тело · силы · отчёты · награды')+
+  const subs=[['body','Тело'],['photos','Фото'],['exercises','Упражнения'],['report','Отчёт'],['history','История'],['awards','Ранги']];
+  return header('Прогресс','Тело · фото · силы · отчёты · награды')+
   `<div class="seg" role="group">${subs.map(([k,n])=>`<button data-act="progSub" data-v="${k}" aria-pressed="${ui.progSub===k}">${n}</button>`).join('')}</div>`+
-  ({body:vBody,exercises:vExProg,report:vReport,history:vHistory,awards:vAwards})[ui.progSub]();
+  ({body:vBody,photos:vPhotos,exercises:vExProg,report:vReport,history:vHistory,awards:vAwards})[ui.progSub]();
 }
 function niceStep(r){return[.2,.5,1,2,5,10,20,50,100].find(s=>r/s<=5)||200}
 function lineChart(ent,o={}){
@@ -1390,6 +1455,25 @@ function lineChart(ent,o={}){
     <circle cx="${L[0].toFixed(1)}" cy="${L[1].toFixed(1)}" r="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="3"/><text x="${(L[0]+10).toFixed(1)}" y="${(L[1]-9).toFixed(1)}" style="fill:var(--ink);font-weight:800;font-size:13px">${fmt(ent[ent.length-1].v,dec)}${unit}</text>${lab}</svg>`;
 }
 const MEAS=[['waist','Талия'],['chest','Грудь'],['hips','Бёдра'],['arm','Бицепс']];
+function vPhotos(){
+  const list=[...PHOTOS].sort((a,b)=>a.d<b.d?1:a.d>b.d?-1:0);
+  const compareOk=PHOTOS.length>=2;
+  if(ui.pcA==null&&compareOk){ui.pcA=PHOTOS[0].id;ui.pcB=PHOTOS[PHOTOS.length-1].id}
+  const byId=id=>PHOTOS.find(p=>p.id===id);
+  return `<section class="panel"><div class="row between"><h3>Фото прогресса</h3><span class="small muted">${list.length} ${plural(list.length,'фото','фото','фото')}</span></div>
+    <p class="small muted">Фотографии хранятся только на этом устройстве — они не отправляются никуда и не входят в облачную синхронизацию. Резервную копию с фото можно сохранить в Профиле → «Скачать резервную копию».</p>
+    <div class="row"><button class="btn primary" data-act="photo-add">${ic('plus',16)} Добавить фото</button><input type="file" id="photo-file" accept="image/*" hidden></div></section>
+  ${compareOk?`<section class="panel lift"><div class="row between"><h3>Сравнить</h3></div>
+    <div class="fields"><div class="field"><label for="pc-a">Было</label><select class="input" id="pc-a">${list.slice().reverse().map(p=>`<option value="${p.id}" ${ui.pcA===p.id?'selected':''}>${fmtD(p.d,{day:'numeric',month:'long',year:'numeric'})}</option>`).join('')}</select></div>
+      <div class="field"><label for="pc-b">Стало</label><select class="input" id="pc-b">${list.slice().reverse().map(p=>`<option value="${p.id}" ${ui.pcB===p.id?'selected':''}>${fmtD(p.d,{day:'numeric',month:'long',year:'numeric'})}</option>`).join('')}</select></div></div>
+    ${photoCompareHTML(byId(ui.pcA),byId(ui.pcB))}</section>`:''}
+  <section class="grid g4">${list.map(p=>`<button class="pthumb" data-act="photo-open" data-v="${p.id}"><img src="${p.img}" alt="Фото ${fmtD(p.d)}" loading="lazy"><span>${fmtD(p.d,{day:'numeric',month:'short'})}</span></button>`).join('')||'<p class="muted">Пока нет фотографий. Добавляйте раз в 2–4 недели, чтобы через пару месяцев увидеть разницу.</p>'}</section>`;
+}
+function photoCompareHTML(a,b){
+  if(!a||!b)return '';
+  return `<div class="pcompare" id="pcompare"><img src="${a.img}" alt="До"><div class="after" style="clip-path:inset(0 0 0 50%)"><img src="${b.img}" alt="После"></div><input type="range" min="0" max="100" value="50" id="pc-slider" aria-label="Перетащите, чтобы сравнить"><div class="pc-line" style="left:50%"></div>
+    <span class="pc-tag a">${fmtD(a.d,{day:'numeric',month:'short'})}</span><span class="pc-tag b">${fmtD(b.d,{day:'numeric',month:'short'})}</span></div>`;
+}
 function vBody(){
   const ws=S.weights,lw=lastW(),bmi=bmiInfo(),gw=S.profile.goalWeight,tk=todayKey(),good=v=>(v<0)===(S.profile.goal!=='gain');
   const from=ui.wRange==='all'?'0000':addDays(tk,-ui.wRange),sel=ws.filter(w=>w.d>=from),ch=sel.length>1?r1(sel[sel.length-1].w-sel[0].w):null,toGo=lw?r1(lw.w-gw):null;
@@ -1496,8 +1580,8 @@ function vProfile(){
     <p class="small muted">Копия переносит все записи на другое устройство: скачайте её на одном и загрузите на другом.</p>
     <div class="row">${DL||!window.claude?`<button class="btn" data-act="export">Скачать резервную копию</button>`:''}<button class="btn" data-act="import">Загрузить копию</button><input type="file" id="imp" accept="application/json,.json" hidden></div>
     <button class="btn danger" style="align-self:flex-start" data-act="reset-ask">${ic('trash',16)} Удалить все записи</button></div></section>
-  <details class="panel"><summary style="cursor:pointer;font-weight:700">Источники фотографий</summary><p class="small muted">Фото упражнений для дома и зала — Free Exercise DB (github.com/yuhonas/free-exercise-db), общественное достояние. Фото единоборств — Wikimedia Commons:</p>
-    <ul class="small" style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px">${Object.entries(ART_CREDITS).map(([k,c])=>`<li>Картина темы: ${esc(c[0])}, ${esc(c[1])}, ${esc(c[2])} — <a href="${esc(c[3])}" target="_blank" rel="noopener">страница файла</a></li>`).join('')}${Object.entries(CREDITS).map(([id,c])=>`<li>${esc(EX[id].name)}: «${esc(c[0])}», ${esc(c[1])}, ${esc(c[2])} — <a href="${esc(c[3])}" target="_blank" rel="noopener">страница файла</a></li>`).join('')}</ul></details>`;
+  <details class="panel"><summary style="cursor:pointer;font-weight:700">Источники фотографий и видео</summary><p class="small muted">Фото упражнений для дома и зала — Free Exercise DB (github.com/yuhonas/free-exercise-db), общественное достояние. Видео — Wikimedia Commons: часть роликов сняли Центры по контролю заболеваний США (CDC), общественное достояние, часть — автор FitnessScape по лицензии CC BY 3.0. Фото единоборств — Wikimedia Commons:</p>
+    <ul class="small" style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px">${Object.entries(ART_CREDITS).map(([k,c])=>`<li>Картина темы: ${esc(c[0])}, ${esc(c[1])}, ${esc(c[2])} — <a href="${esc(c[3])}" target="_blank" rel="noopener">страница файла</a></li>`).join('')}${Object.entries(VIDEO_CREDITS).map(([id,c])=>`<li>Видео «${esc(EX[id].name)}»: ${esc(c[0])}, ${esc(c[1])}, ${esc(c[2])} — <a href="${esc(c[3])}" target="_blank" rel="noopener">страница файла</a></li>`).join('')}${Object.entries(CREDITS).map(([id,c])=>`<li>${esc(EX[id].name)}: «${esc(c[0])}», ${esc(c[1])}, ${esc(c[2])} — <a href="${esc(c[3])}" target="_blank" rel="noopener">страница файла</a></li>`).join('')}</ul></details>`;
 }
 
 /* ---------- Плеер тренировки ---------- */
@@ -1672,6 +1756,9 @@ const ACT={
   install:async()=>{if(!INSTALL)return;INSTALL.prompt();try{const r=await INSTALL.userChoice;if(r.outcome==='accepted')toast('Готово! Ищите иконку на главном экране')}catch(e){}INSTALL=null;render()},
   'ubg-pick':()=>document.getElementById('ubg-file').click(),
   'ubg-del':()=>{UBG=null;try{localStorage.removeItem('podhod:ubg')}catch(e){}render();toast('Свой фон убран')},
+  'photo-add':()=>document.getElementById('photo-file').click(),
+  'photo-open':v=>{const p=PHOTOS.find(x=>x.id===v);if(!p)return;modal(`<div class="row between"><h2>${fmtD(p.d,{day:'numeric',month:'long',year:'numeric'})}</h2><button class="btn iconbtn ghost" data-act="close-modal" aria-label="Закрыть">${ic('x')}</button></div><img src="${p.img}" alt="Фото ${fmtD(p.d)}" style="width:100%;border-radius:var(--r-img);border:1px solid var(--line)"><button class="btn danger" style="align-self:flex-start" data-act="photo-del" data-v="${p.id}">${ic('trash',16)} Удалить фото</button>`)},
+  'photo-del':v=>ask('Удалить это фото?','Удалить',()=>{PHOTOS=PHOTOS.filter(p=>p.id!==v);savePhotos();closeModal();render()}),
   'b-method':v=>{builder().method=v;render()},
   'plan-ai':()=>runAI('plan'),'ai-stop':()=>{ui.ai.ctl&&ui.ai.ctl.abort()},
   'plan-swap':v=>{editW(S.plan.w,'swap',v);touch('main');render()},'plan-del':v=>{editW(S.plan.w,'del',v);touch('main');render()},
@@ -1700,7 +1787,7 @@ const ACT={
   'pf-day':v=>{const d=+v,a=S.profile.days;S.profile.days=a.includes(d)?a.filter(x=>x!==d):[...a,d].sort();touch('main');render()},
   'pf-min':v=>{S.profile.minutes=+v;ui.b=null;S.plan=null;S.week=null;touch('main');render()},
   'pf-eq':v=>{const a=S.profile.eq||[];S.profile.eq=a.includes(v)?a.filter(x=>x!==v):[...a,v];touch('main');render()},
-  'export':async()=>{const json=JSON.stringify({app:'podhod',v:2,exported:new Date().toISOString(),state:S}),name='podhod-'+todayKey()+'.json';
+  'export':async()=>{const json=JSON.stringify({app:'podhod',v:2,exported:new Date().toISOString(),state:S,photos:PHOTOS}),name='podhod-'+todayKey()+'.json';
     if(DL){try{await DL.save({filename:name,data:json});toast('Копия сохранена')}catch(e){if(e&&e.code!=='declined')toast('Не удалось сохранить файл. Попробуйте ещё раз.')}return}
     try{const blob=new Blob([json],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);toast('Копия сохранена в «Загрузки»')}catch(e){toast('Не удалось сохранить файл')}},
   'import':()=>document.getElementById('imp').click(),
@@ -1735,7 +1822,9 @@ const ACT={
 };
 function importFile(f){const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result),st=d.state||d;if(!st.profile||!Array.isArray(st.workouts))throw 0;
   ask('Заменить текущие записи данными из файла?','Заменить',()=>{const old=Object.keys(split());S=merge({main:{profile:st.profile,weights:st.weights||[],settings:st.settings||{},customFoods:st.customFoods||[],plan:null},'m-import':{workouts:st.workouts,food:st.food||{},water:st.water||{}}});S.demo=false;
-    new Set([...old,...store.known,...Object.keys(split())]).forEach(k=>touch(k));render();toast('Данные загружены')})}catch(e){toast('Это не файл резервной копии «Подхода»')}};r.readAsText(f)}
+    new Set([...old,...store.known,...Object.keys(split())]).forEach(k=>touch(k));
+    if(Array.isArray(d.photos)&&d.photos.length){PHOTOS=d.photos;savePhotos()}
+    render();toast('Данные загружены')})}catch(e){toast('Это не файл резервной копии «Подхода»')}};r.readAsText(f)}
 document.addEventListener('click',e=>{ensureAudio();const el=e.target.closest('[data-act]');if(!el||el.tagName==='DETAILS')return;const f=ACT[el.dataset.act];if(f){if(el.tagName!=='INPUT')e.preventDefault();f(el.dataset.v,el,e)}});
 document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.getElementById('modal').hidden)closeModal();if(e.key!=='Enter')return;const id=e.target.id;if(id==='q-weight')ACT['q-weight']();if(id==='w-v')ACT['w-add']();if(id==='fa-g'&&ui.fa&&ui.fa.pick)ACT['fa-add']()});
@@ -1745,10 +1834,14 @@ document.addEventListener('input',e=>{const t=e.target;
   if(t.id==='fa-q'){ui.fa.q=t.value;document.getElementById('fa-res').innerHTML=faResults()}
   if(t.id==='fa-g'){ui.fa.g=t.value;document.getElementById('fa-calc').innerHTML=faCalc()}
   if(t.dataset.fc)ui.fa['c'+t.dataset.fc]=t.value;
+  if(t.id==='pc-slider'){const w=document.getElementById('pcompare');if(w){w.querySelector('.after').style.clipPath=`inset(0 0 0 ${t.value}%)`;w.querySelector('.pc-line').style.left=t.value+'%'}}
 });
 document.addEventListener('change',e=>{const t=e.target;
   if(t.id==='imp'&&t.files[0]){importFile(t.files[0]);t.value='';return}
   if(t.id==='ubg-file'&&t.files[0]){setUbgFile(t.files[0]);t.value='';return}
+  if(t.id==='photo-file'&&t.files[0]){addPhotoFile(t.files[0]);t.value='';return}
+  if(t.id==='pc-a'){ui.pcA=t.value;render();return}
+  if(t.id==='pc-b'){ui.pcB=t.value;render();return}
   if(t.id==='ex-sel'){ui.exSel=t.value;render();return}
   if(t.dataset.pf){const k=t.dataset.pf;let v=t.value;if(['age','height','goalWeight','activity'].includes(k))v=parseFloat(v)||S.profile[k];S.profile[k]=v;if(k==='level'){ui.b=null;S.plan=null;S.week=null}touch('main');render()}
   if(t.dataset.st){S.settings[t.dataset.st]=t.checked;touch('main');if(t.dataset.st==='ubgPage')applyUbg();if(t.dataset.st==='voice'&&t.checked)say('Голос включён')}
