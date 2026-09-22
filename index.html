@@ -358,9 +358,61 @@ table.t td.n{font-family:var(--f-mono);font-size:13px;white-space:nowrap}
 [data-skin="rocky"] .rank .badge{background:var(--plate-y);color:var(--ink);box-shadow:inset 0 0 0 3px var(--ink)}
 [data-skin="rocky"] .flash{background:radial-gradient(circle,rgba(201,154,30,.5),rgba(181,18,27,.6))}
 [data-skin="classic"] .mark{border-radius:50%;box-shadow:inset 0 0 0 6px var(--accent)}
+
+/* ---------- Берсерк: тушь ---------- */
+:root[data-skin="ink"]{
+  --bg:#E3E0DA; --surface:#F0EDE7; --surface2:#E7E3DC; --ink:#0F0E0E; --muted:#56514C; --line:#BDB7AE;
+  --accent:#A8121A; --accent-soft:#F1D9D6; --on-accent:#F7F3EE;
+  --plate-g:#55595E; --plate-y:#7A5424; --plate-r:#A8121A; --plate-ink-y:#F7F3EE;
+  --good:#3E5F2E; --warn:#8A5A12; --bad:#A8121A; --shadow:5px 5px 0 #0F0E0E;
+  --r:2px; --r-img:2px; --photo-filter:grayscale(1) contrast(1.35);
+  --f-display:'Cormorant SC','Cormorant',Georgia,serif; --h-weight:700; --h-track:.05em; --f-quote:'Cormorant','Cormorant SC',Georgia,serif;
+  --art-filter:grayscale(1) contrast(1.2); --art-shade:linear-gradient(180deg,rgba(227,224,218,0) 25%,rgba(227,224,218,.88) 72%,#E3E0DA); --art-ink:#0F0E0E; --art-ts:none;
+  color-scheme:light;
+}
+[data-skin="ink"] body{background-color:var(--bg);background-image:radial-gradient(rgba(15,14,14,.05) 1px,transparent 1.2px);background-size:4px 4px}
+[data-skin="ink"] .panel{border:1.5px solid var(--ink)}
+[data-skin="ink"] .panel.lift{box-shadow:var(--shadow)}
+[data-skin="ink"] .btn.primary{text-transform:uppercase;letter-spacing:.14em;font-size:13px;border-color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
+[data-skin="ink"] .btn.primary.big{font-size:15px}
+[data-skin="ink"] .quote blockquote{font-style:italic;font-size:clamp(21px,3.8vw,28px)}
+[data-skin="ink"] .mark{border-radius:50%;background:var(--ink);box-shadow:0 0 0 2.5px var(--accent)}
+[data-skin="ink"] .deco.blade{display:block;width:min(360px,80%);height:12px;color:var(--ink)}
+[data-skin="ink"] .rank .badge{background:var(--ink);color:#F7F3EE;box-shadow:0 0 0 2px var(--accent)}
+[data-skin="ink"] .ph,[data-skin="ink"] .frames img{border:1.5px solid var(--ink)}
+[data-skin="ink"] .nav{border-color:var(--ink)}
+[data-skin="ink"] .flash{background:radial-gradient(circle,rgba(168,18,26,.55),rgba(15,14,14,.85))}
+.sw-ink{background:radial-gradient(circle at 30% 45%,#A8121A 0 4px,transparent 5px),radial-gradient(circle at 42% 70%,#A8121A 0 2px,transparent 3px),linear-gradient(90deg,#E3E0DA 0 62%,#0F0E0E 62%)}
+
+/* ---------- картины тем, брызги, свой фон ---------- */
+:root{--art-filter:none;--art-shade:linear-gradient(180deg,rgba(0,0,0,0) 25%,rgba(0,0,0,.78));--art-ink:#fff;--art-ts:0 1px 14px rgba(0,0,0,.6)}
+:root[data-skin="berserk"]{--art-filter:invert(1) contrast(1.15) brightness(.7);--art-shade:linear-gradient(180deg,rgba(10,9,9,.05),rgba(10,9,9,.55) 45%,rgba(10,9,9,.96)),radial-gradient(ellipse at 85% 0%,rgba(179,22,28,.45),transparent 55%);--art-ink:#EFE6DA}
+:root[data-skin="rocky"]{--art-filter:sepia(.5) contrast(1.05);--art-shade:linear-gradient(180deg,rgba(22,22,26,0) 25%,rgba(22,22,26,.88));--art-ink:#fff}
+.art{position:relative;border-radius:var(--r);overflow:hidden;min-height:240px;display:flex;align-items:flex-end;border:1px solid var(--line);background:var(--surface)}
+[data-skin="ink"] .art,[data-skin="rocky"] .art{border:1.5px solid var(--ink)}
+.art .img,.art-full .img{position:absolute;inset:0;background-size:cover;background-position:center 30%;filter:var(--art-filter)}
+.art.user .img,.art-full.user .img{filter:none}
+.art .shade,.art-full .shade{position:absolute;inset:0;background:var(--art-shade)}
+.art-body{position:relative;padding:18px 16px 14px;display:flex;flex-direction:column;gap:8px;width:100%}
+.art .quote blockquote,.art .quote .btn{color:var(--art-ink);text-shadow:var(--art-ts)}
+.art-cap{font-size:11px;color:var(--art-ink);opacity:.72}
+.art-full{position:relative;overflow:hidden;border-radius:var(--r);padding:28px 16px}
+.art-full h1,.art-full .muted,.art-full blockquote{color:var(--art-ink);text-shadow:var(--art-ts)}
+.art-full .shade{background:var(--art-full-shade)}
+:root{--art-full-shade:linear-gradient(rgba(0,0,0,.66),rgba(0,0,0,.86))}
+:root[data-skin="berserk"]{--art-full-shade:radial-gradient(ellipse at 50% 0%,rgba(179,22,28,.35),transparent 60%),linear-gradient(rgba(10,9,9,.7),rgba(10,9,9,.92))}
+:root[data-skin="ink"]{--art-full-shade:linear-gradient(rgba(227,224,218,.8),rgba(227,224,218,.93))}
+:root[data-skin="rocky"]{--art-full-shade:linear-gradient(rgba(22,22,26,.7),rgba(22,22,26,.9))}
+.splat{position:absolute;right:-6px;top:-8px;width:min(58%,340px);color:var(--accent);opacity:.82;pointer-events:none}
+.ch{position:relative;overflow:hidden}
+.ch>*:not(.splat){position:relative}
+.wk-card{text-align:left;cursor:pointer;gap:8px;font:inherit;color:var(--ink)}
+.wk-card:hover{border-color:var(--accent)}
+#ubg{position:fixed;inset:0;z-index:-1;background-size:cover;background-position:center;opacity:.2;pointer-events:none}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}.flash,.spin{animation:none}}
 </style>
 
+<div id="ubg" hidden></div>
 <div class="app">
   <nav class="nav" id="nav" aria-label="Разделы"></nav>
   <main id="main"></main>
@@ -433,6 +485,19 @@ hipThrust:X('Ягодичный мост со штангой',['Ноги'],'g','
 calf:X('Подъём на носки',['Ноги'],'g','calf','beg','reps','Тренажёр',['Встаньте носками на платформу, плечи под валиками.','Опустите пятки как можно ниже.','Поднимитесь на носки максимально высоко.'],['Пружинящие рывки','Малая амплитуда'],'Ровное дыхание.','Без веса на ступеньке.','На одной ноге.',{w:1}),
 ropes:X('Канаты',['Кардио','Руки'],'g','cardio','mid','time','Канаты',['Встаньте в полуприсед, концы канатов в руках.','Поочерёдно резко поднимайте и опускайте руки, создавая волны.','Держите корпус стабильным, дышите ритмично.'],['Прямые ноги','Работа только кистями'],'Ритмичное дыхание.','Медленнее и меньше амплитуда.','Волны двумя руками с прыжком.'),
 farmer:X('Прогулка фермера',['Спина','Кор'],'g','carry','beg','time','Гантели или гири',['Возьмите тяжёлые гантели или гири по бокам.','Выпрямитесь: плечи вниз, пресс напряжён.','Идите короткими быстрыми шагами заданное время.'],['Наклон в сторону','Сутулость'],'Ровное дыхание.','Легче вес.','Тяжелее и дольше.',{w:1}),
+hammerCurl:X('Молотковые сгибания',['Руки'],'hg','arms','beg','reps','Гантели',['Встаньте прямо, гантели в опущенных руках, ладони смотрят друг на друга.','Согните руки, не поворачивая кисти.','Медленно опустите.'],['Раскачка корпусом','Локти уходят вперёд'],'Выдох на подъёме.','Попеременно.','Медленный негатив.',{w:1,eq:['db']}),
+arnold:X('Жим Арнольда',['Плечи'],'hg','pushV','mid','reps','Гантели',['Гантели у груди, ладони к себе.','Выжимайте вверх, разворачивая ладони вперёд.','Вверху руки прямые, ладони смотрят вперёд.','Опустите с обратным разворотом.'],['Прогиб в пояснице','Рывки'],'Выдох на жиме.','Меньше вес, сидя.','Пауза вверху.',{w:1,eq:['db']}),
+dbLunge:X('Выпады с гантелями',['Ноги'],'hg','lunge','mid','reps','Гантели',['Встаньте прямо, гантели в руках.','Шагните вперёд и опуститесь, заднее колено почти касается пола.','Оттолкнитесь передней ногой и вернитесь. Чередуйте ноги.'],['Короткий шаг','Колено уходит внутрь'],'Вдох вниз, выдох вверх.','Без гантелей.','Тяжелее гантели.',{w:1,eq:['db'],note:'на каждую ногу'}),
+sumoSquat:X('Сумо-присед с гантелью',['Ноги'],'hg','squat','beg','reps','Гантель',['Широкая стойка, носки развёрнуты, гантель в руках между ног.','Опуститесь вниз, колени по линии носков, спина прямая.','Встаньте, сжимая ягодицы.'],['Колени внутрь','Наклон вперёд'],'Вдох вниз, выдох вверх.','Без веса.','Пауза внизу.',{w:1,eq:['db']}),
+bulgarian:X('Болгарские выпады',['Ноги'],'hg','lunge','adv','reps','Скамья, гантели',['Встаньте спиной к скамье, носок задней ноги на скамье.','Опуститесь на передней ноге до параллели бедра с полом.','Поднимитесь, толкаясь пяткой передней ноги.'],['Колено внутрь','Стоите слишком близко к скамье'],'Вдох вниз, выдох вверх.','Без гантелей.','Тяжелее гантели.',{w:1,note:'на каждую ногу'}),
+gluteKick:X('Отведение ноги назад',['Ноги'],'h','glutes','beg','reps','Коврик',['Встаньте на четвереньки, ладони под плечами.','Отведите согнутую ногу назад-вверх, толкая пяткой потолок.','Сожмите ягодицу вверху и опустите без касания пола.'],['Прогиб в пояснице','Поворот таза'],'Выдох на подъёме.','Меньше амплитуда.','С утяжелителем или резинкой.',{note:'на каждую ногу'}),
+closePush:X('Отжимания узким хватом',['Руки','Грудь'],'hf','push','mid','reps','Без инвентаря',['Упор лёжа, ладони под плечами или чуть уже.','Опускайтесь, прижимая локти к корпусу.','Выжмите себя вверх — работают трицепсы.'],['Локти в стороны','Провисание таза'],'Вдох вниз, выдох вверх.','От опоры.','Ноги на возвышении.'),
+declinePush:X('Отжимания ногами на опоре',['Грудь','Плечи'],'hf','push','adv','reps','Скамья или стул',['Поставьте стопы на скамью, ладони на пол чуть шире плеч.','Тело прямое — опуститесь грудью к полу.','Выжмите себя вверх.'],['Провисание поясницы','Голова тянется вниз'],'Вдох вниз, выдох вверх.','Обычные отжимания.','Выше опора.'),
+pushSidePlank:X('Отжимание с поворотом в боковую планку',['Грудь','Кор'],'hf','push','adv','reps','Без инвентаря',['Сделайте отжимание.','Вверху развернитесь на одну руку, вторую поднимите вверх — боковая планка.','Вернитесь в упор, отожмитесь и повернитесь в другую сторону.'],['Провисание таза','Спешка на повороте'],'Выдох на подъёме.','От опоры с поворотом.','Пауза 2 секунды в боковой планке.'),
+reverseCrunch:X('Обратные скручивания',['Кор'],'hf','core','beg','reps','Коврик',['Лягте на спину, руки вдоль корпуса, согнутые колени подняты.','Подкрутите таз к груди, отрывая ягодицы от пола.','Медленно опустите таз, не бросая ноги.'],['Раскачка ногами','Рывки'],'Выдох на подъёме таза.','Меньше амплитуда.','С прямыми ногами.'),
+spiderCrawl:X('Паук',['Кор','Плечи'],'hf','cardio','mid','time','Без инвентаря',['Упор лёжа, тело низко над полом.','Ползите вперёд: рука и колено одной стороны тянутся друг к другу, затем другой.','Таз низко, пресс напряжён.'],['Таз задран','Задержка дыхания'],'Ритмичное дыхание.','Медленнее, корпус выше.','Ниже к полу и быстрее.'),
+cableCross:X('Сведения в кроссовере',['Грудь'],'g','push','beg','reps','Кроссовер',['Встаньте между блоками, рукояти в руках, шаг вперёд.','Локти слегка согнуты и зафиксированы.','Сведите руки перед грудью по дуге.','Медленно разведите до растяжения груди.'],['Сгибание рук в локтях','Рывки корпусом'],'Выдох на сведении.','Меньше вес.','Пауза в сведении.',{w:1}),
+boxJump:X('Запрыгивания на тумбу',['Ноги','Кардио'],'g','plyo','mid','reps','Тумба',['Встаньте перед тумбой, стопы на ширине плеч.','Махните руками и запрыгните, приземляясь мягко на всю стопу.','Выпрямитесь наверху и сойдите вниз шагом.'],['Жёсткое приземление','Прыжок назад вниз'],'Выдох на прыжке.','Ниже тумба.','Выше тумба.'),
 /* --- единоборства --- */
 shadow:X('Бой с тенью',['Бой'],'f','box','beg','time','Без инвентаря',['Встаньте в стойку: левая нога впереди (для правши), руки у подбородка, подбородок опущен.','Двигайтесь на передней части стопы, не скрещивая ноги.','Выбрасывайте удары сериями и сразу возвращайте руки к лицу.','После серии — нырок, уклон или шаг с линии.','Выполняйте комбинации, которые называет таймер.'],['Руки падают после удара','Подбородок задран','Стойка на пятках'],'Короткий резкий выдох на каждый удар.','Медленно, по одному удару.','С гантелями по 0,5–1 кг.',{one:1,combo:'box'}),
 jabCross:X('Двойка: джеб + кросс',['Бой','Руки'],'f','box','beg','time','Без инвентаря',['Из стойки выбросите джеб — прямой передней рукой, кулак поворачивается ладонью вниз.','Сразу за ним кросс — прямой задней рукой с поворотом бедра и задней стопы.','Верните руки к подбородку по той же траектории.','Плечо прикрывает подбородок на ударе.'],['Замах перед ударом','Задняя пятка не поворачивается','Вторая рука опущена'],'Выдох «тс» на каждый удар.','Только джеб.','Двойной джеб + кросс.',{one:1,combo:'jab'}),
@@ -487,7 +552,7 @@ const MEALS=[['b','Завтрак'],['l','Обед'],['d','Ужин'],['s','Пе
 /* --- мотивация (написано для приложения, в духе историй — не цитаты) --- */
 const QUOTES={
   berserk:['Боль — это кузнечный молот. Ты — клинок.','Не жди, пока шторм утихнет. Иди сквозь него.','Каждый подход — ещё один шаг из тьмы.','Судьбу не выбирают. Её прорубают.','Железо не спрашивает, устал ли ты. Оно ждёт.','Отступать некуда — значит, только вперёд.','Сильными не рождаются. Их выковывают удар за ударом.','Сегодняшняя тяжесть — завтрашняя броня.','Пока ты стоишь на ногах, бой не окончен.','Клинок тяжёл только для того, кто готов его опустить.','Ночь длинная. Тренировка короче. Вперёд.','Шрамы — это карта пройденного пути.','Слабость уходит с потом. Отпусти её.','Не ради похвалы. Ради того, кем ты станешь.','Встань. Возьми железо. Сделай ещё раз.','Тьма не отступит сама. Заставь её.',
-    'Этот подход тяжелее Драконобоя? Нет. Значит, поднимешь.','Клеймо жжёт — значит, ты ещё жив. Работаем.','Сокол взлетает не потому, что легко, а потому, что решил.','Затмение наступает для тех, кто остановился.','Тот, кто держит меч, не просит пощады у штанги.','Твоя броня выкована из прошлых тренировок.','Не молись о лёгкой ноше. Молись о крепкой спине.','Пусть демоны смотрят, как ты делаешь ещё один подход.','Одиночка у костра тоже тренируется. Особенно он.','Мечта без мозолей — просто сон.','Кто идёт против бури, тот и становится бурей.','Сегодня ты — наёмник. Через год — легенда отряда.','Если мир против тебя — отожмись от него.','Боль временна. Мышцы остаются.'],
+    'Этот подход тяжелее Драконобоя? Нет. Значит, поднимешь.','Клеймо жжёт — значит, ты ещё жив. Работаем.','Сокол взлетает не потому, что легко, а потому, что решил.','Затмение наступает для тех, кто остановился.','Тот, кто держит меч, не просит пощады у штанги.','Твоя броня выкована из прошлых тренировок.','Не молись о лёгкой ноше. Молись о крепкой спине.','Пусть демоны смотрят, как ты делаешь ещё один подход.','Одиночка у костра тоже тренируется. Особенно он.','Мечта без мозолей — просто сон.','Кто идёт против бури, тот и становится бурей.','Сегодня ты — наёмник. Через год — легенда отряда.','Если мир против тебя — отожмись от него.','Боль временна. Мышцы остаются.','Каждое утро — новая битва. Меч уже ждёт у кровати.','Гнев — плохой хозяин, но отличное топливо для подхода.','Кто устал — отдыхает. Кто решил — делает ещё один.','Твой враг сегодня — вчерашний ты. Руби.','Броню не покупают. Её набивают подходами.','Бесконечная ночь кончается, когда встаёшь и идёшь.','Даже ветер устаёт. Ты — нет.','Ноша лёгкая? Значит, ты взял не ту ношу.'],
   rocky:['Упал — вставай. Упал снова — вставай снова.','Чемпионов делают в пять утра, когда никто не смотрит.','Ещё один раунд. Всегда есть ещё один раунд.','Удар держат не руки, а характер.','Лестница не станет короче. Ты станешь сильнее.','Никто в тебя не верит? Отличный повод начать.','Пот сегодня — пояс завтра.','Победа — встать на один раз больше, чем упал.','Беги, пока не станет легко. Потом беги дальше.','Неважно, как тяжело. Важно, что ты ещё здесь.','Гонг ещё не прозвучал. Работаем.','Каждое утро — новый бой. Выходи на ринг.','Сердце бойца тренируется вместе с мышцами.','Сегодня ты против вчерашнего себя. Бей первым.','Дистанцию проходят шаг за шагом. Сделай свой.',
     'Лестница — это просто вертикальная дорожка к победе.','Бей мешок так, будто он должен тебе денег.','Не нужно быть лучшим. Нужно выстоять все раунды.','Холодное утро? Отличная погода для пробежки.','Руки вверх. Подбородок вниз. Сердце вперёд.','Каждый подход — удар по сомнениям.','Упасть не стыдно. Стыдно не выйти к гонгу.','Пусть говорят. Ринг всё покажет.'],
   classic:['Лучшая тренировка — та, которая состоялась.','Маленький шаг каждый день — большой путь за год.','Ты никогда не пожалеешь о сделанной тренировке.','Прогресс, а не идеал.','Сила приходит к тем, кто не останавливается.','Сегодня трудно — завтра легче.','Тело достигает того, во что верит голова.','Дисциплина сильнее мотивации.']
@@ -521,6 +586,55 @@ const CREDITS={shadow:['James J. Corbett with punching bag','Paul Thompson','о�
   frontKick:['Shadow Karate Kick','sefcmpa','CC BY 2.0','https://commons.wikimedia.org/wiki/File:Shadow_Karate_Kick.jpg'],
   knee:['USMC-081025-M-0884D-009','Sgt. Rocco DeFilippis','общественное достояние','https://commons.wikimedia.org/wiki/File:USMC-081025-M-0884D-009.jpg'],
   footwork:['Boxing footwork','—','общественное достояние','https://commons.wikimedia.org/wiki/File:Ouch-boxing-footwork.jpg']};
+
+/* --- методики: разные подходы к тренировке --- */
+const METHODS={
+  classic:{n:'Классика',d:'Подход — отдых — подход. Проверенная база.'},
+  circuit:{n:'Круговая',d:'Все упражнения подряд почти без отдыха, отдых — после круга.'},
+  superset:{n:'Суперсеты',d:'Упражнения парами: второе сразу после первого.'},
+  pyramid:{n:'Пирамида',d:'С каждым подходом повторов меньше, а вес больше: 12-10-8-6.'},
+  ladder:{n:'Лесенка',d:'С каждым подходом повторов больше: вверх по ступеням.'},
+  emom:{n:'EMOM',d:'В начале каждой минуты — подход. Успел раньше — отдыхаешь до конца минуты.'},
+  amrap:{n:'AMRAP',d:'Максимум кругов за отведённое время. Отдых — когда сам решишь.'},
+  tabata:{n:'Табата',d:'20 секунд на пределе, 10 отдыха, 8 раз на упражнение.'},
+  s5x5:{n:'Сила 5×5',d:'Тяжёлые базовые: 5 подходов по 5 повторов, длинный отдых.'},
+  rounds:{n:'Раунды',d:'Как на ринге: раунды на время и отдых между ними.'}
+};
+const METHOD_FOR={home:['classic','circuit','superset','ladder','pyramid','emom','amrap','tabata'],gym:['classic','superset','pyramid','s5x5','ladder','circuit','emom','amrap'],fight:['rounds','circuit','tabata','emom','amrap']};
+
+/* --- испытания: свои у каждой темы --- */
+const CHALLENGES={
+  berserk:[
+    {id:'dragonslayer',n:'Драконобой',d:'Тяжёлое железо для того, кто носит меч выше себя: махи, тяги и переноски.',m:'classic',rest:90,items:[['kbSwing|rdl|squat',5,{reps:15}],['farmer|plank',4,{time:45}],['deadlift|rdl|bridge',4,{reps:8}],['goblet|sumoSquat|squat',4,{reps:12}],['hangRaise|legRaise|reverseCrunch',3,{reps:12}]]},
+    {id:'eclipse',n:'Затмение',d:'20 минут без пощады: столько кругов, сколько выдержишь.',m:'amrap',cap:1200,items:[['pushup|kneePush',1,{reps:10}],['squat',1,{reps:15}],['crunch',1,{reps:20}],['climber',1,{time:30}]]},
+    {id:'swordpath',n:'Путь мечника',d:'Каждую минуту — новый удар по слабости. 16 минут.',m:'emom',emom:16,items:[['jumpSquat|squat',1,{reps:10}],['pushup|kneePush',1,{reps:10}],['twist|crunch',1,{reps:20}],['lunge',1,{reps:10}]]},
+    {id:'hundred',n:'Сто ударов',d:'Бой с тенью и серии, пока руки не станут тяжелее меча.',m:'rounds',rest:60,items:[['shadow',3,{time:180}],['jabCross',2,{time:120}],['hook',2,{time:120}],['tuckJump|jumpSquat',3,{reps:10}]]},
+    {id:'campfire',n:'Ночь у костра',d:'Лесенка вверх: с каждым подходом повторов больше. Одиночке холод не страшен.',m:'ladder',rest:45,items:[['pullup|chinup|superman',1,{repsBy:[2,4,6,8]}],['pushup|kneePush',1,{repsBy:[4,8,12,16]}],['squat',1,{repsBy:[6,12,18,24]}]]}
+  ],
+  rocky:[
+    {id:'philly',n:'Утро в Филадельфии',d:'Пробежка, отжимания, пресс и бой с тенью — как в пять утра.',m:'classic',rest:60,items:[['rope|highKnees',3,{time:180}],['closePush|pushup',4,{reps:15}],['crunch',4,{reps:25}],['shadow',3,{time:180}]]},
+    {id:'museumsteps',n:'Ступени музея',d:'Каждую минуту — рывок наверх. 15 минут до вершины.',m:'emom',emom:15,items:[['stepUp|lunge',1,{reps:12}],['jumpSquat|squat',1,{reps:12}],['starJump|highKnees',1,{reps:15}]]},
+    {id:'freezer',n:'Холодильный склад',d:'Шесть раундов по корпусу. Туши в холодильнике дрожат.',m:'rounds',rest:60,items:[['bag|shadow',3,{time:180}],['bodyShots',3,{time:120}]]},
+    {id:'title',n:'Бой за титул',d:'Двенадцать раундов по три минуты. Выстоять до гонга.',m:'rounds',rest:60,items:[['shadow',3,{time:180}],['jabCross',2,{time:180}],['hook',2,{time:180}],['uppercut',2,{time:180}],['bodyShots',2,{time:180}],['footwork',1,{time:180}]]},
+    {id:'barn',n:'Амбар в горах',d:'Никаких тренажёров: переноски, подтягивания, пресс и прыжки.',m:'circuit',rounds:4,roundRest:90,items:[['farmer|kbSwing|squat',1,{time:45}],['chinup|pullup|superman',1,{reps:8}],['crunch|reverseCrunch',1,{reps:20}],['jumpSquat|squat',1,{reps:15}],['pushup|kneePush',1,{reps:15}]]}
+  ],
+  classic:[
+    {id:'tabata4',n:'Табата-экспресс',d:'Четыре упражнения по четыре минуты: 20 секунд работы, 10 отдыха.',m:'tabata',items:[['jumpSquat|squat',8,{time:20}],['pushup|kneePush',8,{time:20}],['climber',8,{time:20}],['crunch',8,{time:20}]]},
+    {id:'amrap15',n:'Круг на 15 минут',d:'Максимум кругов за 15 минут.',m:'amrap',cap:900,items:[['squat',1,{reps:15}],['pushup|kneePush',1,{reps:10}],['lunge',1,{reps:10}],['plank',1,{time:30}]]},
+    {id:'hundredpush',n:'Сотня',d:'Сто отжиманий за тренировку — лесенкой.',m:'ladder',rest:60,items:[['pushup|kneePush',1,{repsBy:[10,15,20,25,30]}]]}
+  ]
+};
+
+/* --- гравюры и фото для тем (общественное достояние) --- */
+const ART={berserk:['durer','satan','charon','deathdance','titans'],rocky:['dempsey','ring1921','steps'],classic:[]};
+const ART_CREDITS={durer:['«Рыцарь, смерть и дьявол», 1513','Альбрехт Дюрер','CC0','https://commons.wikimedia.org/wiki/File:Knight,_Death,_and_the_Devil_MET_DP102226.jpg'],
+  satan:['«Потерянный рай»','Гюстав Доре','общественное достояние','https://commons.wikimedia.org/wiki/File:GustaveDoreParadiseLostSatanProfile.jpg'],
+  charon:['«Ад», песнь III — Харон','Гюстав Доре','общественное достояние','https://commons.wikimedia.org/wiki/File:Gustave_Dor%C3%A9_-_Dante_Alighieri_-_Inferno_-_Plate_9_(Canto_III_-_Charon).jpg'],
+  deathdance:['«Пляска смерти»','Ганс Гольбейн','CC0','https://commons.wikimedia.org/wiki/File:Hans_Holbein_-_Dance_of_Death-_The_Trumpeters_of_Death_-_1929.146_-_Cleveland_Museum_of_Art.jpg'],
+  titans:['«Ад», песнь XXXI — Титаны','Гюстав Доре','общественное достояние','https://commons.wikimedia.org/wiki/File:Gustave_Dor%C3%A9_-_Dante_Alighieri_-_Inferno_-_Plate_65_(Canto_XXXI_-_The_Titans).jpg'],
+  dempsey:['Джек Демпси на тренировке','Библиотека Конгресса США','общественное достояние','https://commons.wikimedia.org/wiki/File:Jack_Dempsey,_full-length_portrait,_standing,_facing_right,_training_at_Michigan_City,_Indiana_LCCN92521076.jpg'],
+  ring1921:['Джек Демпси на тренировке','DPLA','общественное достояние','https://commons.wikimedia.org/wiki/File:Jack_Dempsey_in_training_-_DPLA_-_f58d5accbd4d91210c34d75ad03e6257.jpg'],
+  steps:['На ступенях Художественного музея Филадельфии','Dick Swanson, NARA','общественное достояние','https://commons.wikimedia.org/wiki/File:ON_THE_STEPS_OF_THE_PHILADELPHIA_MUSEUM_OF_ART_-_NARA_-_552704.jpg']};
 
 'use strict';
 /* ================= ЛОГИКА ПРИЛОЖЕНИЯ «ПОДХОД» ================= */
@@ -566,28 +680,32 @@ const ICON={
 const ic=(n,s=20)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true">${ICON[n]}</svg>`;
 
 /* ---------- skins ---------- */
-const SKINS=[['berserk','Берсерк','Тёмная сталь и кровавое затмение'],['rocky','Рокки','Боксёрский зал, красный и золото'],['classic','Классика','Светлая и тёмная, спокойная']];
+const SKINS=[['berserk','Берсерк: тьма','Чёрная сталь и кровавое затмение'],['ink','Берсерк: тушь','Серая бумага, чёрная тушь, брызги крови'],['rocky','Рокки','Боксёрский зал, красный и золото'],['classic','Классика','Светлая и тёмная, спокойная']];
 const skin=()=>(S&&S.settings&&S.settings.skin)||'berserk';
+const sk=()=>skin()==='ink'?'berserk':skin();
 const LVN={classic:{beg:'Новичок',mid:'Средний',adv:'Продвинутый'},berserk:{beg:'Новобранец',mid:'Наёмник',adv:'Берсерк'},rocky:{beg:'Любитель',mid:'Претендент',adv:'Чемпион'}};
 const LVP={beg:'g',mid:'y',adv:'r'},LVI={beg:0,mid:1,adv:2};
-const lvName=l=>LVN[skin()][l]||l;
+const lvName=l=>LVN[sk()][l]||l;
 const GO={berserk:'В бой',rocky:'На ринг',classic:'Поехали'};
 let lastQ='';
-function quote(){const l=QUOTES[skin()];let q;do{q=rand(l)}while(q===lastQ&&l.length>1);lastQ=q;return q}
-const joke=()=>rand(JOKES[skin()]);
+function quote(){const l=QUOTES[sk()];let q;do{q=rand(l)}while(q===lastQ&&l.length>1);lastQ=q;return q}
+const joke=()=>rand(JOKES[sk()]);
 const quoteHTML=(q,center,cls='')=>`<figure class="quote ${center?'center':''} ${cls}"><span class="qm" aria-hidden="true">“</span><blockquote>${esc(q)}</blockquote>${center?'':`<button class="btn iconbtn ghost" data-act="quote" aria-label="Другая фраза">${ic('reset',18)}</button>`}</figure>`;
 const BLADE='<svg class="deco blade" viewBox="0 0 360 12" aria-hidden="true"><path d="M0 6 8 4.2h22V1h4v3.4L344 5.2 360 6l-16 .8L34 7.6V11h-4V7.8H8Z" fill="currentColor"/></svg>';
-const decoHTML=()=>skin()==='berserk'?BLADE:skin()==='rocky'?'<span class="deco stripes" aria-hidden="true"></span>':'';
+const decoHTML=()=>sk()==='berserk'?BLADE:sk()==='rocky'?'<span class="deco stripes" aria-hidden="true"></span>':'';
 
 /* ---------- state & storage ---------- */
-let S=null,SAMPLE=null,AI_OFF=false,DL=null;
+let S=null,SAMPLE=null,AI_OFF=false,DL=null,UBG=null;
+try{UBG=localStorage.getItem('podhod:ubg')}catch(e){}
+function applyUbg(){const el=document.getElementById('ubg');if(!el)return;const on=!!(UBG&&S&&S.settings.ubgPage);el.hidden=!on;if(on)el.style.backgroundImage=`url("${UBG}")`}
+function setUbgFile(f){if(!f||!/^image\//.test(f.type)){toast('Выберите картинку');return}const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>{const k=Math.min(1,1280/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);const url=c.toDataURL('image/jpeg',.82);UBG=url;try{localStorage.setItem('podhod:ubg',url);toast('Фон установлен')}catch(e){toast('Фон установлен, но на устройстве мало места — после перезапуска он пропадёт')}render()};img.onerror=()=>toast('Не удалось открыть картинку');img.src=r.result};r.readAsDataURL(f)}
 const store={mode:'local',db:null,uid:null,dirty:new Set(),timer:null,chain:Promise.resolve(),ready:false,known:new Set()};
 const blankProfile=()=>({name:'',sex:'m',age:30,height:178,activity:1.55,goal:'keep',level:'beg',goalWeight:75,place:'home',days:[1,3,5],minutes:40,eq:[]});
-const blankSettings=()=>({sound:true,voice:true,skin:'berserk'});
-const blank=()=>({v:2,demo:false,profile:blankProfile(),weights:[],workouts:[],food:{},water:{},customFoods:[],settings:blankSettings(),plan:null});
+const blankSettings=()=>({sound:true,voice:true,skin:'berserk',ubgPage:false});
+const blank=()=>({v:2,demo:false,profile:blankProfile(),weights:[],workouts:[],food:{},water:{},customFoods:[],settings:blankSettings(),plan:null,week:null});
 const monthOf=d=>'m-'+d.slice(0,7);
 function split(){
-  const docs={main:{v:2,demo:!!S.demo,profile:S.profile,weights:S.weights,settings:S.settings,customFoods:S.customFoods,plan:S.plan}};
+  const docs={main:{v:2,demo:!!S.demo,profile:S.profile,weights:S.weights,settings:S.settings,customFoods:S.customFoods,plan:S.plan,week:S.week}};
   const m=k=>docs[k]||(docs[k]={workouts:[],food:{},water:{}});
   S.workouts.forEach(w=>m(monthOf(w.d)).workouts.push(w));
   Object.entries(S.food).forEach(([d,a])=>{if(a.length)m(monthOf(d)).food[d]=a});
@@ -596,7 +714,7 @@ function split(){
 }
 function merge(docs){
   const s=blank(),mn=docs.main||{};
-  Object.assign(s,{demo:!!mn.demo,profile:Object.assign(blankProfile(),mn.profile||{}),weights:mn.weights||[],settings:Object.assign(blankSettings(),mn.settings||{}),customFoods:mn.customFoods||[],plan:mn.plan||null});
+  Object.assign(s,{demo:!!mn.demo,profile:Object.assign(blankProfile(),mn.profile||{}),weights:mn.weights||[],settings:Object.assign(blankSettings(),mn.settings||{}),customFoods:mn.customFoods||[],plan:mn.plan||null,week:mn.week||null});
   Object.entries(docs).forEach(([k,d])=>{if(!k.startsWith('m-'))return;(d.workouts||[]).forEach(w=>s.workouts.push(w));Object.assign(s.food,d.food||{});Object.assign(s.water,d.water||{})});
   s.workouts=s.workouts.filter(w=>w&&w.d&&Array.isArray(w.ex)).sort((a,b)=>a.ts-b.ts);s.weights.sort((a,b)=>a.d<b.d?-1:1);
   if(!['beg','mid','adv'].includes(s.profile.level))s.profile.level='beg';
@@ -677,34 +795,90 @@ function dose(id,{place,focus,lv,idx,R,goal}){
   const rest=circuit?30:main?[90,120,150][L]:place==='gym'?75:60;
   return{ex:id,sets,reps,rest};
 }
+function pickMethod(p,R){
+  if(p.method&&p.method!=='random')return p.method;
+  const pool=p.place==='fight'?(['boxing','kick'].includes(p.focus)?['rounds','rounds','rounds','circuit','emom','tabata']:['circuit','tabata','amrap','emom','rounds'])
+    :(['hiit','core'].includes(p.focus)?['circuit','tabata','amrap','emom','ladder']:(p.place==='gym'?['classic','classic','superset','pyramid','s5x5','circuit','ladder','emom']:['classic','circuit','superset','ladder','emom','amrap','pyramid']));
+  return pool[Math.floor(R()*pool.length)];
+}
+function applyMethod(w,m,L){
+  w.method=m;const its=w.items;
+  if(m==='circuit'){w.rounds=clamp(Math.round(w.minutes/10)+L-1,2,6);w.gap=15;w.roundRest=[90,75,60][L];its.forEach(it=>{it.sets=w.rounds;delete it.repsBy;if(it.time)it.time=Math.min(it.time,[30,40,45][L]);else it.reps=Math.min(it.reps||12,15)})}
+  else if(m==='superset'){its.forEach(it=>{it.rest=Math.max(45,it.rest||60)})}
+  else if(m==='pyramid'){its.forEach(it=>{if(!it.time){it.repsBy=L===0?[12,10,8]:L===1?[12,10,8,6]:[12,10,8,6,4];if(!EX[it.ex].w)it.repsBy=it.repsBy.map(r=>r+4);it.sets=it.repsBy.length;it.reps=it.repsBy[0]}})}
+  else if(m==='ladder'){its.forEach(it=>{if(!it.time){const b=Math.max(2,Math.round((it.reps||10)/3));it.repsBy=[1,2,3,4].slice(0,[3,4,4][L]).map(k=>b*k);it.sets=it.repsBy.length;it.reps=it.repsBy[0];it.rest=45}})}
+  else if(m==='emom'){w.emom=clamp(Math.round(w.minutes*.6),8,30);its.forEach(it=>{if(it.time)it.time=clamp(it.time,20,40);else it.reps=Math.min(it.reps||10,[8,10,12][L])})}
+  else if(m==='amrap'){w.cap=clamp(Math.round(w.minutes*.6),8,30)*60;its.forEach(it=>{if(it.time)it.time=Math.min(it.time,40);else it.reps=Math.min(it.reps||10,[10,12,15][L])})}
+  else if(m==='tabata'){w.items=its.slice(0,clamp(Math.round(w.minutes/5),3,6));w.items.forEach(it=>{it.time=20;it.sets=8;it.rest=10;it.restAfter=60;delete it.reps;delete it.repsBy})}
+  else if(m==='s5x5'){let n=0;its.forEach(it=>{if(EX[it.ex].w&&!it.time&&n<3){it.sets=5;it.reps=5;it.rest=[120,150,180][L];n++}});if(!n)w.method='classic'}
+}
 function gen(p,ctx){
   ctx=ctx||{eq:S.profile.eq||[],recent:recentIds(),goal:S.profile.goal};
   const R=rng(hash(p.seed!=null?p.seed:Math.random()*1e9));
-  const slots=SLOTS[p.focus]||SLOTS.full,n=clamp(Math.round(p.minutes/(p.place==='fight'?7.5:8.5)),3,slots.length);
+  const m=pickMethod(p,R),L=LVI[p.lv];
+  const slots=SLOTS[p.focus]||SLOTS.full,per=m==='tabata'?5:m==='amrap'||m==='emom'?9:p.place==='fight'?7.5:8.5;
+  const n=clamp(Math.round(p.minutes/per),3,slots.length);
   const used=new Set(),items=[];
   for(let i=0;i<slots.length&&items.length<n;i++){
     const pats=slots[i].split('|');
     const pool=Object.keys(EX).filter(id=>!used.has(id)&&pats.includes(EX[id].pat)&&exOk(id,p.place,p.lv,ctx.eq));
     if(!pool.length)continue;
-    const w=pool.map(id=>(ctx.recent.has(id)?.3:1)*(EX[id].lv===p.lv?1.6:1)*(p.place==='gym'&&EX[id].pl==='g'?1.6:1)*(p.place==='fight'&&EX[id].pl==='f'?1.5:1));
+    const w=pool.map(id=>(ctx.recent.has(id)?.25:1)*(EX[id].lv===p.lv?1.6:1)*(p.place==='gym'&&EX[id].pl==='g'?1.6:1)*(p.place==='fight'&&EX[id].pl==='f'?1.5:1)*(m==='s5x5'&&EX[id].w?2:1));
     const id=pickW(pool,w,R);used.add(id);items.push(dose(id,{...p,idx:items.length,R,goal:ctx.goal}));
   }
   if(!items.length)items.push(dose('plank',{...p,idx:0,R,goal:ctx.goal}));
-  const ep=EPITHETS[skin()];
-  return{id:newId(),title:ep[Math.floor(R()*ep.length)]+': '+focusName(p.place,p.focus).toLowerCase(),place:p.place,focus:p.focus,lv:p.lv,minutes:p.minutes,items,kind:'gen'};
+  const ep=EPITHETS[sk()];
+  const w={id:newId(),title:ep[Math.floor(R()*ep.length)]+': '+focusName(p.place,p.focus).toLowerCase(),place:p.place,focus:p.focus,lv:p.lv,minutes:p.minutes,items,kind:'gen'};
+  applyMethod(w,m,L);
+  return w;
 }
 function recentIds(n=3){const s=new Set();(S?S.workouts:[]).slice(-n).forEach(w=>w.ex.forEach(e=>s.add(e.id)));return s}
-function estMin(w){let s=0;w.items.forEach(it=>{s+=it.sets*(it.time||it.reps*3.2*(EX[it.ex].note?2:1))+it.sets*(it.rest||60)});return Math.max(5,Math.round(s/60))}
+/* шаги тренировки: порядок подходов зависит от методики */
+function buildSteps(w){
+  const out=[],its=w.items,m=w.method||'classic',st=(i,s,rest,x)=>out.push(Object.assign({i,s,rest},x));
+  const rt=(it,s)=>it.time?{time:it.time}:{reps:it.repsBy?it.repsBy[Math.min(s,it.repsBy.length)-1]:it.reps};
+  if(m==='circuit'){const R=w.rounds||3;for(let r=1;r<=R;r++)its.forEach((it,i)=>st(i,r,i===its.length-1?(r===R?0:(w.roundRest||75)):(w.gap??15),rt(it,r)))}
+  else if(m==='superset'){for(let a=0;a<its.length;a+=2){const b=a+1<its.length?a+1:null,sets=Math.max(its[a].sets,b!=null?its[b].sets:0);
+    for(let s=1;s<=sets;s++){if(s<=its[a].sets)st(a,s,b!=null&&s<=its[b].sets?10:(its[a].rest||60),rt(its[a],s));if(b!=null&&s<=its[b].sets)st(b,s,its[b].rest||60,rt(its[b],s))}}}
+  else if(m==='emom'){const N=w.emom||12;for(let k=0;k<N;k++){const i=k%its.length;st(i,Math.floor(k/its.length)+1,60,{...rt(its[i],1),emom:1})}}
+  else if(m==='amrap'){for(let r=1;r<=60;r++)its.forEach((it,i)=>st(i,r,0,rt(it,1)))}
+  else its.forEach((it,i)=>{for(let s=1;s<=it.sets;s++)st(i,s,s===it.sets?(it.restAfter??it.rest??60):(it.rest??60),rt(it,s))});
+  if(out.length)out[out.length-1].rest=0;
+  return out;
+}
+function estMin(w){const m=w.method;if(m==='amrap')return Math.round((w.cap||900)/60)+3;if(m==='emom')return(w.emom||12)+3;let s=0;buildSteps(w).forEach(st=>{const e=EX[w.items[st.i].ex];s+=(st.time||(st.reps||10)*3.2*(e&&e.note?2:1))+st.rest});return Math.max(5,Math.round(s/60))}
 const target=it=>it.time?(it.time>=60&&it.time%60===0?it.time/60+' мин':it.time+' с'):it.reps+' повт.';
 const isRound=id=>['box','kick','bag','fwarm'].includes(EX[id].pat);
+const mName=w=>METHODS[w.method||'classic'].n;
+function methodLine(w){const m=w.method||'classic';if(m==='circuit')return `${w.rounds} ${plural(w.rounds,'круг','круга','кругов')} подряд, отдых ${w.roundRest} с после круга.`;if(m==='emom')return `${w.emom} мин: в начале каждой минуты — следующее упражнение.`;if(m==='amrap')return `${Math.round((w.cap||900)/60)} мин: максимум кругов, отдых — по самочувствию.`;return METHODS[m].d}
+function rowText(w,it){const n=EX[it.ex].note?' '+EX[it.ex].note:'',m=w.method;
+  if(m==='tabata')return '8 × 20 с работы / 10 с отдыха';
+  if(m==='circuit'||m==='amrap'||m==='emom')return target(it)+n;
+  if(it.repsBy)return `${it.repsBy.join('-')} повт.${n} · отдых ${it.rest||60} с`;
+  return `${it.sets} × ${target(it)}${n} · отдых ${it.rest||60} с`}
+function ensureWeek(){const mon=mondayOf(todayKey());if(!S.week||S.week.start!==mon)S.week={start:mon,plans:{}};return S.week}
+function planFor(d){const p=S.profile,days=[...p.days].sort((a,b)=>((a+6)%7)-((b+6)%7)),idx=Math.max(0,days.indexOf(parseKey(d).getDay()));
+  const cyc=p.place==='fight'?['boxing','kick','cond']:['full','upper','lower','hiit'];return gen({place:p.place,focus:cyc[idx%cyc.length],minutes:p.minutes,lv:p.level,seed:d+p.place+p.level+p.minutes})}
 function autoFocus(place){const n=S.workouts.filter(w=>w.d>=addDays(todayKey(),-6)).length;const cyc=place==='fight'?['boxing','kick','cond']:['full','upper','lower'];return cyc[n%cyc.length]}
-function ensurePlan(){const tk=todayKey();if(S.plan&&S.plan.d===tk&&S.plan.w&&S.plan.w.items)return S.plan;const p=S.profile;
-  S.plan={d:tk,w:gen({place:p.place,focus:autoFocus(p.place),minutes:p.minutes,lv:p.level,seed:tk+p.place+S.workouts.length})};if(store.ready)touch('main');return S.plan}
-function swapIn(w,i){const it=w.items[i],e=EX[it.ex],have=new Set(w.items.map(x=>x.ex));
-  let pool=Object.keys(EX).filter(id=>!have.has(id)&&EX[id].pat===e.pat&&exOk(id,w.place,w.lv,S.profile.eq||[]));
-  if(!pool.length)pool=Object.keys(EX).filter(id=>!have.has(id)&&EX[id].type===e.type&&EX[id].grp.some(g=>e.grp.includes(g))&&exOk(id,w.place,w.lv,S.profile.eq||[]));
+function ensurePlan(){const tk=todayKey();if(S.plan&&S.plan.d===tk&&S.plan.w&&S.plan.w.items)return S.plan;const wk=ensureWeek();let w=wk.plans[tk];if(!w){w=planFor(tk);wk.plans[tk]=w}S.plan={d:tk,w};if(store.ready)touch('main');return S.plan}
+function setPlan(w){S.plan={d:todayKey(),w};ensureWeek().plans[todayKey()]=w;touch('main')}
+function swapIn(w,i){const it=w.items[i],e=EX[it.ex],have=new Set(w.items.map(x=>x.ex)),eq=S.profile.eq||[];
+  let pool=Object.keys(EX).filter(id=>!have.has(id)&&EX[id].pat===e.pat&&exOk(id,w.place,w.lv,eq));
+  if(!pool.length)pool=Object.keys(EX).filter(id=>!have.has(id)&&EX[id].type===e.type&&EX[id].grp.some(g=>e.grp.includes(g))&&exOk(id,w.place,w.lv,eq));
   if(!pool.length){toast('Замены под ваш инвентарь не нашлось');return false}
-  const id=rand(pool);const d=dose(id,{place:w.place,focus:w.focus,lv:w.lv,idx:i,R:Math.random,goal:S.profile.goal});w.items[i]=d;return true}
+  const id=rand(pool),d=dose(id,{place:w.place,focus:w.focus,lv:w.lv,idx:i,R:Math.random,goal:S.profile.goal});
+  if(w.method&&!['classic','rounds'].includes(w.method)){d.sets=it.sets;d.rest=it.rest;if(it.restAfter!=null)d.restAfter=it.restAfter;if(w.method==='tabata'){d.time=20;delete d.reps}else if(it.repsBy&&!d.time){d.repsBy=it.repsBy;d.reps=it.repsBy[0]}}
+  w.items[i]=d;return true}
+/* испытания темы */
+function resolveEx(alts){const eq=S.profile.eq||[],gym=S.profile.place==='gym',l=alts.split('|');return l.find(id=>EX[id]&&(gym||!EX[id].eq||EX[id].eq.every(x=>eq.includes(x)))&&(gym||EX[id].pl!=='g'))||l[l.length-1]}
+function challengeW(c){
+  const items=c.items.map(([a,sets,o])=>{const id=resolveEx(a),it={ex:id,sets:o.repsBy?o.repsBy.length:sets,rest:c.rest||60};
+    if(o.repsBy){it.repsBy=o.repsBy;it.reps=o.repsBy[0]}else if(o.time)it.time=o.time;else it.reps=o.reps;
+    if(EX[id].type==='time'&&!it.time){it.time=40;delete it.reps;delete it.repsBy}return it});
+  if(c.m==='tabata')items.forEach(it=>{it.time=20;it.sets=8;it.rest=10;it.restAfter=60;delete it.reps});
+  return{id:newId(),title:c.n,note:c.d,place:S.profile.place,focus:'full',lv:S.profile.level,minutes:30,items,kind:'challenge',chId:c.id,method:c.m,rounds:c.rounds,roundRest:c.roundRest||(c.m==='circuit'?90:undefined),gap:15,cap:c.cap,emom:c.emom};
+}
+const weekNo=()=>Math.floor(parseKey(mondayOf(todayKey())).getTime()/6048e5);
 
 /* ---------- AI coach (через Claude, когда есть интернет и версия по ссылке) ---------- */
 const aiOn=()=>!!SAMPLE&&!AI_OFF;
@@ -726,7 +900,7 @@ ${lines}
   const d=await SAMPLE.json(prompt,{signal,cache:false});
   const items=(Array.isArray(d&&d.items)?d.items:[]).filter(it=>it&&EX[it.ex]).slice(0,10).map(it=>{const e=EX[it.ex],o={ex:it.ex,sets:clamp(parseInt(it.sets)||3,1,8),rest:clamp(parseInt(it.rest)||60,10,300)};if(e.type==='time')o.time=clamp(parseInt(it.time)||30,10,600);else o.reps=clamp(parseInt(it.reps)||10,1,60);return o});
   if(items.length<2)throw{code:'bad_plan'};
-  return{id:newId(),title:String(d.title||'Тренировка от ИИ').slice(0,60),note:String(d.note||'').slice(0,260),place:p.place,focus:p.focus,lv:p.lv,minutes:p.minutes,items,kind:'ai'};
+  return{id:newId(),method:'classic',title:String(d.title||'Тренировка от ИИ').slice(0,60),note:String(d.note||'').slice(0,260),place:p.place,focus:p.focus,lv:p.lv,minutes:p.minutes,items,kind:'ai'};
 }
 async function runAI(targetKind){
   if(ui.ai.busy)return;
@@ -734,7 +908,7 @@ async function runAI(targetKind){
   const ctl=new AbortController();ui.ai={busy:true,target:targetKind,ctl};render();
   try{
     const w=await aiGen(p,ctl.signal);
-    if(targetKind==='plan'){S.plan={d:todayKey(),w};touch('main')}else ui.draft=w;
+    if(targetKind==='plan')setPlan(w);else ui.draft=w;
     ui.ai={busy:false};render();toast('ИИ-тренер составил тренировку');
   }catch(e){
     ui.ai={busy:false};const c=e&&e.code;
@@ -743,7 +917,7 @@ async function runAI(targetKind){
     else if(c==='rate_limited')toast('Слишком много запросов к ИИ. Попробуйте через минуту.');
     else if(c==='invalid_json'||c==='bad_plan')toast('ИИ ответил неразборчиво — собрал тренировку сам');
     else toast('Нет связи с ИИ — собрал тренировку сам');
-    if(c!=='rate_limited'){const w=gen({...p,seed:null});if(targetKind==='plan'){S.plan={d:todayKey(),w};touch('main')}else ui.draft=w}
+    if(c!=='rate_limited'){const w=gen({...p,seed:null});if(targetKind==='plan')setPlan(w);else ui.draft=w}
     render();
   }
 }
@@ -763,7 +937,7 @@ function makeDemo(){
     const w=gen({place,focus,minutes:45,lv:'mid',seed:'demo'+d},{eq:s.profile.eq,recent,goal:'lose'});
     const ex=w.items.map(it=>({id:it.ex,sets:Array.from({length:it.sets},(_,j)=>it.time?{t:it.time}:{r:Math.max(1,it.reps-(j>=2&&R()<.4?1:0)),kg:EX[it.ex].w?(DEMO_KG[it.ex]||10)+prog*2:0})}));
     const start=parseKey(d);start.setHours(i%4===0?6:18,30);
-    const rec={id:newId(),d,ts:start.getTime(),dur:estMin(w)*60+Math.round(R()*300),level:'mid',place,title:w.title,kind:'gen',ex};rec.vol=volOf(rec);rec.kcal=Math.round(6*83*rec.dur/3600);rec.xp=xpOf(rec);s.workouts.push(rec);
+    const rec={id:newId(),d,ts:start.getTime(),dur:estMin(w)*60+Math.round(R()*300),level:'mid',place,title:w.title,kind:'gen',method:w.method,ex};rec.vol=volOf(rec);rec.kcal=Math.round(6*83*rec.dur/3600);rec.xp=xpOf(rec);s.workouts.push(rec);
   }
   const add=(d,meal,n,g)=>{const f=FOODS.find(x=>x.n===n);(s.food[d]||(s.food[d]=[])).push(foodEntry(f,g,meal))};
   const menus=[[['b','Овсянка на воде',250],['b','Банан',120],['b','Творог 5%',150],['l','Гречка варёная',200],['l','Куриная грудка отварная',180],['l','Огурец',150],['s','Йогурт греческий 2%',170],['d','Лосось',150],['d','Брокколи',200],['d','Рис варёный',150]],
@@ -778,7 +952,7 @@ function foodEntry(f,g,meal){const q=g/100;return{id:newId(),meal,name:f.n,g,kca
 function volOf(w){let v=0;w.ex.forEach(e=>e.sets.forEach(s=>{if(s.kg&&s.r)v+=s.kg*s.r}));return Math.round(v)}
 function xpOf(w){const sets=w.ex.reduce((a,e)=>a+e.sets.length,0);return Math.round(10+w.dur/60+sets*2+(w.vol||0)/250)}
 const totalXP=()=>S.workouts.reduce((a,w)=>a+(w.xp||xpOf(w)),0);
-function rankOf(xp){let i=0;RANKS.at.forEach((t,k)=>{if(xp>=t)i=k});const nx=RANKS.at[i+1];return{i,name:RANKS[skin()][i],next:nx!=null?RANKS[skin()][i+1]:null,nextAt:nx,frac:nx?(xp-RANKS.at[i])/(nx-RANKS.at[i]):1}}
+function rankOf(xp){let i=0;RANKS.at.forEach((t,k)=>{if(xp>=t)i=k});const nx=RANKS.at[i+1];return{i,name:RANKS[sk()][i],next:nx!=null?RANKS[sk()][i+1]:null,nextAt:nx,frac:nx?(xp-RANKS.at[i])/(nx-RANKS.at[i]):1}}
 function weekStreak(){const tgt=Math.max(1,S.profile.days.length);let m=mondayOf(todayKey()),n=0;const cnt=s=>S.workouts.filter(w=>w.d>=s&&w.d<=addDays(s,6)).length;if(cnt(m)>=tgt)n++;m=addDays(m,-7);while(cnt(m)>=tgt&&n<520){n++;m=addDays(m,-7)}return n}
 const lastW=()=>S.weights.length?S.weights[S.weights.length-1]:null;
 function targets(){
@@ -809,7 +983,7 @@ function achievements(){
   return[['Первая кровь','Первая тренировка',n>=1],['Десятка','10 тренировок',n>=10],['Полтинник','50 тренировок',n>=50],['Режим','3 тренировки за 7 дней',wk>=3],
     ['Тонна','1 000 кг за одну тренировку',maxVol>=1000],['Грузчик','10 000 кг всего',vol>=10000],['Железный человек','100 000 кг всего',vol>=100000],['Час боли','Тренировка дольше часа',long],
     ['Ранняя пташка','Тренировка до 7 утра',hrs.some(h=>h<7)],['Ночной мечник','Тренировка после 22:00',hrs.some(h=>h>=22)],['Боец','5 тренировок единоборств',fights>=5],['Универсал','Дом, зал и бой',places>=3],
-    ['Минус 2 кг','С первой записи веса',lost>=2],['Минус 5 кг','С первой записи веса',lost>=5],['Белковый маньяк','Норма белка 3 дня подряд',prot3],['Водяной','Норма воды сегодня',(S.water[tk]||0)>=tg.water]];
+    ['Испытатель','3 испытания темы',W.filter(w=>w.chId).length>=3],['Методист','5 разных методик',new Set(W.map(w=>w.method).filter(Boolean)).size>=5],['Минус 2 кг','С первой записи веса',lost>=2],['Минус 5 кг','С первой записи веса',lost>=5],['Белковый маньяк','Норма белка 3 дня подряд',prot3],['Водяной','Норма воды сегодня',(S.water[tk]||0)>=tg.water]];
 }
 function funFact(w){const v=w.vol||0;if(v>=1500)return`Ты поднял ${fmt(v/1000,1)} т — это примерно ${fmt(v/950,1)} «Жигулей».`;if(v>=300)return`Суммарно ${fmt(v)} кг — как ${fmt(v/350,1)} концертного рояля.`;if(v>0)return`${fmt(v)} кг — это примерно ${Math.max(1,Math.round(v/8))} арбузов.`;const m=Math.round(w.dur/60);return`${m} мин работы — это ${Math.max(1,Math.round(m/3))} боксёрских раундов по 3 минуты.`}
 
@@ -820,12 +994,12 @@ const frames=id=>EX[id].one?`<div class="frames one"><figure><img src="img/${id}
   :`<div class="frames"><figure><img src="img/${id}-0.jpg" alt="${esc(EX[id].name)} — исходное положение"><figcaption>1 · Исходное положение</figcaption></figure><figure><img src="img/${id}-1.jpg" alt="${esc(EX[id].name)} — конечное положение"><figcaption>2 · Конечное положение</figcaption></figure></div>`;
 
 /* ---------- ui state ---------- */
-const ui={q:null,tab:'today',trainSub:'build',b:null,draft:null,ai:{busy:false},libPlace:'all',libGrp:'Все',libQ:'',foodDate:null,fa:null,progSub:'body',wRange:60,rRange:'week',exSel:null,egg:0};
+const ui={q:null,artSeed:null,tab:'today',trainSub:'build',b:null,draft:null,ai:{busy:false},libPlace:'all',libGrp:'Все',libQ:'',foodDate:null,fa:null,progSub:'body',wRange:60,rRange:'week',exSel:null,egg:0};
 const TABS=[['today','Сегодня'],['train','Тренировки'],['timer','Таймер'],['food','Питание'],['progress','Прогресс']];
-function builder(){if(!ui.b){const p=S.profile;ui.b={place:p.place,focus:autoFocus(p.place),minutes:p.minutes,lv:p.level}}return ui.b}
+function builder(){if(!ui.b){const p=S.profile;ui.b={place:p.place,focus:autoFocus(p.place),minutes:p.minutes,lv:p.level,method:'random'}}return ui.b}
 
 function render(){
-  document.documentElement.dataset.skin=skin();
+  document.documentElement.dataset.skin=skin();applyUbg();
   const tc=document.querySelector('meta[name="theme-color"]');if(tc)tc.setAttribute('content',getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()||'#0A0909');
   document.getElementById('nav').innerHTML=`<button class="brand" data-act="egg" aria-label="Подход"><span class="mark" aria-hidden="true"></span>Подход</button>`+
     TABS.map(([k,n])=>`<button data-act="tab" data-v="${k}" ${ui.tab===k?'aria-current="page"':''}>${ic(k,22)}<span>${n}</span></button>`).join('')+
@@ -842,9 +1016,25 @@ function header(title,eyebrow){
 }
 const placeChip=pl=>`<span class="chip">${ic(pl,14)} ${PLACES[pl].n}</span>`;
 const lvChip=l=>`<span class="lv"><span class="plate ${LVP[l]}" style="width:14px;height:14px"></span>${lvName(l)}</span>`;
-const exRows=(w,edit)=>`<ul class="exrows">${w.items.map((it,i)=>`<li><div class="thumb">${photo(it.ex,'sm')}</div><div class="nm"><button data-act="ex" data-v="${it.ex}">${esc(EX[it.ex].name)}</button><div class="sr">${it.sets} × ${target(it)}${EX[it.ex].note?' '+EX[it.ex].note:''} · отдых ${it.rest||60} с</div></div>${edit?`<button class="btn iconbtn ghost" data-act="${edit}-swap" data-v="${i}" aria-label="Заменить упражнение">${ic('swap',18)}</button><button class="btn iconbtn ghost" data-act="${edit}-del" data-v="${i}" aria-label="Убрать упражнение">${ic('x',18)}</button>`:''}</li>`).join('')}</ul>`;
+const exRows=(w,edit)=>`<ul class="exrows">${w.items.map((it,i)=>`<li><div class="thumb">${photo(it.ex,'sm')}</div><div class="nm">${w.method==='superset'?`<span class="chip" style="padding:1px 7px;margin-right:6px">${String.fromCharCode(65+Math.floor(i/2))}${i%2+1}</span>`:''}<button data-act="ex" data-v="${it.ex}">${esc(EX[it.ex].name)}</button><div class="sr">${rowText(w,it)}</div></div>${edit?`<button class="btn iconbtn ghost" data-act="${edit}-swap" data-v="${i}" aria-label="Заменить упражнение">${ic('swap',18)}</button><button class="btn iconbtn ghost" data-act="${edit}-del" data-v="${i}" aria-label="Убрать упражнение">${ic('x',18)}</button>`:''}</li>`).join('')}</ul>`;
 
 /* ---------- Сегодня ---------- */
+function splat(seed=7){if(sk()!=='berserk')return '';const R=rng(seed*7919+hash(skin()));let c='';for(let i=0;i<30;i++){const x=R()*200,y=R()*110,r=Math.pow(R(),3)*8+.5;c+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}"/>`;if(r>4&&R()<.7)c+=`<rect x="${(x-r*.22).toFixed(1)}" y="${y.toFixed(1)}" width="${(r*.44).toFixed(1)}" height="${(8+R()*28).toFixed(1)}" rx="${(r*.22).toFixed(1)}"/>`}return `<svg class="splat" viewBox="0 0 200 140" aria-hidden="true"><g fill="currentColor">${c}</g></svg>`}
+function artBanner(){
+  const q=ui.q||(ui.q=quote()),has=UBG||(ART[sk()]||[]).length;
+  if(!has)return quoteHTML(q);
+  const img=artBg(ui.artSeed!=null?ui.artSeed:(hash(todayKey())%97)/97),key=!UBG&&img.replace('art/','').replace('.jpg','');
+  return `<section class="art ${UBG?'user':''}"><div class="img" style="background-image:url('${img}')"></div><div class="shade"></div>${splat(3)}<div class="art-body">${quoteHTML(q)}${key&&ART_CREDITS[key]?`<span class="art-cap">${esc(ART_CREDITS[key][0])} — ${esc(ART_CREDITS[key][1])}</span>`:''}</div></section>`;
+}
+let INSTALL=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();INSTALL=e;if(S&&(ui.tab==='today'||ui.tab==='profile'))render()});
+const standalone=()=>{try{return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}};
+function installHTML(){if(window.claude||standalone())return '';
+  if(INSTALL)return `<div class="banner"><p class="small"><b>Поставьте «Подход» на телефон</b> — иконка на главном экране, работает без интернета.</p><button class="btn primary sm" data-act="install">Установить</button></div>`;
+  if(/iphone|ipad|ipod/i.test(navigator.userAgent))return `<div class="banner"><p class="small"><b>Поставить на iPhone:</b> кнопка «Поделиться» внизу Safari → «На экран Домой».</p></div>`;return ''}
+function weekAhead(){const tk=todayKey(),wk=ensureWeek(),end=addDays(wk.start,7),out=[];let changed=false;
+  for(let i=1;i<=7&&out.length<3;i++){const d=addDays(tk,i);if(!S.profile.days.includes(parseKey(d).getDay()))continue;let w=d<end?wk.plans[d]:null;if(!w){w=planFor(d);if(d<end){wk.plans[d]=w;changed=true}}out.push([d,w])}
+  if(changed&&store.ready)touch('main');return out}
 function vToday(){
   const tk=todayKey(),plan=ensurePlan(),w=plan.w,p=S.profile,wd=new Date().getDay(),isDay=p.days.includes(wd);
   const doneToday=S.workouts.filter(x=>x.d===tk),planDone=doneToday.some(x=>x.planId===w.id);
@@ -853,20 +1043,23 @@ function vToday(){
   const week=Array.from({length:7},(_,i)=>{const d=addDays(mon,i),dd=parseKey(d),dn=S.workouts.some(x=>x.d===d),pl=p.days.includes(dd.getDay());
     return `<div class="day ${d===tk?'today':''}"><span class="w">${WDS[dd.getDay()]}</span><span class="d">${dd.getDate()}</span><span class="mk ${dn?'done':pl?'plan':''}"></span></div>`}).join('');
   const wPrev=S.weights.filter(x=>x.d<=addDays(tk,-7)).pop(),dW=lw&&wPrev?r1(lw.w-wPrev.w):null;
-  return header(isDay?'Сегодня — в бой':'Сегодня — отдых')+quoteHTML(ui.q||(ui.q=quote()))+
+  const chl=CHALLENGES[sk()],ch=chl[weekNo()%chl.length],chDone=S.workouts.filter(x=>x.chId===ch.id).length;
+  return header(isDay?'Сегодня — в бой':'Сегодня — отдых')+installHTML()+artBanner()+
   `<section class="panel rank"><span class="badge">${rk.i+1}</span><div class="stack" style="gap:6px"><div class="row between"><b style="font:var(--h-weight) 20px/1.1 var(--f-display);text-transform:uppercase;letter-spacing:var(--h-track)">${esc(rk.name)}</b><span class="small muted mono">${fmt(xp)} XP</span></div><div class="bar"><i style="width:${(rk.frac*100).toFixed(1)}%"></i></div><span class="small muted">${rk.next?`До ранга «${esc(rk.next)}» — ${fmt(rk.nextAt-xp)} XP`:'Высший ранг. Дальше только легенды.'}</span></div>
     <div class="stack" style="align-items:center;gap:0;text-align:center"><span class="num" style="font-size:28px;line-height:1">${streak}</span><span class="small muted" style="line-height:1.2">${plural(streak,'неделя','недели','недель')}<br>подряд</span></div></section>
   <section class="panel lift hero"><div class="stack" style="gap:14px">
       <div class="row" role="group" aria-label="Где тренируемся">${Object.keys(PLACES).map(k=>`<button class="chip ${w.place===k?'on':''}" data-act="plan-place" data-v="${k}">${ic(k,14)} ${PLACES[k].n}</button>`).join('')}</div>
-      <div class="row">${lvChip(w.lv)}<span class="chip">${esc(focusName(w.place,w.focus))}</span><span class="chip">≈ ${estMin(w)} мин</span>${w.kind==='ai'?`<span class="chip on">${ic('spark',13)} от ИИ</span>`:''}${planDone?'<span class="chip good">Выполнено</span>':''}</div>
+      <div class="row">${lvChip(w.lv)}<span class="chip">${esc(focusName(w.place,w.focus))}</span><span class="chip on">${esc(mName(w))}</span><span class="chip">≈ ${estMin(w)} мин</span>${w.kind==='ai'?`<span class="chip">${ic('spark',13)} от ИИ</span>`:''}${planDone?'<span class="chip good">Выполнено</span>':''}</div>
       <h2 style="font-size:30px">${esc(w.title)}</h2>
-      ${w.note?`<p class="muted">${esc(w.note)}</p>`:''}
+      <p class="muted">${esc(w.note||methodLine(w))}</p>
       ${isDay?'':'<p class="small muted">По расписанию сегодня отдых. Можно лёгкую тренировку, прогулку или растяжку — решать тебе.</p>'}
       ${exRows(w,'plan')}
-      <div class="row"><button class="btn primary big" data-act="start-plan">${ic('play',18)} ${planDone?'Ещё раз':GO[skin()]+'!'}</button><button class="btn" data-act="plan-reroll">${ic('dice',18)} Другая</button>${aiOn()?`<button class="btn" data-act="plan-ai" ${ui.ai.busy?'disabled':''}>${ic('spark',18)} ИИ-тренер</button>`:''}</div>
+      <div class="row"><button class="btn primary big" data-act="start-plan">${ic('play',18)} ${planDone?'Ещё раз':GO[sk()]+'!'}</button><button class="btn" data-act="plan-reroll">${ic('dice',18)} Другая</button><button class="btn" data-act="plan-method">${ic('swap',18)} Другая методика</button>${aiOn()?`<button class="btn" data-act="plan-ai" ${ui.ai.busy?'disabled':''}>${ic('spark',18)} ИИ-тренер</button>`:''}</div>
       ${aiStatus('plan')}
     </div><div>${photo(w.items[0].ex)}</div></section>
+  <section class="panel ch">${splat(5)}<span class="eyebrow">Испытание недели</span><div class="row between"><h2>${esc(ch.n)}</h2>${chDone?`<span class="chip good">Пройдено ${chDone}×</span>`:''}</div><p class="muted" style="max-width:60ch">${esc(ch.d)}</p><div class="row"><span class="chip on">${METHODS[ch.m].n}</span><span class="chip">+20 XP сверху</span><button class="btn primary sm" data-act="ch-start" data-v="${ch.id}">Принять вызов</button><button class="btn ghost sm" data-act="goto-ch">Все испытания</button></div></section>
   <section class="stack"><div class="row between"><h3>Эта неделя</h3><span class="muted small">${wkDone} из ${p.days.length} тренировок</span></div><div class="week">${week}</div></section>
+  ${(()=>{const a=weekAhead();return a.length?`<section class="stack"><div class="row between"><h3>Дальше по плану</h3><span class="small muted">каждая тренировка — своя методика</span></div><div class="grid g3">${a.map(([d,x])=>`<button class="panel wk-card" data-act="week-open" data-v="${d}"><span class="eyebrow">${WDL[parseKey(d).getDay()]} · ${fmtD(d,{day:'numeric',month:'short'})}</span><b>${esc(x.title)}</b><span class="row"><span class="chip">${esc(mName(x))}</span><span class="chip">≈ ${estMin(x)} мин</span></span></button>`).join('')}</div></section>`:''})()}
   <section class="grid g4">
     <div class="panel stat"><span class="eyebrow">Калории</span><span class="v">${fmt(eat.kcal)}<small>/ ${fmt(tg.kcal)}</small></span><div class="bar ${eat.kcal>tg.kcal?'over':''}"><i style="width:${clamp(eat.kcal/tg.kcal*100,0,100)}%"></i></div><button class="btn sm" data-act="tab" data-v="food">${ic('plus',16)} Добавить еду</button></div>
     <div class="panel stat"><span class="eyebrow">Вода</span><span class="v">${fmt(water/1000,2)}<small>/ ${fmt(tg.water/1000,2)} л</small></span><div class="bar"><i style="width:${clamp(water/tg.water*100,0,100)}%"></i></div><div class="row"><button class="btn sm" data-act="water" data-v="250">+ стакан</button><button class="btn sm ghost" data-act="water" data-v="-250">−</button></div></div>
@@ -881,26 +1074,32 @@ const achHTML=([t,s,ok])=>`<div class="${ok?'':'no'}"><span class="plate ${ok?'y
 /* ---------- Тренировки ---------- */
 function vTrain(){
   const sub=ui.trainSub;
-  return header('Тренировки','Конструктор и техника')+
-  `<div class="seg" role="group" aria-label="Раздел"><button data-act="trainSub" data-v="build" aria-pressed="${sub==='build'}">Конструктор</button><button data-act="trainSub" data-v="library" aria-pressed="${sub==='library'}">Упражнения</button></div>`+
-  (sub==='build'?vBuilder():vLibrary());
+  return header('Тренировки','Конструктор · испытания · техника')+
+  `<div class="seg" role="group" aria-label="Раздел">${[['build','Конструктор'],['challenges','Испытания'],['library','Упражнения']].map(([k,n])=>`<button data-act="trainSub" data-v="${k}" aria-pressed="${sub===k}">${n}</button>`).join('')}</div>`+
+  (sub==='build'?vBuilder():sub==='challenges'?vChallenges():vLibrary());
 }
 function vBuilder(){
-  const b=builder();
+  const b=builder();if(!b.method||(b.method!=='random'&&!METHOD_FOR[b.place].includes(b.method)))b.method='random';
   return `<section class="panel lift"><div class="stack"><span class="flabel">Где тренируемся</span><div class="places">${Object.entries(PLACES).map(([k,v])=>`<button class="place" data-act="b-place" data-v="${k}" aria-pressed="${b.place===k}">${ic(k,22)}<b>${v.n}</b><small>${v.d}</small></button>`).join('')}</div></div>
     <div class="stack"><span class="flabel">Направление</span><div class="row">${FOCUS[b.place].map(([k,n])=>`<button class="chip ${b.focus===k?'on':''}" data-act="b-focus" data-v="${k}">${n}</button>`).join('')}</div></div>
+    <div class="stack"><span class="flabel">Методика</span><div class="row">${[['random','Любая — удиви меня']].concat(METHOD_FOR[b.place].map(k=>[k,METHODS[k].n])).map(([k,n])=>`<button class="chip ${b.method===k?'on':''}" data-act="b-method" data-v="${k}">${n}</button>`).join('')}</div><span class="small muted">${b.method==='random'?'Генератор сам выберет подход: классику, круговую, суперсеты, EMOM, AMRAP, табату и другие.':esc(METHODS[b.method].d)}</span></div>
     <div class="row" style="gap:18px;align-items:flex-start"><div class="stack"><span class="flabel">Время</span><div class="seg">${[20,30,45,60,90].map(m=>`<button data-act="b-min" data-v="${m}" aria-pressed="${b.minutes===m}">${m} мин</button>`).join('')}</div></div>
       <div class="stack"><span class="flabel">Уровень</span><div class="seg">${['beg','mid','adv'].map(l=>`<button data-act="b-lv" data-v="${l}" aria-pressed="${b.lv===l}">${lvName(l)}</button>`).join('')}</div></div></div>
     <div class="row"><button class="btn primary big" data-act="b-gen">${ic('dice',18)} Собрать тренировку</button>${aiOn()?`<button class="btn big" data-act="b-ai" ${ui.ai.busy?'disabled':''}>${ic('spark',18)} ИИ-тренер</button>`:''}</div>
     ${aiStatus('draft')}
-    <p class="small muted" style="max-width:70ch">Каждый раз получается новая тренировка: упражнения из последних занятий попадаются реже.${aiOn()?' ИИ-тренер составит программу с учётом вашей истории — нужен интернет.':' Здесь работает встроенный генератор: он каждый раз собирает новую тренировку и не требует интернета.'} Дома учитывается инвентарь из профиля${(S.profile.eq||[]).length?': '+EQUIP.filter(e=>S.profile.eq.includes(e[0])).map(e=>e[1].toLowerCase()).join(', '):' — сейчас без инвентаря'}.</p>
+    <p class="small muted" style="max-width:70ch">Каждый раз новая тренировка: упражнения из последних занятий попадаются реже, методика и порядок меняются.${aiOn()?' ИИ-тренер составит программу с учётом вашей истории — нужен интернет.':' Генератор работает и без интернета.'} Дома учитывается инвентарь из профиля${(S.profile.eq||[]).length?': '+EQUIP.filter(e=>S.profile.eq.includes(e[0])).map(e=>e[1].toLowerCase()).join(', '):' — сейчас без инвентаря'}.</p>
   </section>${ui.draft?vDraft():''}`;
 }
 function vDraft(){const w=ui.draft;
-  return `<section class="panel lift" id="draft"><div class="row between"><div class="row">${placeChip(w.place)}${lvChip(w.lv)}<span class="chip">${esc(focusName(w.place,w.focus))}</span><span class="chip">≈ ${estMin(w)} мин</span>${w.kind==='ai'?`<span class="chip on">${ic('spark',13)} от ИИ</span>`:''}</div></div>
-    <h2 style="font-size:28px">${esc(w.title)}</h2>${w.note?`<p class="muted">${esc(w.note)}</p>`:''}
+  return `<section class="panel lift" id="draft"><div class="row">${placeChip(w.place)}${lvChip(w.lv)}<span class="chip">${esc(focusName(w.place,w.focus))}</span><span class="chip on">${esc(mName(w))}</span><span class="chip">≈ ${estMin(w)} мин</span>${w.kind==='ai'?`<span class="chip">${ic('spark',13)} от ИИ</span>`:''}</div>
+    <h2 style="font-size:28px">${esc(w.title)}</h2><p class="muted">${esc(w.note||methodLine(w))}</p>
     ${exRows(w,'d')}
-    <div class="row"><button class="btn primary big" data-act="d-start">${ic('play',18)} ${GO[skin()]}!</button><button class="btn" data-act="d-plan">Сделать тренировкой дня</button><button class="btn ghost" data-act="b-gen">${ic('dice',16)} Пересобрать</button></div></section>`;
+    <div class="row"><button class="btn primary big" data-act="d-start">${ic('play',18)} ${GO[sk()]}!</button><button class="btn" data-act="d-plan">Сделать тренировкой дня</button><button class="btn ghost" data-act="b-gen">${ic('dice',16)} Пересобрать</button></div></section>`;
+}
+function vChallenges(){const list=CHALLENGES[sk()],th=SKINS.find(x=>x[0]===skin())[1];
+  return `<p class="muted" style="max-width:70ch">Испытания меняются вместе с темой оформления: сейчас — «${esc(th)}». Сменить тему можно в профиле, и здесь появятся другие испытания. За каждое пройденное испытание — +20 XP сверху.</p>
+  <section class="grid g2">${list.map(c=>{const w=challengeW(c),done=S.workouts.filter(x=>x.chId===c.id).length;
+    return `<div class="panel lift ch">${splat(hash(c.id)%50)}<div class="row between"><h2>${esc(c.n)}</h2>${done?`<span class="chip good">Пройдено ${done}×</span>`:''}</div><p class="muted">${esc(c.d)}</p><div class="row"><span class="chip on">${METHODS[c.m].n}</span><span class="chip">≈ ${estMin(w)} мин</span></div>${exRows(w)}<div class="row"><button class="btn primary" data-act="ch-start" data-v="${c.id}">${ic('play',16)} Принять вызов</button></div></div>`}).join('')}</section>`;
 }
 function vLibrary(){
   const q=ui.libQ.trim().toLowerCase(),pk=ui.libPlace==='all'?null:PLACES[ui.libPlace].k;
@@ -1126,7 +1325,7 @@ function vHistory(){
 function vAwards(){
   const xp=totalXP(),rk=rankOf(xp),a=achievements();
   return `<section class="grid g2"><div class="panel lift"><h3>Ранги</h3><p class="small muted">Опыт начисляется за каждую тренировку: за время, подходы и поднятый вес. Сейчас: ${fmt(xp)} XP.</p>
-    <ol class="ladder">${RANKS.at.map((t,i)=>`<li class="${i===rk.i?'cur':i>rk.i?'fut':''}"><span class="num">${i+1}</span><span>${esc(RANKS[skin()][i])}</span><span class="mono small">${fmt(t)} XP</span></li>`).join('')}</ol></div>
+    <ol class="ladder">${RANKS.at.map((t,i)=>`<li class="${i===rk.i?'cur':i>rk.i?'fut':''}"><span class="num">${i+1}</span><span>${esc(RANKS[sk()][i])}</span><span class="mono small">${fmt(t)} XP</span></li>`).join('')}</ol></div>
     <div class="panel"><div class="row between"><h3>Награды</h3><span class="small muted">${a.filter(x=>x[2]).length} из ${a.length}</span></div><div class="ach">${a.map(achHTML).join('')}</div></div></section>`;
 }
 
@@ -1135,7 +1334,12 @@ function vProfile(){
   const p=S.profile,tg=targets();
   const sel=(id,v,opts)=>`<select class="input" id="${id}" data-pf="${id.slice(3)}">${opts.map(([k,l])=>`<option value="${k}" ${String(v)===String(k)?'selected':''}>${l}</option>`).join('')}</select>`;
   return header('Профиль','Параметры, тренировки и оформление')+
-  `<section class="panel lift"><h3>Оформление</h3><div class="skins">${SKINS.map(([k,n,d])=>`<button class="skin-opt" data-act="skin" data-v="${k}" aria-pressed="${skin()===k}"><span class="sw sw-${k}"></span><b>${n}</b><small>${d}</small></button>`).join('')}</div></section>
+  `<section class="panel lift"><h3>Оформление</h3><div class="skins">${SKINS.map(([k,n,d])=>`<button class="skin-opt" data-act="skin" data-v="${k}" aria-pressed="${skin()===k}"><span class="sw sw-${k}"></span><b>${n}</b><small>${d}</small></button>`).join('')}</div>
+    <p class="small muted">Вместе с темой меняются фразы, ранги, названия уровней, картины и испытания.</p>
+    <div class="stack"><h3>Свой фон</h3><p class="small muted" style="max-width:65ch">Поставьте любую картинку — например, любимый арт. Она появится на главном экране и перед тренировкой, хранится только на этом устройстве и никуда не загружается.</p>
+    <div class="row">${UBG?`<img src="${UBG}" alt="Ваш фон" style="width:120px;aspect-ratio:3/2;object-fit:cover;border-radius:var(--r-img);border:1px solid var(--line)">`:''}<button class="btn" data-act="ubg-pick">${UBG?'Сменить картинку':'Выбрать картинку'}</button>${UBG?'<button class="btn ghost danger" data-act="ubg-del">Убрать</button>':''}<input type="file" id="ubg-file" accept="image/*" hidden></div>
+    ${UBG?`<label class="switch"><span>Показывать фоном на всех экранах</span><input type="checkbox" data-st="ubgPage" ${S.settings.ubgPage?'checked':''}></label>`:''}</div></section>
+  ${installHTML()}
   <section class="grid g2"><div class="panel"><h3>О вас</h3><div class="fields">
     <div class="field" style="grid-column:1/-1"><label for="pf-name">Имя</label><input class="input" id="pf-name" data-pf="name" value="${esc(p.name)}" placeholder="Как к вам обращаться"></div>
     <div class="field"><label for="pf-sex">Пол</label>${sel('pf-sex',p.sex,[['m','Мужской'],['f','Женский']])}</div>
@@ -1161,66 +1365,77 @@ function vProfile(){
     <div class="row">${DL||!window.claude?`<button class="btn" data-act="export">Скачать резервную копию</button>`:''}<button class="btn" data-act="import">Загрузить копию</button><input type="file" id="imp" accept="application/json,.json" hidden></div>
     <button class="btn danger" style="align-self:flex-start" data-act="reset-ask">${ic('trash',16)} Удалить все записи</button></div></section>
   <details class="panel"><summary style="cursor:pointer;font-weight:700">Источники фотографий</summary><p class="small muted">Фото упражнений для дома и зала — Free Exercise DB (github.com/yuhonas/free-exercise-db), общественное достояние. Фото единоборств — Wikimedia Commons:</p>
-    <ul class="small" style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px">${Object.entries(CREDITS).map(([id,c])=>`<li>${esc(EX[id].name)}: «${esc(c[0])}», ${esc(c[1])}, ${esc(c[2])} — <a href="${esc(c[3])}" target="_blank" rel="noopener">страница файла</a></li>`).join('')}</ul></details>`;
+    <ul class="small" style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px">${Object.entries(ART_CREDITS).map(([k,c])=>`<li>Картина темы: ${esc(c[0])}, ${esc(c[1])}, ${esc(c[2])} — <a href="${esc(c[3])}" target="_blank" rel="noopener">страница файла</a></li>`).join('')}${Object.entries(CREDITS).map(([id,c])=>`<li>${esc(EX[id].name)}: «${esc(c[0])}», ${esc(c[1])}, ${esc(c[2])} — <a href="${esc(c[3])}" target="_blank" rel="noopener">страница файла</a></li>`).join('')}</ul></details>`;
 }
 
 /* ---------- Плеер тренировки ---------- */
 let PL=null;
 function startWorkout(w,planId){
   ensureAudio();
-  PL={w,items:w.items,title:w.title,lv:w.lv,place:w.place,planId,start:Date.now(),i:0,set:1,phase:'intro',q:quote(),log:w.items.map(it=>({id:it.ex,sets:[]})),restEnd:0,restDur:0,timedEnd:0,timedStart:0,beep:null,steps:false,rk0:rankOf(totalXP()).i};
+  PL={w,items:w.items,title:w.title,lv:w.lv,place:w.place,method:w.method||'classic',planId,start:Date.now(),steps:buildSteps(w),k:0,phase:'intro',q:quote(),log:w.items.map(it=>({id:it.ex,sets:[]})),restEnd:0,restDur:0,timedEnd:0,timedStart:0,stepStart:0,capEnd:0,beep:null,steps_open:false,rk0:rankOf(totalXP()).i,art:Math.random()};
   document.body.style.overflow='hidden';wake(true);renderPlayer();
 }
+const curStep=()=>PL.steps[PL.k];
+const stepTarget=st=>st.time?(st.time>=60&&st.time%60===0?st.time/60+' мин':st.time+' с'):st.reps+' повт.';
+function stepLabel(st){const m=PL.method,it=PL.items[st.i];if(m==='circuit')return `Круг ${st.s} из ${PL.w.rounds}`;if(m==='amrap')return `Круг ${st.s}`;if(m==='emom')return `Минута ${PL.k+1} из ${PL.steps.length}`;if(m==='tabata')return `Интервал ${st.s} из 8`;return `${isRound(it.ex)?'Раунд':'Подход'} ${st.s} из ${it.sets}`}
+function artBg(seed){const u=UBG,l=ART[sk()]||[];if(u)return u;if(!l.length)return null;return 'art/'+l[Math.floor(seed*l.length)%l.length]+'.jpg'}
 function renderPlayer(){
   const el=document.getElementById('player');
   if(!PL){el.hidden=true;el.innerHTML='';document.body.style.overflow='';wake();return}
   el.hidden=false;
-  const it=PL.items[PL.i],ex=it&&EX[it.ex],round=it&&isRound(it.ex);
-  const prog=PL.items.map((_,k)=>`<i class="${k<PL.i||PL.phase==='done'?'done':k===PL.i?'cur':''}"></i>`).join('');
+  const st=curStep(),it=st&&PL.items[st.i],ex=it&&EX[it.ex];
+  const pct=PL.method==='amrap'&&PL.capEnd?clamp((Date.now()-(PL.capEnd-PL.w.cap*1000))/(PL.w.cap*1000),0,1):PL.phase==='done'?1:PL.k/PL.steps.length;
   const top=`<div class="pl-top"><button class="btn iconbtn" data-act="pl-close" aria-label="Закрыть тренировку">${ic('x')}</button>
-    <div class="ttl"><div class="eyebrow">${esc(PL.title)}</div><div class="num" style="font-size:22px" id="pl-elapsed">${PL.phase==='intro'?'0:00':fmtDur((Date.now()-PL.start)/1000)}</div></div>
-    ${PL.phase==='done'||PL.phase==='intro'?'<span style="width:38px"></span>':'<button class="btn sm" data-act="pl-finish">Завершить</button>'}</div><div class="pl-prog">${prog}</div>`;
+    <div class="ttl"><div class="eyebrow">${esc(PL.title)} · ${esc(METHODS[PL.method].n)}</div><div class="num" style="font-size:22px" id="pl-elapsed">${PL.phase==='intro'?'0:00':fmtDur((Date.now()-PL.start)/1000)}</div></div>
+    ${PL.phase==='done'||PL.phase==='intro'?'<span style="width:38px"></span>':'<button class="btn sm" data-act="pl-finish">Завершить</button>'}</div><div class="bar"><i id="pl-bar" style="width:${(pct*100).toFixed(1)}%"></i></div>`;
   let body='';
   if(PL.phase==='intro'){
-    const tot=PL.items.reduce((a,x)=>a+x.sets,0);
-    body=`<section class="intro"><div class="row" style="justify-content:center">${lvChip(PL.lv)}${placeChip(PL.place)}</div><h1 style="font-size:clamp(34px,8vw,58px)">${esc(PL.title)}</h1>${decoHTML()}
-      <p class="muted">${PL.items.length} ${plural(PL.items.length,'упражнение','упражнения','упражнений')} · ${tot} ${plural(tot,'подход','подхода','подходов')} · ≈ ${estMin(PL.w)} мин</p>
+    const img=artBg(PL.art),tot=PL.method==='amrap'?null:PL.steps.length;
+    body=`<section class="intro art-full">${img?`<div class="img" style="background-image:url('${img}')"></div><div class="shade"></div>`:''}${splat(11)}
+      <div class="stack" style="align-items:center;gap:18px;position:relative">
+      <div class="row" style="justify-content:center">${lvChip(PL.lv)}${placeChip(PL.place)}<span class="chip on">${esc(METHODS[PL.method].n)}</span></div><h1 style="font-size:clamp(34px,8vw,58px)">${esc(PL.title)}</h1>${decoHTML()}
+      <p class="muted" style="max-width:48ch">${esc(methodLine(PL.w))}</p>
+      <p class="muted">${PL.items.length} ${plural(PL.items.length,'упражнение','упражнения','упражнений')}${tot?` · ${tot} ${plural(tot,'подход','подхода','подходов')}`:''} · ≈ ${estMin(PL.w)} мин</p>
       ${quoteHTML(PL.q,true)}
-      <button class="btn primary big" style="min-width:220px" data-act="pl-go">${ic('play',18)} ${GO[skin()]}!</button></section>`;
+      <button class="btn primary big" style="min-width:220px" data-act="pl-go">${ic('play',18)} ${GO[sk()]}!</button></div></section>`;
   }else if(PL.phase==='done'){
-    const w=PL.saved,pr=PL.newPR||[],rk=rankOf(totalXP()),up=rk.i>PL.rk0;
-    body=`<section class="panel lift" style="align-items:center;text-align:center;gap:18px"><span class="plate xl ${LVP[PL.lv]}"></span><h1>${up?'Новый ранг!':'Тренировка завершена'}</h1>${decoHTML()}
+    const w=PL.saved,pr=PL.newPR||[],rk=rankOf(totalXP()),up=rk.i>PL.rk0,sets=w.ex.reduce((a,e)=>a+e.sets.length,0);
+    const extra=PL.method==='amrap'?['Кругов',Math.floor(sets/PL.items.length)+(sets%PL.items.length?' + '+sets%PL.items.length:'')]:['Подходов',sets];
+    body=`<section class="panel lift" style="align-items:center;text-align:center;gap:18px;position:relative;overflow:hidden">${splat(23)}<span class="plate xl ${LVP[PL.lv]}"></span><h1>${up?'Новый ранг!':'Тренировка завершена'}</h1>${decoHTML()}
       ${up?`<p style="font:var(--h-weight) 24px/1.2 var(--f-display);text-transform:uppercase;color:var(--accent)">${esc(rk.name)}</p>`:''}
-      <div class="grid g4" style="width:100%">${[['Время',fmtMin(w.dur)],['Подходов',w.ex.reduce((a,e)=>a+e.sets.length,0)],['Объём',fmt(w.vol)+' кг'],['Опыт','+'+w.xp+' XP']].map(([k,v])=>`<div class="stat"><span class="eyebrow">${k}</span><span class="v">${v}</span></div>`).join('')}</div>
+      <div class="grid g4" style="width:100%">${[['Время',fmtMin(w.dur)],extra,['Объём',fmt(w.vol)+' кг'],['Опыт','+'+w.xp+' XP']].map(([k,v])=>`<div class="stat"><span class="eyebrow">${k}</span><span class="v">${v}</span></div>`).join('')}</div>
       <p>${esc(funFact(w))}</p>
       <div style="width:100%;max-width:420px" class="stack"><div class="bar"><i style="width:${(rk.frac*100).toFixed(1)}%"></i></div><span class="small muted">${esc(rk.name)} · ${rk.next?`до «${esc(rk.next)}» ${fmt(rk.nextAt-totalXP())} XP`:'высший ранг'}</span></div>
       ${pr.length?`<div class="stack"><h3>Новые рекорды</h3><div class="row" style="justify-content:center">${pr.map(t=>`<span class="chip on">${esc(t)}</span>`).join('')}</div></div>`:''}
       ${quoteHTML(PL.q,true)}
       <button class="btn primary big" data-act="pl-exit">Готово</button></section>`;
   }else if(PL.phase==='rest'){
-    const nx=PL.items[PL.i];
-    body=`<section class="stack" style="align-items:center;gap:18px;padding-top:10px"><span class="eyebrow">Отдых</span>
+    const nx=PL.items[st.i];
+    body=`<section class="stack" style="align-items:center;gap:18px;padding-top:10px"><span class="eyebrow">${st.emom?'До следующей минуты':'Отдых'}</span>
       ${ring('pl-ring','rest')}
-      <div class="row" style="justify-content:center"><button class="btn" data-act="pl-rest" data-v="-15">−15 с</button><button class="btn" data-act="pl-rest" data-v="15">+15 с</button><button class="btn primary" data-act="pl-rest" data-v="skip">Пропустить отдых</button></div>
+      <div class="row" style="justify-content:center">${st.emom?'':`<button class="btn" data-act="pl-rest" data-v="-15">−15 с</button><button class="btn" data-act="pl-rest" data-v="15">+15 с</button>`}<button class="btn primary" data-act="pl-rest" data-v="skip">${st.emom?'Начать сейчас':'Пропустить отдых'}</button></div>
       ${quoteHTML(PL.q,true,PL.qj?'joke':'')}
-      <div class="panel" style="width:100%;max-width:520px;flex-direction:row;align-items:center"><div style="width:120px;flex:none">${photo(nx.ex,'sm')}</div><div class="stack" style="gap:4px"><span class="eyebrow">Далее</span><h3>${esc(EX[nx.ex].name)}</h3><span class="small muted">${isRound(nx.ex)?'Раунд':'Подход'} ${PL.set} из ${nx.sets} · ${target(nx)}${EX[nx.ex].note?' '+EX[nx.ex].note:''}</span></div></div></section>`;
+      <div class="panel" style="width:100%;max-width:520px;flex-direction:row;align-items:center"><div style="width:120px;flex:none">${photo(nx.ex,'sm')}</div><div class="stack" style="gap:4px"><span class="eyebrow">Далее</span><h3>${esc(EX[nx.ex].name)}</h3><span class="small muted">${stepLabel(st)} · ${stepTarget(st)}${EX[nx.ex].note?' '+EX[nx.ex].note:''}</span></div></div></section>`;
   }else{
-    const log=PL.log[PL.i].sets,kg0=log.length?log[log.length-1].kg||0:lastKg(it.ex);
+    const log=PL.log[st.i].sets,kg0=log.length?log[log.length-1].kg||0:lastKg(it.ex);
     let ctrl;
-    if(it.time){
+    if(st.time){
       ctrl=PL.phase==='timed'?`<div class="countdown" id="pl-count">${fmtDur(Math.ceil((PL.timedEnd-Date.now())/1000))}</div>${ex.combo?`<div class="combo" id="pl-combo" aria-live="polite"></div><div class="combo-legend">1 джеб · 2 кросс · 3 левый хук · 4 правый хук · 5, 6 апперкоты</div>`:''}<button class="btn primary big block" data-act="pl-timed-stop">Закончить раньше</button>`
-        :`<div class="countdown">${fmtDur(it.time)}</div><button class="btn primary big block" data-act="pl-timed">${ic('play',18)} Старт</button>`;
+        :`<div class="countdown">${fmtDur(st.time)}</div><button class="btn primary big block" data-act="pl-timed">${ic('play',18)} Старт</button>`;
     }else{
-      ctrl=`<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))"><div class="field"><label for="p-reps">Повторения</label><div class="stepper"><button data-act="pl-step" data-v="p-reps:-1" aria-label="Меньше">−</button><input id="p-reps" type="number" inputmode="numeric" value="${log.length?log[log.length-1].r:it.reps}"><button data-act="pl-step" data-v="p-reps:1" aria-label="Больше">+</button></div></div>
+      ctrl=`<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))"><div class="field"><label for="p-reps">Повторения</label><div class="stepper"><button data-act="pl-step" data-v="p-reps:-1" aria-label="Меньше">−</button><input id="p-reps" type="number" inputmode="numeric" value="${st.reps}"><button data-act="pl-step" data-v="p-reps:1" aria-label="Больше">+</button></div></div>
         ${ex.w?`<div class="field"><label for="p-kg">Вес, кг</label><div class="stepper"><button data-act="pl-step" data-v="p-kg:-1" aria-label="Меньше">−</button><input id="p-kg" type="number" step="0.5" inputmode="decimal" value="${kg0}"><button data-act="pl-step" data-v="p-kg:1" aria-label="Больше">+</button></div></div>`:''}</div>
-        <button class="btn primary big block" data-act="pl-set">Подход выполнен</button>`;
+        <button class="btn primary big block" data-act="pl-set">${PL.method==='amrap'||PL.method==='circuit'?'Готово — дальше':'Подход выполнен'}</button>`;
     }
+    const nxt=PL.steps[PL.k+1];
     body=`<div class="pl-main">${photo(it.ex,'lg')}
-      <section class="stack" style="gap:14px"><span class="eyebrow">Упражнение ${PL.i+1} из ${PL.items.length}</span><h1>${esc(ex.name)}</h1>
-        <div class="row"><span class="num" style="font-size:26px">${round?'Раунд':'Подход'} ${PL.set} <span class="muted">из ${it.sets}</span></span><span class="chip on">${target(it)}${ex.note?' '+ex.note:''}</span></div>
+      <section class="stack" style="gap:14px"><span class="eyebrow">Упражнение ${st.i+1} из ${PL.items.length}${PL.method==='superset'?' · суперсет '+String.fromCharCode(65+Math.floor(st.i/2))+(st.i%2+1):''}</span><h1>${esc(ex.name)}</h1>
+        <div class="row"><span class="num" style="font-size:24px">${stepLabel(st)}</span><span class="chip on">${stepTarget(st)}${ex.note?' '+ex.note:''}</span></div>
+        ${PL.method==='amrap'?`<div class="small muted">До конца: <b class="mono" id="pl-cap">${fmtDur((PL.capEnd-Date.now())/1000)}</b></div>`:''}
         ${ctrl}
         ${log.length?`<div class="setlog">${log.map((s,k)=>`<span>${k+1}: ${s.t?s.t+' с':s.r+(s.kg?' × '+fmt(s.kg,1)+' кг':' повт.')}</span>`).join('')}</div>`:''}
-        <details ${PL.steps?'open':''} data-act="pl-steps"><summary class="btn sm ghost" style="width:fit-content">Техника выполнения</summary><ol class="steps" style="margin-top:10px">${ex.steps.map(s=>`<li><span>${esc(s)}</span></li>`).join('')}</ol><ul class="warn" style="margin-top:10px">${ex.mistakes.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></details>
+        ${nxt&&nxt.i!==st.i?`<p class="small muted">Далее: ${esc(EX[PL.items[nxt.i].ex].name)} · ${stepTarget(nxt)}</p>`:''}
+        <details ${PL.steps_open?'open':''} data-act="pl-steps"><summary class="btn sm ghost" style="width:fit-content">Техника выполнения</summary><ol class="steps" style="margin-top:10px">${ex.steps.map(s=>`<li><span>${esc(s)}</span></li>`).join('')}</ol><ul class="warn" style="margin-top:10px">${ex.mistakes.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></details>
         <div class="row"><button class="btn ghost sm" data-act="pl-swap">${ic('swap',15)} Заменить</button><button class="btn ghost sm" data-act="pl-skip">Пропустить упражнение</button></div>
       </section></div>`;
   }
@@ -1229,21 +1444,26 @@ function renderPlayer(){
 }
 function ring(id,cls){const C=2*Math.PI*54;return `<div class="ringwrap"><svg viewBox="0 0 120 120"><circle class="ring-bg" cx="60" cy="60" r="54" stroke-width="8"/><circle id="${id}" class="ring-fg ${cls}" cx="60" cy="60" r="54" stroke-width="8" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="0"/></svg><div class="rv"><div><b id="${id}-v">0:00</b><span class="muted small" id="${id}-s"></span></div></div></div>`}
 function setRing(id,frac,txt,sub){const c=document.getElementById(id);if(!c)return;const C=2*Math.PI*54;c.setAttribute('stroke-dashoffset',(C*(1-clamp(frac,0,1))).toFixed(1));const v=document.getElementById(id+'-v');if(v)v.textContent=txt;const s=document.getElementById(id+'-s');if(s&&sub!=null)s.textContent=sub}
-function logSet(s){PL.log[PL.i].sets.push(s);advance()}
+function logSet(s){PL.log[curStep().i].sets.push(s);advance()}
+function startStep(auto){const st=curStep();PL.stepStart=Date.now();
+  if(st.time&&auto){beginTimed();return}
+  PL.phase='work';if(auto){beep(990,.3);say(EX[PL.items[st.i].ex].name)}renderPlayer()}
 function advance(){
-  const it=PL.items[PL.i],rest=it.rest||60;
-  if(PL.set<it.sets)PL.set++;else{PL.i++;PL.set=1}
-  if(PL.i>=PL.items.length){finishWorkout();return}
+  const st=curStep();let rest=st.rest;
+  if(st.emom)rest=Math.max(0,Math.round((PL.stepStart+60000-Date.now())/1000));
+  PL.k++;
+  if(PL.k>=PL.steps.length||(PL.capEnd&&Date.now()>=PL.capEnd)){finishWorkout();return}
+  if(rest<=0){startStep(true);return}
   PL.qj=Math.random()<.45;PL.q=PL.qj?joke():quote();
-  PL.phase='rest';PL.restDur=rest;PL.restEnd=Date.now()+rest*1000;PL.beep=null;beep(520,.15);say('Отдых');renderPlayer();
+  PL.phase='rest';PL.restDur=rest;PL.restEnd=Date.now()+rest*1000;PL.beep=null;beep(520,.15);if(rest>=8&&!st.emom)say('Отдых');renderPlayer();
 }
-function beginTimed(){const it=PL.items[PL.i];PL.phase='timed';PL.timedStart=Date.now();PL.timedEnd=Date.now()+it.time*1000+300;PL.beep=null;T.cb.next=Date.now()+1500;T.cb.text='';bell(1);renderPlayer()}
+function beginTimed(){const st=curStep();PL.phase='timed';PL.timedStart=Date.now();PL.timedEnd=Date.now()+st.time*1000+300;PL.beep=null;T.cb.next=Date.now()+1500;T.cb.text='';bell(1);renderPlayer()}
 function finishWorkout(){
   const ex=PL.log.filter(e=>e.sets.length);
   if(!ex.length){PL=null;renderPlayer();return}
   const before=records(),dur=Math.round((Date.now()-PL.start)/1000),tk=todayKey(),bw=(lastW()||{}).w||75;
-  const rec={id:newId(),d:tk,ts:PL.start,dur,level:PL.lv,place:PL.place,title:PL.title,kind:PL.w.kind||'gen',planId:PL.planId||null,ex};
-  rec.vol=volOf(rec);rec.kcal=Math.round((PL.place==='fight'?8:5.5)*bw*dur/3600);rec.xp=xpOf(rec);
+  const rec={id:newId(),d:tk,ts:PL.start,dur,level:PL.lv,place:PL.place,title:PL.title,kind:PL.w.kind||'gen',method:PL.method,chId:PL.w.chId||null,planId:PL.planId||null,ex};
+  rec.vol=volOf(rec);rec.kcal=Math.round((PL.place==='fight'||['circuit','amrap','tabata','emom'].includes(PL.method)?8:5.5)*bw*dur/3600);rec.xp=xpOf(rec)+(rec.chId?20:0);
   S.workouts.push(rec);touch(tk);
   const after=records();PL.newPR=[];
   ex.forEach(e=>{const b=before[e.id],a=after[e.id];if(!a||!EX[e.id])return;const n=EX[e.id].name;
@@ -1270,14 +1490,17 @@ function tick(){
   const now=Date.now();
   if(PL&&PL.phase!=='done'&&PL.phase!=='intro'){
     const e=document.getElementById('pl-elapsed');if(e)e.textContent=fmtDur((now-PL.start)/1000);
+    if(PL.capEnd){const c=document.getElementById('pl-cap');if(c)c.textContent=fmtDur((PL.capEnd-now)/1000);const b=document.getElementById('pl-bar');if(b)b.style.width=(clamp((now-(PL.capEnd-PL.w.cap*1000))/(PL.w.cap*1000),0,1)*100).toFixed(1)+'%';
+      if(now>=PL.capEnd){bell(3);say('Время вышло');finishWorkout();return}}
+    const st=curStep();
     if(PL.phase==='rest'){const left=PL.restEnd-now,s=Math.ceil(left/1000);setRing('pl-ring',left/(PL.restDur*1000),fmtDur(s),'из '+fmtDur(PL.restDur));
-      if(s===5&&PL.beep!=='n'){PL.beep='n';const nx=PL.items[PL.i];say('Приготовься. '+EX[nx.ex].name)}
+      if(s===5&&PL.beep!=='n'&&PL.restDur>8){PL.beep='n';say('Приготовься. '+EX[PL.items[st.i].ex].name)}
       if(s<=3&&s>0&&PL.beep!==s){PL.beep=s;beep(660,.1)}
-      if(left<=0){buzz([200]);const nx=PL.items[PL.i];if(nx.time&&(PL.set>1||isRound(nx.ex))){beginTimed()}else{PL.phase='work';beep(990,.35);renderPlayer()}}}
-    if(PL.phase==='timed'){const it=PL.items[PL.i],left=PL.timedEnd-now,s=Math.ceil(left/1000);const c=document.getElementById('pl-count');if(c)c.textContent=fmtDur(s);
+      if(left<=0){buzz([200]);startStep(true)}}
+    if(PL.phase==='timed'){const it=PL.items[st.i],left=PL.timedEnd-now,s=Math.ceil(left/1000);const c=document.getElementById('pl-count');if(c)c.textContent=fmtDur(s);
       if(EX[it.ex].combo){comboTick(now,EX[it.ex].combo);const cb=document.getElementById('pl-combo');if(cb)cb.textContent=T.cb.text}
-      if(isRound(it.ex)&&s===10&&it.time>20&&PL.beep!=='w'){PL.beep='w';clap()}
-      if(s<=3&&s>0&&PL.beep!==s){PL.beep=s;beep(660,.1)}if(left<=0){bell(1);buzz([200]);logSet({t:it.time})}}
+      if(isRound(it.ex)&&s===10&&st.time>20&&PL.beep!=='w'){PL.beep='w';clap()}
+      if(s<=3&&s>0&&PL.beep!==s){PL.beep=s;beep(660,.1)}if(left<=0){bell(1);buzz([200]);logSet({t:st.time})}}
   }
   timerTick(now);
   if(ui.tab==='timer')timerPaint();
@@ -1301,19 +1524,27 @@ const ACT={
   tab:v=>{ui.tab=v;ui.fa=null;render();window.scrollTo(0,0)},egg,
   trainSub:v=>{ui.trainSub=v;render()},libPlace:v=>{ui.libPlace=v;render()},libGrp:v=>{ui.libGrp=v;render()},
   ex:v=>openEx(v),'close-modal':closeModal,'ask-ok':()=>{const cb=askCb;askCb=null;closeModal();cb&&cb()},
-  quote:()=>{ui.q=quote();render()},
+  quote:()=>{ui.q=quote();ui.artSeed=Math.random();render()},
   skin:v=>{S.settings.skin=v;ui.q=quote();touch('main');render();toast('Оформление: '+SKINS.find(x=>x[0]===v)[1])},
   'reset-demo':()=>resetAll(),'reset-ask':()=>ask('Удалить все тренировки, питание и вес?','Удалить',resetAll),
   'goto-awards':()=>{ui.tab='progress';ui.progSub='awards';render();window.scrollTo(0,0)},
   'start-plan':()=>startWorkout(S.plan.w,S.plan.w.id),
-  'plan-reroll':()=>{const w=S.plan.w;S.plan={d:todayKey(),w:gen({place:w.place,focus:w.focus||autoFocus(w.place),minutes:S.profile.minutes,lv:S.profile.level,seed:null})};touch('main');render()},
-  'plan-place':v=>{S.plan={d:todayKey(),w:gen({place:v,focus:autoFocus(v),minutes:S.profile.minutes,lv:S.profile.level,seed:null})};touch('main');render()},
+  'plan-reroll':()=>{const w=S.plan.w;setPlan(gen({place:w.place,focus:w.focus||autoFocus(w.place),minutes:S.profile.minutes,lv:S.profile.level,seed:null}));render()},
+  'plan-method':()=>{const w=S.plan.w,ms=METHOD_FOR[w.place].filter(m=>m!==(w.method||'classic'));setPlan(gen({place:w.place,focus:w.focus||autoFocus(w.place),minutes:S.profile.minutes,lv:S.profile.level,method:rand(ms),seed:null}));render();toast('Методика: '+mName(S.plan.w))},
+  'plan-place':v=>{setPlan(gen({place:v,focus:autoFocus(v),minutes:S.profile.minutes,lv:S.profile.level,seed:null}));render()},
+  'ch-start':v=>{const c=CHALLENGES[sk()].find(x=>x.id===v);if(c)startWorkout(challengeW(c))},
+  'goto-ch':()=>{ui.tab='train';ui.trainSub='challenges';render();window.scrollTo(0,0)},
+  'week-open':v=>{const w=ensureWeek().plans[v]||planFor(v);ui.draft=JSON.parse(JSON.stringify(w));ui.tab='train';ui.trainSub='build';render();const d=document.getElementById('draft');if(d)d.scrollIntoView({block:'start'})},
+  install:async()=>{if(!INSTALL)return;INSTALL.prompt();try{const r=await INSTALL.userChoice;if(r.outcome==='accepted')toast('Готово! Ищите иконку на главном экране')}catch(e){}INSTALL=null;render()},
+  'ubg-pick':()=>document.getElementById('ubg-file').click(),
+  'ubg-del':()=>{UBG=null;try{localStorage.removeItem('podhod:ubg')}catch(e){}render();toast('Свой фон убран')},
+  'b-method':v=>{builder().method=v;render()},
   'plan-ai':()=>runAI('plan'),'ai-stop':()=>{ui.ai.ctl&&ui.ai.ctl.abort()},
   'plan-swap':v=>{editW(S.plan.w,'swap',v);touch('main');render()},'plan-del':v=>{editW(S.plan.w,'del',v);touch('main');render()},
   'b-place':v=>{const b=builder();b.place=v;b.focus=FOCUS[v][0][0];render()},'b-focus':v=>{builder().focus=v;render()},'b-min':v=>{builder().minutes=+v;render()},'b-lv':v=>{builder().lv=v;render()},
   'b-gen':()=>{ui.draft=gen({...builder(),seed:null});render();document.getElementById('draft')?.scrollIntoView({behavior:'smooth',block:'start'})},
   'b-ai':()=>runAI('draft'),'d-swap':v=>{editW(ui.draft,'swap',v);render()},'d-del':v=>{editW(ui.draft,'del',v);render()},
-  'd-start':()=>startWorkout(ui.draft),'d-plan':()=>{S.plan={d:todayKey(),w:ui.draft};touch('main');ui.tab='today';render();window.scrollTo(0,0);toast('Это тренировка дня')},
+  'd-start':()=>startWorkout(ui.draft),'d-plan':()=>{setPlan(ui.draft);ui.tab='today';render();window.scrollTo(0,0);toast('Это тренировка дня')},
   water:v=>{const d=ui.tab==='food'&&ui.foodDate||todayKey();S.water[d]=Math.max(0,(S.water[d]||0)+ +v);touch(d);render()},
   glass:v=>{const d=ui.foodDate||todayKey(),n=+v+1;S.water[d]=(Math.round((S.water[d]||0)/250)===n?n-1:n)*250;touch(d);render()},
   'q-weight':()=>{if(addWeight(todayKey(),document.getElementById('q-weight').value))render()},
@@ -1331,9 +1562,9 @@ const ACT={
     const f={n,k,p:+fa.cp||0,f:+fa.cf||0,c:+fa.cc||0,custom:1};S.customFoods=S.customFoods.filter(x=>x.n!==n);S.customFoods.unshift(f);touch('main');
     const d=ui.foodDate||todayKey();(S.food[d]||(S.food[d]=[])).push(foodEntry(f,+fa.cg||100,fa.meal));touch(d);toast('Добавлено: '+n);ui.fa={meal:fa.meal,q:'',pick:null,g:100,custom:false};render()},
   fdel:v=>{const d=ui.foodDate||todayKey();S.food[d]=(S.food[d]||[]).filter(x=>x.id!==v);touch(d);render()},
-  'pf-place':v=>{S.profile.place=v;ui.b=null;touch('main');render()},
+  'pf-place':v=>{S.profile.place=v;ui.b=null;S.plan=null;S.week=null;touch('main');render()},
   'pf-day':v=>{const d=+v,a=S.profile.days;S.profile.days=a.includes(d)?a.filter(x=>x!==d):[...a,d].sort();touch('main');render()},
-  'pf-min':v=>{S.profile.minutes=+v;ui.b=null;touch('main');render()},
+  'pf-min':v=>{S.profile.minutes=+v;ui.b=null;S.plan=null;S.week=null;touch('main');render()},
   'pf-eq':v=>{const a=S.profile.eq||[];S.profile.eq=a.includes(v)?a.filter(x=>x!==v):[...a,v];touch('main');render()},
   'export':async()=>{const json=JSON.stringify({app:'podhod',v:2,exported:new Date().toISOString(),state:S}),name='podhod-'+todayKey()+'.json';
     if(DL){try{await DL.save({filename:name,data:json});toast('Копия сохранена')}catch(e){if(e&&e.code!=='declined')toast('Не удалось сохранить файл. Попробуйте ещё раз.')}return}
@@ -1351,17 +1582,17 @@ const ACT={
   'rs-toggle':()=>{const r=T.rs;ensureAudio();if(r.run){r.left=Math.max(0,r.end-Date.now());r.run=false}else{r.end=Date.now()+r.left;r.run=true;r.b=null}wake();render()},
   'rs-add':v=>{const r=T.rs;if(r.run)r.end+=+v*1000;else r.left+=+v*1000;r.dur=Math.max(r.dur,Math.ceil((r.run?r.end-Date.now():r.left)/1000));timerPaint()},
   'rs-reset':()=>{T.rs={dur:T.rs.dur,left:T.rs.dur*1000,end:0,run:false};wake();render()},
-  'pl-go':()=>{PL.phase='work';PL.start=Date.now();bell(1);say(EX[PL.items[0].ex].name);renderPlayer()},
+  'pl-go':()=>{PL.start=Date.now();if(PL.method==='amrap')PL.capEnd=Date.now()+(PL.w.cap||900)*1000;bell(1);say(EX[PL.items[curStep().i].ex].name);startStep(false)},
   'pl-close':()=>PL.phase==='intro'?(PL=null,renderPlayer()):ask('Выйти из тренировки? Выполненные подходы сохранятся.','Выйти',()=>finishWorkout()),
   'pl-finish':()=>ask('Завершить тренировку сейчас?','Завершить',()=>finishWorkout()),
   'pl-exit':()=>{PL=null;renderPlayer();render()},
   'pl-step':v=>{const[id,d]=v.split(':'),el=document.getElementById(id);const st=id==='p-kg'?(+d>0?1:-1)*(parseFloat(el.value)>=10?2.5:1):+d;el.value=Math.max(0,r1((parseFloat(el.value)||0)+st))},
   'pl-set':()=>{const r=parseInt(document.getElementById('p-reps').value)||0,k=document.getElementById('p-kg');if(r<=0){toast('Укажите число повторений');return}const s={r};if(k)s.kg=parseFloat(k.value)||0;logSet(s)},
   'pl-timed':()=>beginTimed(),
-  'pl-timed-stop':()=>{const t=Math.round((Date.now()-PL.timedStart)/1000);PL.phase='work';if(t>0)logSet({t});else renderPlayer()},
+  'pl-timed-stop':()=>{const t=Math.round((Date.now()-PL.timedStart)/1000);if(t>0)logSet({t});else{PL.phase='work';renderPlayer()}},
   'pl-rest':v=>{if(v==='skip')PL.restEnd=Date.now();else{PL.restEnd+=+v*1000;PL.restDur=Math.max(PL.restDur,Math.ceil((PL.restEnd-Date.now())/1000))}tick()},
-  'pl-swap':()=>{if(PL.log[PL.i].sets.length){toast('Подходы уже начаты — заменить можно только до первого подхода');return}const w={...PL.w,items:PL.items};if(swapIn(w,PL.i)){PL.log[PL.i]={id:PL.items[PL.i].ex,sets:[]};toast('Заменил: '+EX[PL.items[PL.i].ex].name);renderPlayer()}},
-  'pl-skip':()=>{PL.i++;PL.set=1;if(PL.i>=PL.items.length)finishWorkout();else{PL.phase='work';renderPlayer()}}
+  'pl-swap':()=>{const i=curStep().i;if(PL.log[i].sets.length){toast('Подходы уже начаты — заменить можно только до первого подхода');return}const w={...PL.w,items:PL.items};if(swapIn(w,i)){PL.log[i]={id:PL.items[i].ex,sets:[]};const k0=PL.k;PL.steps=buildSteps(PL.w);PL.k=Math.min(k0,PL.steps.length-1);toast('Заменил: '+EX[PL.items[i].ex].name);startStep(false)}},
+  'pl-skip':()=>{const i=curStep().i;PL.steps=PL.steps.slice(0,PL.k).concat(PL.steps.slice(PL.k).filter(x=>x.i!==i));if(PL.k>=PL.steps.length)finishWorkout();else startStep(false)}
 };
 function importFile(f){const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result),st=d.state||d;if(!st.profile||!Array.isArray(st.workouts))throw 0;
   ask('Заменить текущие записи данными из файла?','Заменить',()=>{const old=Object.keys(split());S=merge({main:{profile:st.profile,weights:st.weights||[],settings:st.settings||{},customFoods:st.customFoods||[],plan:null},'m-import':{workouts:st.workouts,food:st.food||{},water:st.water||{}}});S.demo=false;
@@ -1369,7 +1600,7 @@ function importFile(f){const r=new FileReader();r.onload=()=>{try{const d=JSON.p
 document.addEventListener('click',e=>{ensureAudio();const el=e.target.closest('[data-act]');if(!el||el.tagName==='DETAILS')return;const f=ACT[el.dataset.act];if(f){if(el.tagName!=='INPUT')e.preventDefault();f(el.dataset.v,el,e)}});
 document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.getElementById('modal').hidden)closeModal();if(e.key!=='Enter')return;const id=e.target.id;if(id==='q-weight')ACT['q-weight']();if(id==='w-v')ACT['w-add']();if(id==='fa-g'&&ui.fa&&ui.fa.pick)ACT['fa-add']()});
-document.addEventListener('toggle',e=>{if(e.target.dataset&&e.target.dataset.act==='pl-steps'&&PL)PL.steps=e.target.open},true);
+document.addEventListener('toggle',e=>{if(e.target.dataset&&e.target.dataset.act==='pl-steps'&&PL)PL.steps_open=e.target.open},true);
 document.addEventListener('input',e=>{const t=e.target;
   if(t.id==='lib-q'){ui.libQ=t.value;const pos=t.selectionStart;render();const n=document.getElementById('lib-q');n.focus();try{n.setSelectionRange(pos,pos)}catch(_){}}
   if(t.id==='fa-q'){ui.fa.q=t.value;document.getElementById('fa-res').innerHTML=faResults()}
@@ -1378,9 +1609,10 @@ document.addEventListener('input',e=>{const t=e.target;
 });
 document.addEventListener('change',e=>{const t=e.target;
   if(t.id==='imp'&&t.files[0]){importFile(t.files[0]);t.value='';return}
+  if(t.id==='ubg-file'&&t.files[0]){setUbgFile(t.files[0]);t.value='';return}
   if(t.id==='ex-sel'){ui.exSel=t.value;render();return}
-  if(t.dataset.pf){const k=t.dataset.pf;let v=t.value;if(['age','height','goalWeight','activity'].includes(k))v=parseFloat(v)||S.profile[k];S.profile[k]=v;if(k==='level'){ui.b=null;S.plan=null}touch('main');render()}
-  if(t.dataset.st){S.settings[t.dataset.st]=t.checked;touch('main');if(t.dataset.st==='voice'&&t.checked)say('Голос включён')}
+  if(t.dataset.pf){const k=t.dataset.pf;let v=t.value;if(['age','height','goalWeight','activity'].includes(k))v=parseFloat(v)||S.profile[k];S.profile[k]=v;if(k==='level'){ui.b=null;S.plan=null;S.week=null}touch('main');render()}
+  if(t.dataset.st){S.settings[t.dataset.st]=t.checked;touch('main');if(t.dataset.st==='ubgPage')applyUbg();if(t.dataset.st==='voice'&&t.checked)say('Голос включён')}
   if(t.dataset.iv){T.iv[t.dataset.iv]=Math.max(t.dataset.iv==='rounds'?1:0,parseInt(t.value)||0);render()}
   if(t.dataset.rd){const k=t.dataset.rd;T.rd[k]=k==='warn'?t.checked:k==='combo'?t.value:Math.max(1,parseInt(t.value)||1);render()}
 });
