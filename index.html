@@ -343,6 +343,36 @@ table.t td.n{font-family:var(--f-mono);font-size:13px;white-space:nowrap}
 .flash{position:fixed;inset:0;z-index:70;pointer-events:none;background:radial-gradient(circle at 50% 40%,rgba(0,0,0,.2) 0 12%,rgba(179,22,28,.55) 13% 16%,rgba(0,0,0,.85) 40%);animation:fl 1.6s ease-out forwards}
 @keyframes fl{0%{opacity:0}15%{opacity:1}100%{opacity:0}}
 
+/* eclipse: солнечное затмение на чистом CSS/SVG, работает на телефоне без библиотек */
+.eclipse{position:relative;width:100%;overflow:hidden;background:#050403}
+.eclipse svg{display:block;width:100%;height:100%}
+.eclipse .sky{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(0,0,0,0),rgba(0,0,0,.94));animation:eclSky 7s ease-in-out infinite}
+.eclipse .stars{position:absolute;inset:0;animation:eclStars 7s ease-in-out infinite}
+.eclipse .stars i{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;box-shadow:0 0 3px 1px rgba(255,255,255,.8)}
+.eclipse .corona{filter:drop-shadow(0 0 6px var(--accent)) drop-shadow(0 0 16px var(--accent));animation:eclGlow 7s ease-in-out infinite}
+.eclipse .moon-g{animation:eclMoon 7s linear infinite}
+.eclipse .cap{position:absolute;left:10px;bottom:8px;font:800 10px/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase;padding:5px 9px;border-radius:4px;background:rgba(5,4,3,.7);color:#F0C77A;z-index:2}
+.eclipse.mini{aspect-ratio:16/9;border-radius:var(--r-img);border:1px solid var(--line)}
+.eclipse.hero{aspect-ratio:5/3}
+.art-full.eclipse{background:#050403}
+.art-full.eclipse svg{position:absolute;inset:0;width:100%;height:100%}
+.eclipse-full{position:fixed;inset:0;z-index:70;pointer-events:none;background:#050403;overflow:hidden}
+.eclipse-full svg{position:absolute;inset:0;width:100%;height:100%}
+.eclipse-full .sky{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 42%,rgba(0,0,0,0),rgba(0,0,0,.97));animation:eclSkyFull 4.6s cubic-bezier(.4,0,.3,1) forwards}
+.eclipse-full .stars{position:absolute;inset:0;animation:eclStarsFull 4.6s cubic-bezier(.4,0,.3,1) forwards}
+.eclipse-full .stars i{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;box-shadow:0 0 3px 1px rgba(255,255,255,.85)}
+.eclipse-full .corona{filter:drop-shadow(0 0 8px var(--accent)) drop-shadow(0 0 22px var(--accent));animation:eclGlowFull 4.6s cubic-bezier(.4,0,.3,1) forwards}
+.eclipse-full .moon-g{animation:eclMoonFull 4.6s cubic-bezier(.45,0,.3,1) forwards}
+@keyframes eclMoon{0%{transform:translateX(-70px)}45%,55%{transform:translateX(0)}100%{transform:translateX(70px)}}
+@keyframes eclSky{0%,100%{opacity:0}45%,55%{opacity:1}}
+@keyframes eclStars{0%,100%{opacity:0}45%,55%{opacity:1}}
+@keyframes eclGlow{0%,100%{filter:drop-shadow(0 0 6px var(--accent)) drop-shadow(0 0 16px var(--accent))}48%,52%{filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 30px var(--accent))}}
+@keyframes eclMoonFull{0%{transform:translateX(-95px)}42%,58%{transform:translateX(0)}100%{transform:translateX(95px)}}
+@keyframes eclSkyFull{0%,100%{opacity:0}42%,58%{opacity:1}}
+@keyframes eclStarsFull{0%,100%{opacity:0}42%,58%{opacity:1}}
+@keyframes eclGlowFull{0%,100%{filter:drop-shadow(0 0 8px var(--accent)) drop-shadow(0 0 22px var(--accent))}46%,54%{filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 40px var(--accent))}}
+@media (prefers-reduced-motion: reduce){.eclipse .moon-g,.eclipse-full .moon-g{animation:none;transform:translateX(0)}.eclipse .sky,.eclipse-full .sky,.eclipse .stars,.eclipse-full .stars{animation:none;opacity:1}.eclipse .corona,.eclipse-full .corona{animation:none}}
+
 /* skin details */
 [data-skin="berserk"] body{background:radial-gradient(ellipse 820px 380px at 78% -140px,rgba(179,22,28,.26),transparent 70%) no-repeat,var(--bg)}
 [data-skin="berserk"] h1{text-shadow:0 2px 30px rgba(179,22,28,.28)}
@@ -1101,6 +1131,21 @@ const exRows=(w,edit)=>`<ul class="exrows">${w.items.map((it,i)=>`<li><div class
 
 /* ---------- Сегодня ---------- */
 function splat(seed=7){if(sk()!=='berserk')return '';const R=rng(seed*7919+hash(skin()));let c='';for(let i=0;i<30;i++){const x=R()*200,y=R()*110,r=Math.pow(R(),3)*8+.5;c+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}"/>`;if(r>4&&R()<.7)c+=`<rect x="${(x-r*.22).toFixed(1)}" y="${y.toFixed(1)}" width="${(r*.44).toFixed(1)}" height="${(8+R()*28).toFixed(1)}" rx="${(r*.22).toFixed(1)}"/>`}return `<svg class="splat" viewBox="0 0 200 140" aria-hidden="true"><g fill="currentColor">${c}</g></svg>`}
+/* ---------- затмение: анимация на CSS/SVG, без библиотек, работает на телефоне ---------- */
+function eclipseCore(seed){
+  const R=rng((seed||3)*104729);let stars='';
+  for(let i=0;i<26;i++){const x=(R()*100).toFixed(1),y=(R()*62).toFixed(1),d=(R()*2.6).toFixed(1);stars+=`<i style="left:${x}%;top:${y}%;animation-delay:-${d}s"></i>`}
+  return `<div class="sky"></div><div class="stars">${stars}</div>
+    <svg viewBox="0 0 200 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <circle class="corona" cx="100" cy="60" r="30" fill="#F0C77A"/>
+      <g class="moon-g"><circle cx="100" cy="60" r="32" fill="#050403"/></g>
+    </svg>`;
+}
+const eclipseMini=(cls='',cap='')=>`<div class="eclipse ${cls}" role="img" aria-label="Анимация солнечного затмения">${eclipseCore(5)}${cap?`<span class="cap">${esc(cap)}</span>`:''}</div>`;
+function eclipseBurst(){
+  const f=document.createElement('div');f.className='eclipse-full';f.setAttribute('aria-hidden','true');
+  f.innerHTML=eclipseCore(9);document.body.appendChild(f);setTimeout(()=>f.remove(),4700);
+}
 function artBanner(){
   const q=ui.q||(ui.q=quote()),has=UBG||(ART[sk()]||[]).length;
   if(!has)return quoteHTML(q);
@@ -1179,8 +1224,8 @@ function vDraft(){const w=ui.draft;
 }
 function vChallenges(){const list=CHALLENGES[sk()],th=SKINS.find(x=>x[0]===skin())[1];
   return `<p class="muted" style="max-width:70ch">Испытания меняются вместе с темой оформления: сейчас — «${esc(th)}». Сменить тему можно в профиле, и здесь появятся другие испытания. За каждое пройденное испытание — +20 XP сверху.</p>
-  <section class="grid g2">${list.map(c=>{const w=challengeW(c),done=S.workouts.filter(x=>x.chId===c.id).length;
-    return `<div class="panel lift ch">${splat(hash(c.id)%50)}<div class="row between"><h2>${esc(c.n)}</h2>${done?`<span class="chip good">Пройдено ${done}×</span>`:''}</div><p class="muted">${esc(c.d)}</p><div class="row"><span class="chip on">${METHODS[c.m].n}</span><span class="chip">≈ ${estMin(w)} мин</span></div>${exRows(w)}<div class="row"><button class="btn primary" data-act="ch-start" data-v="${c.id}">${ic('play',16)} Принять вызов</button></div></div>`}).join('')}</section>`;
+  <section class="grid g2">${list.map(c=>{const w=challengeW(c),done=S.workouts.filter(x=>x.chId===c.id).length,isEcl=c.id==='eclipse';
+    return `<div class="panel lift ch">${isEcl?eclipseMini('mini'):splat(hash(c.id)%50)}<div class="row between"><h2>${esc(c.n)}</h2>${done?`<span class="chip good">Пройдено ${done}×</span>`:''}</div><p class="muted">${esc(c.d)}</p><div class="row"><span class="chip on">${METHODS[c.m].n}</span><span class="chip">≈ ${estMin(w)} мин</span></div>${exRows(w)}<div class="row"><button class="btn primary" data-act="ch-start" data-v="${c.id}">${ic('play',16)} Принять вызов</button></div></div>`}).join('')}</section>`;
 }
 function vLibrary(){
   const q=ui.libQ.trim().toLowerCase(),pk=ui.libPlace==='all'?null:PLACES[ui.libPlace].k;
@@ -1477,8 +1522,8 @@ function renderPlayer(){
     ${PL.phase==='done'||PL.phase==='intro'?'<span style="width:38px"></span>':'<button class="btn sm" data-act="pl-finish">Завершить</button>'}</div><div class="bar"><i id="pl-bar" style="width:${(pct*100).toFixed(1)}%"></i></div>`;
   let body='';
   if(PL.phase==='intro'){
-    const img=artBg(PL.art),tot=PL.method==='amrap'?null:PL.steps.length;
-    body=`<section class="intro art-full">${img?`<div class="img" style="background-image:url('${img}')"></div><div class="shade"></div>`:''}${splat(11)}
+    const isEcl=PL.w.chId==='eclipse',img=isEcl?null:artBg(PL.art),tot=PL.method==='amrap'?null:PL.steps.length;
+    body=`<section class="intro art-full ${isEcl?'eclipse':''}">${isEcl?eclipseCore(9):img?`<div class="img" style="background-image:url('${img}')"></div><div class="shade"></div>`:''}${isEcl?'':splat(11)}
       <div class="stack" style="align-items:center;gap:18px;position:relative">
       <div class="row" style="justify-content:center">${lvChip(PL.lv)}${placeChip(PL.place)}<span class="chip on">${esc(METHODS[PL.method].n)}</span></div><h1 style="font-size:clamp(34px,8vw,58px)">${esc(PL.title)}</h1>${decoHTML()}
       <p class="muted" style="max-width:48ch">${esc(methodLine(PL.w))}</p>
@@ -1599,8 +1644,10 @@ function closeModal(){const m=document.getElementById('modal');m.hidden=true;m.i
 let askCb=null;
 function ask(text,ok,cb){askCb=cb;modal(`<h2>${text}</h2><div class="row" style="justify-content:flex-end"><button class="btn" data-act="close-modal">Отмена</button><button class="btn primary" data-act="ask-ok">${ok}</button></div>`,true)}
 let toastT;function toast(t){const e=document.getElementById('toast');e.textContent=t;e.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>e.hidden=true,2800)}
-function egg(){ui.egg++;if(ui.egg<5)return;ui.egg=0;const f=document.createElement('div');f.className='flash';document.body.appendChild(f);setTimeout(()=>f.remove(),1700);
-  ensureAudio();if(skin()==='rocky'){bell(3);toast('Динь-динь-динь! Бой начался. Где твой мешок?')}else if(skin()==='berserk'){tone(110,1.4,0,.4,'sawtooth');toast('Клеймо жжёт. Затмение близко — иди тренируйся.')}else toast('Ты нашёл секрет. Награда — ещё один подход.')}
+function egg(){ui.egg++;if(ui.egg<5)return;ui.egg=0;ensureAudio();
+  if(sk()==='berserk'){eclipseBurst();tone(110,1.4,0,.4,'sawtooth');setTimeout(()=>tone(220,1.8,0,.3,'sawtooth'),1900);setTimeout(()=>toast('Затмение началось. Иди тренируйся.'),1950)}
+  else{const f=document.createElement('div');f.className='flash';document.body.appendChild(f);setTimeout(()=>f.remove(),1700);
+    if(skin()==='rocky'){bell(3);toast('Динь-динь-динь! Бой начался. Где твой мешок?')}else toast('Ты нашёл секрет. Награда — ещё один подход.')}}
 
 /* ---------- действия ---------- */
 function addWeight(d,v,extra){v=parseFloat(String(v).replace(',','.'));if(!(v>20&&v<400)){toast('Введите вес в килограммах, например 78,4');return false}
