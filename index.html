@@ -230,7 +230,8 @@ button.chip{cursor:pointer}
 .exrows .nm{flex:1;min-width:0}
 .exrows .nm button{background:none;border:0;padding:0;text-align:left;font-weight:700;color:var(--ink)}
 .exrows .nm button:hover{color:var(--accent)}
-.exrows .sr{font-family:var(--f-mono);font-size:13px;color:var(--muted);white-space:nowrap}
+.exrows .sr{font-family:var(--f-mono);font-size:13px;color:var(--muted);overflow-wrap:anywhere}
+.exrows .nm button{overflow-wrap:anywhere}
 .places{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .place{display:flex;flex-direction:column;gap:4px;align-items:flex-start;text-align:left;padding:12px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface2);min-width:0}
 .place b{font:var(--h-weight) 18px/1 var(--f-display);text-transform:uppercase;letter-spacing:var(--h-track)}
@@ -389,6 +390,31 @@ table.t td.n{font-family:var(--f-mono);font-size:13px;white-space:nowrap}
 @keyframes eclSkyFull{0%,100%{opacity:0}42%,58%{opacity:1}}
 @keyframes eclStarsFull{0%,100%{opacity:0}42%,58%{opacity:1}}
 @keyframes eclGlowFull{0%,100%{filter:drop-shadow(0 0 8px var(--accent)) drop-shadow(0 0 22px var(--accent))}46%,54%{filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 40px var(--accent))}}
+/* --- кровавое затмение --- */
+.eclipse-full.blood{background:#0B0202}
+.eclipse-full.blood .sky{background:radial-gradient(ellipse at 50% 42%,rgba(150,10,14,.34),rgba(10,0,0,.97));animation-duration:5.6s}
+.eclipse-full.blood .stars{animation-duration:5.6s}
+.eclipse-full.blood .stars i{background:#FF6A6A;box-shadow:0 0 4px 1px rgba(220,30,30,.9)}
+.eclipse-full.blood .corona{filter:drop-shadow(0 0 10px #B3161C) drop-shadow(0 0 34px #8E0E14);animation:eclGlowBlood 5.6s cubic-bezier(.4,0,.3,1) forwards}
+.eclipse-full.blood .moon-g{animation-duration:5.6s}
+.eclipse-full.blood::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,rgba(200,26,32,.30),transparent 62%);mix-blend-mode:screen;animation:bloodPulse 5.6s ease-in-out forwards}
+@keyframes eclGlowBlood{0%{filter:drop-shadow(0 0 6px #7A0B10) drop-shadow(0 0 14px #5A070B)}46%,56%{filter:drop-shadow(0 0 16px #FF2A32) drop-shadow(0 0 60px #B3161C)}100%{filter:drop-shadow(0 0 8px #7A0B10) drop-shadow(0 0 20px #5A070B)}}
+@keyframes bloodPulse{0%{opacity:0}40%{opacity:.5}60%{opacity:1}100%{opacity:0}}
+.eclipse-full .drips{position:absolute;inset:0;overflow:hidden}
+.eclipse-full .drips i{position:absolute;top:-60px;border-radius:0 0 60% 60%/0 0 100% 100%;background:linear-gradient(180deg,rgba(120,8,12,0),#9E1016 28%,#C81A20);box-shadow:0 0 10px rgba(160,12,18,.75);animation:dripFall cubic-bezier(.45,.05,.55,1) forwards}
+@keyframes dripFall{0%{transform:translateY(0);opacity:0}12%{opacity:1}100%{transform:translateY(112vh);opacity:.85}}
+
+/* кнопка затмения в шапке — видна и на телефоне */
+.chip.fin{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:10px;padding:2px 7px;margin-right:6px}
+.top-acts{display:flex;align-items:center;gap:8px;flex:none}
+.ecl-btn{position:relative;width:42px;height:42px;flex:none;border-radius:50%;border:1px solid var(--line);background:#0A0706;display:grid;place-items:center;overflow:hidden;padding:0;cursor:pointer}
+.ecl-btn:hover,.ecl-btn:focus-visible{border-color:var(--accent)}
+.ecl-btn .ecl-sun{position:absolute;width:20px;height:20px;border-radius:50%;background:#F0C77A;box-shadow:0 0 7px 1px rgba(240,199,122,.85),0 0 14px 3px rgba(200,26,32,.45);animation:eclBtnGlow 7s ease-in-out infinite}
+.ecl-btn .ecl-moon{position:absolute;width:20px;height:20px;border-radius:50%;background:#0A0706;animation:eclBtnMoon 7s linear infinite}
+@keyframes eclBtnMoon{0%{transform:translateX(-17px)}45%,55%{transform:translateX(-3px)}100%{transform:translateX(17px)}}
+@keyframes eclBtnGlow{0%,100%{box-shadow:0 0 7px 1px rgba(240,199,122,.85),0 0 14px 3px rgba(200,26,32,.45)}48%,52%{box-shadow:0 0 10px 2px #fff,0 0 22px 7px rgba(200,26,32,.8)}}
+.ecl-btn:active .ecl-sun{background:#C81A20;box-shadow:0 0 12px 3px rgba(200,26,32,.95)}
+@media (prefers-reduced-motion: reduce){.ecl-btn .ecl-moon{animation:none;transform:translateX(-3px)}.ecl-btn .ecl-sun{animation:none}.eclipse-full .drips i{animation:none;opacity:.8}.eclipse-full.blood::after{animation:none;opacity:.55}}
 @media (prefers-reduced-motion: reduce){.eclipse .moon-g,.eclipse-full .moon-g{animation:none;transform:translateX(0)}.eclipse .sky,.eclipse-full .sky,.eclipse .stars,.eclipse-full .stars{animation:none;opacity:1}.eclipse .corona,.eclipse-full .corona{animation:none}}
 
 /* skin details */
@@ -508,6 +534,21 @@ table.t td.n{font-family:var(--f-mono);font-size:13px;white-space:nowrap}
    eq — нужный инвентарь дома: db гантели, bar турник, bench скамья, bag мешок, rope скакалка, kb гиря. */
 const X=(name,grp,pl,pat,lv,type,equip,steps,mistakes,breath,easier,harder,o={})=>Object.assign({name,grp,pl,pat,lv,type,equip,steps,mistakes,breath,easier,harder},o);
 const EX={
+goodMorning:X('Наклон со штангой',['Спина'],'hg','hinge','mid','reps','Штанга',['Штанга на верхе трапеций, ноги на ширине таза, колени чуть мягкие.','Уводите таз назад и наклоняйте корпус вперёд с прямой спиной.','Опускайтесь, пока не почувствуете натяжение бицепса бедра, и поднимитесь.'],['Круглая спина','Сгибание коленей вместо наклона таза','Слишком большой вес'],'Вдох в наклоне, выдох на подъёме.','Наклон без веса или с палкой.','Пауза 2 секунды в нижней точке.',{w:1}),
+sumoDl:X('Становая тяга сумо',['Ноги','Спина'],'g','hinge','mid','reps','Штанга',['Ноги широко, носки развёрнуты, гриф у голеней, хват внутри ног.','Грудь вверх, спина прямая, таз ниже, чем в классике.','Разгибайте ноги и таз одновременно, ведя гриф вплотную к телу.'],['Округление поясницы','Таз взлетает раньше груди','Гриф уходит вперёд'],'Вдох перед подъёмом, выдох наверху.','Тяга с плинтов или гири.','Пауза в 5 см от пола.',{w:1}),
+pullThrough:X('Протяжка в блоке',['Ягодицы','Спина'],'g','hinge','beg','reps','Нижний блок',['Встаньте спиной к нижнему блоку, канат между ног, шагните вперёд.','Уводите таз назад, наклоняясь с прямой спиной.','Резко выпрямитесь, сжав ягодицы в верхней точке.'],['Тяга руками вместо таза','Переразгибание поясницы наверху'],'Вдох в наклоне, выдох на выпрямлении.','Меньше вес, короче амплитуда.','Пауза 2 секунды в сжатии.',{w:1}),
+hyperext:X('Гиперэкстензия без тренажёра',['Спина','Ягодицы'],'hg','back','mid','reps','Коврик',['Лягте на живот, руки у висков, ноги прямые.','На выдохе поднимайте грудь и бёдра от пола за счёт спины и ягодиц.','Задержитесь на секунду и плавно опуститесь.'],['Рывки','Запрокидывание головы','Переразгибание поясницы'],'Выдох на подъёме, вдох на опускании.','Поднимайте только корпус, ноги на полу.','Держите 3 секунды наверху или возьмите блин.'),
+sglBridge:X('Ягодичный мост на одной ноге',['Ягодицы'],'hf','glutes','mid','reps','Коврик',['Лягте на спину, одна стопа на полу, вторая нога выпрямлена вверх.','Упритесь пяткой и поднимите таз до линии плечо–колено.','Сожмите ягодицу наверху и опуститесь, не касаясь пола.'],['Перекос таза','Работа поясницей вместо ягодицы','Опора на носок'],'Выдох на подъёме, вдох вниз.','Обычный мост на двух ногах.','Пауза 3 секунды наверху.'),
+walkLunge:X('Выпады в движении',['Ноги','Ягодицы'],'hgf','lunge','beg','reps','—',['Встаньте прямо, руки на поясе или с гантелями.','Сделайте широкий шаг вперёд и опуститесь до угла 90° в обоих коленях.','Оттолкнитесь передней ногой и сразу шагните другой ногой вперёд.'],['Колено уходит за носок','Короткий шаг','Заваливание корпуса'],'Вдох вниз, выдох на подъёме.','Выпады на месте с опорой.','Гантели в руках или штанга на спине.'),
+calfMachine:X('Подъём на носки в тренажёре',['Икры'],'g','calf','beg','reps','Тренажёр',['Встаньте в тренажёр, плечи под валиками, носки на платформе.','Опустите пятки как можно ниже, чувствуя растяжение икры.','Поднимитесь на носки максимально высоко и задержитесь на секунду.'],['Короткая амплитуда','Рывки','Сгибание коленей'],'Выдох на подъёме, вдох вниз.','Меньше вес, больше амплитуда.','Пауза 2 секунды вверху и внизу.',{w:1}),
+donkeyCalf:X('Подъём на носки «ослик»',['Икры'],'g','calf','mid','reps','Платформа',['Наклонитесь корпусом вперёд, опираясь руками, носки на платформе.','Опустите пятки ниже уровня платформы.','Мощно поднимитесь на носки, не разгибая корпус.'],['Разгибание корпуса','Пружинящие полуповторы'],'Выдох на подъёме, вдох вниз.','Без дополнительного веса.','Партнёр на спине или пояс с весом.',{w:1}),
+invRow:X('Австралийские подтягивания',['Спина','Руки'],'hgf','pull','beg','reps','Низкая перекладина',['Возьмитесь за перекладину на уровне пояса, тело прямое, пятки на полу.','Сведите лопатки и подтяните грудь к перекладине.','Опуститесь под контролем до полного выпрямления рук.'],['Провисание таза','Работа только руками','Рывки корпусом'],'Выдох на подтягивании, вдох вниз.','Поднимите перекладину выше, согните колени.','Опустите перекладину ниже или закиньте ноги на возвышение.'),
+pallof:X('Жим Палоффа',['Пресс'],'g','core','beg','time','Блок',['Встаньте боком к блоку, рукоять у груди двумя руками.','Выжмите руки прямо перед собой, сопротивляясь развороту корпуса.','Держите, затем вернитесь к груди, не позволяя корпусу скрутиться.'],['Разворот корпуса','Задержка дыхания','Слишком большой вес'],'Ровное дыхание, не задерживайте.','Встаньте ближе к блоку.','Шаг дальше от блока или выше вес.'),
+frogSitup:X('Складка «лягушка»',['Пресс'],'hf','core','mid','reps','Коврик',['Лягте на спину, стопы вместе, колени разведены в стороны.','Руки за головой или вдоль корпуса.','Скручивайтесь вверх, тянясь грудью к стопам, и плавно опускайтесь.'],['Рывок руками за шею','Отрыв поясницы рывком'],'Выдох на подъёме, вдох вниз.','Руки вдоль корпуса, короче амплитуда.','Блин на груди или пауза наверху.'),
+frogHops:X('Лягушачьи прыжки',['Ноги','Кардио'],'hf','plyo','mid','reps','—',['Присядьте глубоко, руки между ног, спина прямая.','Мощно вытолкнитесь вперёд и вверх, приземляясь снова в присед.','Сразу же повторяйте, сохраняя низкую стойку.'],['Приземление на прямые ноги','Круглая спина','Пауза между прыжками'],'Выдох на прыжке.','Прыжки на месте без продвижения.','Дальше прыжок или прыжки в горку.'),
+thruster:X('Трастер с гирей',['Всё тело'],'hg','squat','mid','reps','Гиря',['Гиря в стойке у плеча, локоть прижат, ноги на ширине плеч.','Присядьте до параллели, держа корпус вертикально.','Мощно встаньте и на инерции выжмите гирю над головой.'],['Выжимание отдельно от приседа','Прогиб в пояснице наверху','Заваливание вперёд'],'Вдох в приседе, выдох на выжиме.','Присед и жим раздельно, меньше вес.','Две гири или без паузы между повторами.',{w:1}),
+handstandPush:X('Отжимания в стойке на руках',['Плечи','Руки'],'hg','pushV','adv','reps','Стена',['Встаньте в стойку на руках у стены, ладони чуть шире плеч.','Согните локти и опуститесь, пока макушка не коснётся пола.','Мощно выжмите себя обратно в стойку.'],['Прогиб в пояснице','Разведённые локти','Падение на голову'],'Вдох вниз, выдох на выжиме.','Отжимания «домиком» ногами на возвышении.','Без стены или с паузой внизу.',{note:'Только у стены и на мягкой поверхности.'}),
+hangPike:X('Подъём ног в вис до перекладины',['Пресс'],'hg','core','adv','reps','Турник',['Повисните на перекладине, плечи активны, ноги прямые.','Не раскачиваясь, поднимайте прямые ноги к перекладине.','Опускайте медленно, сохраняя контроль.'],['Раскачка','Согнутые колени','Бросание ног вниз'],'Выдох на подъёме, вдох вниз.','Подъём коленей к груди.','Пауза наверху 2 секунды.'),
 catStretch:X('Кошка-корова',['Растяжка'],'hgf','cool','beg','time','Коврик',['Встаньте на четвереньки, ладони под плечами, колени под тазом.','На вдохе прогните спину вниз, поднимая голову и таз (корова).','На выдохе округлите спину, подбородок к груди (кошка).'],['Резкие рывки','Задержка дыхания'],'Вдох на прогибе, выдох на округлении.','Меньше амплитуда.','Задержка 3 секунды в каждой точке.'),
 childPose:X('Поза ребёнка',['Растяжка'],'hgf','cool','beg','time','Коврик',['Сядьте на пятки, колени чуть разведены.','Наклонитесь вперёд, вытянув руки перед собой.','Опустите лоб на пол и расслабьте плечи.'],['Напряжённые плечи','Задержка дыхания'],'Медленное глубокое дыхание.','Руки вдоль корпуса.','Растяните руки дальше вперёд.'),
 hamstringStretch:X('Растяжка задней поверхности бедра',['Растяжка'],'hgf','cool','beg','time','Коврик',['Сядьте, одна нога прямая, другая согнута стопой к бедру.','Наклонитесь вперёд к прямой ноге с прямой спиной.','Тянитесь грудью к колену, не круглите поясницу.'],['Круглая спина','Рывки'],'Выдох на наклоне.','Меньше наклон.','Обе ноги прямые.',{note:'на каждую ногу'}),
@@ -739,30 +780,30 @@ const METHOD_FOR={home:['classic','circuit','superset','ladder','pyramid','emom'
 /* --- испытания: свои у каждой темы --- */
 const CHALLENGES={
   berserk:[
-    {id:'dragonslayer',n:'Драконобой',d:'Тяжёлое железо для того, кто носит меч выше себя: махи, тяги и переноски.',m:'classic',rest:90,items:[['kbSwing|rdl|squat',5,{reps:15}],['farmer|plank',4,{time:45}],['deadlift|rdl|bridge',4,{reps:8}],['goblet|sumoSquat|squat',4,{reps:12}],['hangRaise|legRaise|reverseCrunch',3,{reps:12}]]},
-    {id:'eclipse',n:'Затмение',d:'20 минут без пощады: столько кругов, сколько выдержишь.',m:'amrap',cap:1200,items:[['pushup|kneePush',1,{reps:10}],['squat',1,{reps:15}],['crunch',1,{reps:20}],['climber',1,{time:30}]]},
-    {id:'swordpath',n:'Путь мечника',d:'Каждую минуту — новый удар по слабости. 16 минут.',m:'emom',emom:16,items:[['jumpSquat|squat',1,{reps:10}],['pushup|kneePush',1,{reps:10}],['twist|crunch',1,{reps:20}],['lunge',1,{reps:10}]]},
-    {id:'hundred',n:'Сто ударов',d:'Бой с тенью и серии, пока руки не станут тяжелее меча.',m:'rounds',rest:60,items:[['shadow',3,{time:180}],['jabCross',2,{time:120}],['hook',2,{time:120}],['tuckJump|jumpSquat',3,{reps:10}]]},
-    {id:'campfire',n:'Ночь у костра',d:'Лесенка вверх: с каждым подходом повторов больше. Одиночке холод не страшен.',m:'ladder',rest:45,items:[['pullup|chinup|superman',1,{repsBy:[2,4,6,8]}],['pushup|kneePush',1,{repsBy:[4,8,12,16]}],['squat',1,{repsBy:[6,12,18,24]}]]}
+    {id:'dragonslayer',n:'Драконобой',d:'Тяжёлое железо для того, кто носит меч выше себя: махи, тяги и переноски.',m:'classic',rest:75,items:[['kbSwing|rdl|squat',6,{reps:20}],['farmer|plank',5,{time:68}],['deadlift|rdl|bridge',5,{reps:10}],['goblet|sumoSquat|squat',5,{reps:16}],['hangRaise|legRaise|reverseCrunch',4,{reps:16}]]},
+    {id:'eclipse',n:'Затмение',d:'25 минут без пощады: столько кругов, сколько выдержишь.',m:'amrap',cap:1500,items:[['pushup|kneePush',1,{reps:13}],['squat',1,{reps:20}],['crunch',1,{reps:26}],['climber',1,{time:45}]]},
+    {id:'swordpath',n:'Путь мечника',d:'Каждую минуту — новый удар по слабости. 20 минут.',m:'emom',emom:20,items:[['jumpSquat|squat',1,{reps:13}],['pushup|kneePush',1,{reps:13}],['twist|crunch',1,{reps:26}],['lunge',1,{reps:13}]]},
+    {id:'hundred',n:'Сто ударов',d:'Бой с тенью и серии, пока руки не станут тяжелее меча.',m:'rounds',rest:50,items:[['shadow',4,{time:180}],['jabCross',3,{time:120}],['hook',3,{time:120}],['tuckJump|jumpSquat',4,{reps:13}]]},
+    {id:'campfire',n:'Ночь у костра',d:'Лесенка вверх: с каждым подходом повторов больше. Одиночке холод не страшен.',m:'ladder',rest:40,items:[['pullup|chinup|superman',1,{repsBy:[2,5,8,10]}],['pushup|kneePush',1,{repsBy:[5,10,15,20]}],['squat',1,{repsBy:[8,15,22,30]}]]}
   ],
   rocky:[
-    {id:'philly',n:'Утро в Филадельфии',d:'Пробежка, отжимания, пресс и бой с тенью — как в пять утра.',m:'classic',rest:60,items:[['rope|highKnees',3,{time:180}],['closePush|pushup',4,{reps:15}],['crunch',4,{reps:25}],['shadow',3,{time:180}]]},
-    {id:'museumsteps',n:'Ступени музея',d:'Каждую минуту — рывок наверх. 15 минут до вершины.',m:'emom',emom:15,items:[['stepUp|lunge',1,{reps:12}],['jumpSquat|squat',1,{reps:12}],['starJump|highKnees',1,{reps:15}]]},
-    {id:'freezer',n:'Холодильный склад',d:'Шесть раундов по корпусу. Туши в холодильнике дрожат.',m:'rounds',rest:60,items:[['bag|shadow',3,{time:180}],['bodyShots',3,{time:120}]]},
-    {id:'title',n:'Бой за титул',d:'Двенадцать раундов по три минуты. Выстоять до гонга.',m:'rounds',rest:60,items:[['shadow',3,{time:180}],['jabCross',2,{time:180}],['hook',2,{time:180}],['uppercut',2,{time:180}],['bodyShots',2,{time:180}],['footwork',1,{time:180}]]},
-    {id:'barn',n:'Амбар в горах',d:'Никаких тренажёров: переноски, подтягивания, пресс и прыжки.',m:'circuit',rounds:4,roundRest:90,items:[['farmer|kbSwing|squat',1,{time:45}],['chinup|pullup|superman',1,{reps:8}],['crunch|reverseCrunch',1,{reps:20}],['jumpSquat|squat',1,{reps:15}],['pushup|kneePush',1,{reps:15}]]}
+    {id:'philly',n:'Утро в Филадельфии',d:'Пробежка, отжимания, пресс и бой с тенью — как в пять утра.',m:'classic',rest:50,items:[['rope|highKnees',4,{time:180}],['closePush|pushup',5,{reps:20}],['crunch',5,{reps:32}],['shadow',4,{time:180}]]},
+    {id:'museumsteps',n:'Ступени музея',d:'Каждую минуту — рывок наверх. 19 минут до вершины.',m:'emom',emom:19,items:[['stepUp|lunge',1,{reps:16}],['jumpSquat|squat',1,{reps:16}],['starJump|highKnees',1,{reps:20}]]},
+    {id:'freezer',n:'Холодильный склад',d:'Восемь раундов по корпусу. Туши в холодильнике дрожат.',m:'rounds',rest:50,items:[['bag|shadow',4,{time:180}],['bodyShots',4,{time:120}]]},
+    {id:'title',n:'Бой за титул',d:'Двенадцать раундов по три минуты. Выстоять до гонга.',m:'rounds',rest:50,items:[['shadow',3,{time:180}],['jabCross',2,{time:180}],['hook',2,{time:180}],['uppercut',2,{time:180}],['bodyShots',2,{time:180}],['footwork',1,{time:180}]]},
+    {id:'barn',n:'Амбар в горах',d:'Никаких тренажёров: переноски, подтягивания, пресс и прыжки.',m:'circuit',rounds:5,roundRest:70,items:[['farmer|kbSwing|squat',1,{time:68}],['chinup|pullup|superman',1,{reps:10}],['crunch|reverseCrunch',1,{reps:26}],['jumpSquat|squat',1,{reps:20}],['pushup|kneePush',1,{reps:20}]]}
   ],
   space:[
-    {id:'launchday',n:'День старта',d:'Полная предполётная подготовка: ноги, спина и кор перед выходом на орбиту.',m:'classic',rest:75,items:[['squat|bbSquat',4,{reps:12}],['pullup|latPull|row',4,{reps:10}],['plank|sidePlank',3,{time:40}],['legRaise|hangRaise',3,{reps:12}]]},
-    {id:'orbit',n:'Орбитальный виток',d:'Круговая тренировка без остановки — станция не ждёт.',m:'circuit',rounds:4,roundRest:75,items:[['squat|jumpSquat',1,{reps:15}],['pushup|kneePush',1,{reps:12}],['climber',1,{time:30}],['crunch',1,{reps:20}]]},
-    {id:'spacewalk',n:'Выход в открытый космос',d:'Каждую минуту — новая задача. 14 минут вне корабля.',m:'emom',emom:14,items:[['jumpSquat|squat',1,{reps:10}],['pushup|kneePush',1,{reps:10}],['twist|crunch',1,{reps:20}],['lunge',1,{reps:10}]]},
-    {id:'reentry',n:'Вход в атмосферу',d:'Максимум перегрузки за 18 минут — сколько кругов выдержит корпус.',m:'amrap',cap:1080,items:[['squat',1,{reps:15}],['pushup|kneePush',1,{reps:10}],['lunge',1,{reps:10}],['plank',1,{time:30}]]},
-    {id:'zerog',n:'Невесомость',d:'Лесенка вверх: гравитация не помогает, только собственная сила.',m:'ladder',rest:45,items:[['pullup|chinup|superman',1,{repsBy:[2,4,6,8]}],['pushup|kneePush',1,{repsBy:[4,8,12,16]}],['squat',1,{repsBy:[6,12,18,24]}]]}
+    {id:'launchday',n:'День старта',d:'Полная предполётная подготовка: ноги, спина и кор перед выходом на орбиту.',m:'classic',rest:75,items:[['squat|bbSquat',5,{reps:16}],['pullup|latPull|row',5,{reps:13}],['plank|sidePlank',4,{time:60}],['legRaise|hangRaise',4,{reps:16}]]},
+    {id:'orbit',n:'Орбитальный виток',d:'Круговая тренировка без остановки — станция не ждёт.',m:'circuit',rounds:5,roundRest:75,items:[['squat|jumpSquat',1,{reps:20}],['pushup|kneePush',1,{reps:16}],['climber',1,{time:45}],['crunch',1,{reps:26}]]},
+    {id:'spacewalk',n:'Выход в открытый космос',d:'Каждую минуту — новая задача. 18 минут вне корабля.',m:'emom',emom:18,items:[['jumpSquat|squat',1,{reps:13}],['pushup|kneePush',1,{reps:13}],['twist|crunch',1,{reps:26}],['lunge',1,{reps:13}]]},
+    {id:'reentry',n:'Вход в атмосферу',d:'Максимум перегрузки за 22 минуты — сколько кругов выдержит корпус.',m:'amrap',cap:1320,items:[['squat',1,{reps:20}],['pushup|kneePush',1,{reps:13}],['lunge',1,{reps:13}],['plank',1,{time:45}]]},
+    {id:'zerog',n:'Невесомость',d:'Лесенка вверх: гравитация не помогает, только собственная сила.',m:'ladder',rest:40,items:[['pullup|chinup|superman',1,{repsBy:[2,5,8,10]}],['pushup|kneePush',1,{repsBy:[5,10,15,20]}],['squat',1,{repsBy:[8,15,22,30]}]]}
   ],
   classic:[
-    {id:'tabata4',n:'Табата-экспресс',d:'Четыре упражнения по четыре минуты: 20 секунд работы, 10 отдыха.',m:'tabata',items:[['jumpSquat|squat',8,{time:20}],['pushup|kneePush',8,{time:20}],['climber',8,{time:20}],['crunch',8,{time:20}]]},
-    {id:'amrap15',n:'Круг на 15 минут',d:'Максимум кругов за 15 минут.',m:'amrap',cap:900,items:[['squat',1,{reps:15}],['pushup|kneePush',1,{reps:10}],['lunge',1,{reps:10}],['plank',1,{time:30}]]},
-    {id:'hundredpush',n:'Сотня',d:'Сто отжиманий за тренировку — лесенкой.',m:'ladder',rest:60,items:[['pushup|kneePush',1,{repsBy:[10,15,20,25,30]}]]}
+    {id:'tabata4',n:'Табата-экспресс',d:'Четыре упражнения по четыре минуты: 20 секунд работы, 10 отдыха.',m:'tabata',items:[['jumpSquat|squat',8,{time:30}],['pushup|kneePush',8,{time:30}],['climber',8,{time:30}],['crunch',8,{time:30}]]},
+    {id:'amrap15',n:'Круг на 19 минут',d:'Максимум кругов за 19 минут.',m:'amrap',cap:1140,items:[['squat',1,{reps:20}],['pushup|kneePush',1,{reps:13}],['lunge',1,{reps:13}],['plank',1,{time:45}]]},
+    {id:'hundredpush',n:'Сотня',d:'Сто отжиманий за тренировку — лесенкой.',m:'ladder',rest:50,items:[['pushup|kneePush',1,{repsBy:[10,15,20,25,30]}]]}
   ]
 };
 
@@ -947,19 +988,19 @@ function pickW(arr,w,R){let t=w.reduce((a,b)=>a+b,0),x=R()*t;for(let i=0;i<arr.l
 function dose(id,{place,focus,lv,idx,R,goal}){
   const e=EX[id],L=LVI[lv],ri=a=>a[Math.floor(R()*a.length)],circuit=focus==='hiit'||focus==='cond';
   if(e.type==='time'){
-    if(['box','kick','bag'].includes(e.pat))return{ex:id,sets:clamp([2,3,3][L]+(R()<.35?1:0),2,5),time:[90,120,180][L],rest:[45,60,60][L]};
-    if(e.pat==='fwarm'||(place==='fight'&&idx===0))return{ex:id,sets:2,time:[60,90,120][L],rest:30};
-    return{ex:id,sets:circuit?[3,4,4][L]:3,time:ri([[20,30],[30,40,45],[40,45,60]][L]),rest:circuit?[30,20,20][L]:45};
+    if(['box','kick','bag'].includes(e.pat))return{ex:id,sets:clamp([3,4,5][L]+(R()<.4?1:0),3,7),time:[120,150,180][L],rest:[40,40,35][L]};
+    if(e.pat==='fwarm'||(place==='fight'&&idx===0))return{ex:id,sets:2,time:[60,90,120][L],rest:25};
+    return{ex:id,sets:circuit?[4,5,6][L]:[4,4,5][L],time:ri([[30,40],[40,50,60],[50,60,75]][L]),rest:circuit?[25,18,15][L]:35};
   }
   const main=place==='gym'&&idx<2&&e.w;
-  let sets=main?[3,4,5][L]:3;if(L===2&&!main&&R()<.5)sets=4;
+  let sets=main?[4,5,6][L]:[3,4,5][L];if(L>0&&!main&&R()<.4)sets++;
   let reps;
-  if(e.pat==='plyo')reps=ri([[8,10],[10,12],[12,15]][L]);
-  else if(e.pat==='pullV'&&!e.w)reps=ri([[3,4,5],[6,8],[8,10,12]][L]);
-  else if(e.w&&place==='gym')reps=main?(goal==='gain'?ri([6,8]):goal==='lose'?ri([10,12]):ri([8,10])):ri([10,12,15]);
-  else reps=ri([[8,10,12],[12,15],[15,18,20]][L]);
-  if(e.note)reps=Math.max(6,Math.round(reps*.8));
-  const rest=circuit?30:main?[90,120,150][L]:place==='gym'?75:60;
+  if(e.pat==='plyo')reps=ri([[10,12],[14,16],[18,20]][L]);
+  else if(e.pat==='pullV'&&!e.w)reps=ri([[4,5,6],[8,10],[10,12,15]][L]);
+  else if(e.w&&place==='gym')reps=main?(goal==='gain'?ri([6,8]):goal==='lose'?ri([12,15]):ri([8,10,12])):ri([12,15,18]);
+  else reps=ri([[12,15],[15,18,20],[20,25,30]][L]);
+  if(e.note)reps=Math.max(8,Math.round(reps*.8));
+  const rest=circuit?[25,20,15][L]:main?[90,105,120][L]:place==='gym'?[60,50,45][L]:[45,40,30][L];
   return{ex:id,sets,reps,rest};
 }
 function pickMethod(p,R){
@@ -970,20 +1011,20 @@ function pickMethod(p,R){
 }
 function applyMethod(w,m,L){
   w.method=m;const its=w.items;
-  if(m==='circuit'){w.rounds=clamp(Math.round(w.minutes/10)+L-1,2,6);w.gap=15;w.roundRest=[90,75,60][L];its.forEach(it=>{it.sets=w.rounds;delete it.repsBy;if(it.time)it.time=Math.min(it.time,[30,40,45][L]);else it.reps=Math.min(it.reps||12,15)})}
-  else if(m==='superset'){its.forEach(it=>{it.rest=Math.max(45,it.rest||60)})}
-  else if(m==='pyramid'){its.forEach(it=>{if(!it.time){it.repsBy=L===0?[12,10,8]:L===1?[12,10,8,6]:[12,10,8,6,4];if(!EX[it.ex].w)it.repsBy=it.repsBy.map(r=>r+4);it.sets=it.repsBy.length;it.reps=it.repsBy[0]}})}
-  else if(m==='ladder'){its.forEach(it=>{if(!it.time){const b=Math.max(2,Math.round((it.reps||10)/3));it.repsBy=[1,2,3,4].slice(0,[3,4,4][L]).map(k=>b*k);it.sets=it.repsBy.length;it.reps=it.repsBy[0];it.rest=45}})}
-  else if(m==='emom'){w.emom=clamp(Math.round(w.minutes*.6),8,30);its.forEach(it=>{if(it.time)it.time=clamp(it.time,20,40);else it.reps=Math.min(it.reps||10,[8,10,12][L])})}
-  else if(m==='amrap'){w.cap=clamp(Math.round(w.minutes*.6),8,30)*60;its.forEach(it=>{if(it.time)it.time=Math.min(it.time,40);else it.reps=Math.min(it.reps||10,[10,12,15][L])})}
-  else if(m==='tabata'){w.items=its.slice(0,clamp(Math.round(w.minutes/5),3,6));w.items.forEach(it=>{it.time=20;it.sets=8;it.rest=10;it.restAfter=60;delete it.reps;delete it.repsBy})}
-  else if(m==='s5x5'){let n=0;its.forEach(it=>{if(EX[it.ex].w&&!it.time&&n<3){it.sets=5;it.reps=5;it.rest=[120,150,180][L];n++}});if(!n)w.method='classic'}
+  if(m==='circuit'){w.rounds=clamp(Math.round(w.minutes/8)+L,3,8);w.gap=10;w.roundRest=[70,55,45][L];its.forEach(it=>{it.sets=w.rounds;delete it.repsBy;if(it.time)it.time=Math.min(it.time,[40,45,55][L]);else it.reps=Math.min(it.reps||12,[15,18,22][L])})}
+  else if(m==='superset'){its.forEach(it=>{it.sets=Math.max(it.sets||3,[4,4,5][L]);it.rest=clamp(it.rest||60,35,60)})}
+  else if(m==='pyramid'){its.forEach(it=>{if(!it.time){it.repsBy=L===0?[12,10,8,10]:L===1?[12,10,8,6,8,10]:[15,12,10,8,6,8,10,12];if(!EX[it.ex].w)it.repsBy=it.repsBy.map(r=>r+6);it.sets=it.repsBy.length;it.reps=it.repsBy[0];it.rest=clamp(it.rest||60,35,75)}})}
+  else if(m==='ladder'){its.forEach(it=>{if(!it.time){const b=Math.max(2,Math.round((it.reps||10)/3));it.repsBy=[1,2,3,4,5,4,3].slice(0,[4,5,7][L]).map(k=>b*k);it.sets=it.repsBy.length;it.reps=it.repsBy[0];it.rest=[40,35,30][L]}})}
+  else if(m==='emom'){w.emom=clamp(Math.round(w.minutes*.75),10,40);its.forEach(it=>{if(it.time)it.time=clamp(it.time,25,45);else it.reps=Math.min(it.reps||10,[10,13,16][L])})}
+  else if(m==='amrap'){w.cap=clamp(Math.round(w.minutes*.75),10,40)*60;its.forEach(it=>{if(it.time)it.time=Math.min(it.time,45);else it.reps=Math.min(it.reps||10,[12,15,18][L])})}
+  else if(m==='tabata'){w.items=its.slice(0,clamp(Math.round(w.minutes/4),4,8));w.items.forEach(it=>{it.time=20;it.sets=8;it.rest=10;it.restAfter=[60,45,30][L];delete it.reps;delete it.repsBy})}
+  else if(m==='s5x5'){let n=0;its.forEach(it=>{if(EX[it.ex].w&&!it.time&&n<3){it.sets=[5,5,6][L];it.reps=5;it.rest=[110,130,150][L];n++}});if(!n)w.method='classic'}
 }
 function gen(p,ctx){
   ctx=ctx||{eq:S.profile.eq||[],recent:recentIds(),goal:S.profile.goal};
   const R=rng(hash(p.seed!=null?p.seed:Math.random()*1e9));
   const m=pickMethod(p,R),L=LVI[p.lv];
-  const slots=SLOTS[p.focus]||SLOTS.full,per=m==='tabata'?5:m==='amrap'||m==='emom'?9:p.place==='fight'?7.5:8.5;
+  const slots=SLOTS[p.focus]||SLOTS.full,per=m==='tabata'?5:m==='amrap'||m==='emom'?9:p.place==='fight'?8:p.place==='gym'?10:9.5;
   const n=clamp(Math.round(p.minutes/per),3,slots.length);
   const used=new Set(),items=[];
   for(let i=0;i<slots.length&&items.length<n;i++){
@@ -997,16 +1038,59 @@ function gen(p,ctx){
   const ep=EPITHETS[sk()];
   const w={id:newId(),title:ep[Math.floor(R()*ep.length)]+': '+focusName(p.place,p.focus).toLowerCase(),place:p.place,focus:p.focus,lv:p.lv,minutes:p.minutes,items,kind:'gen'};
   applyMethod(w,m,L);
+  addFinisher(w,L,R,p,ctx);
+  fitTime(w);
   return w;
+}
+/* тренировка должна укладываться в выбранное время: режем объём, а не жёсткость */
+function fitTime(w){
+  const m=w.method||'classic';
+  if(m==='amrap'||m==='emom'||m==='tabata')return;
+  const cap=Math.round(w.minutes*1.12);
+  const core=()=>w.items.filter(it=>!it.fin);
+  const floor=w.minutes<=25?2:3;
+  for(let guard=0;guard<40&&estMin(w)>cap;guard++){
+    const c=core();
+    if(c.length>floor){const last=c[c.length-1];w.items.splice(w.items.indexOf(last),1);continue}
+    // дальше режем подходы у самого объёмного упражнения, но не ниже 3
+    let best=null;c.forEach(it=>{if(it.sets>3&&(!best||it.sets>best.sets))best=it});
+    if(best){best.sets--;if(best.repsBy&&best.repsBy.length>best.sets)best.repsBy=best.repsBy.slice(0,best.sets);continue}
+    // если и это не помогло — укорачиваем раунды по времени
+    let t=null;c.forEach(it=>{if(it.time&&it.time>60&&(!t||it.time>t.time))t=it});
+    if(t){t.time=Math.max(60,t.time-30);continue}
+    // в самом конце жертвуем добивкой — лучше короткая честная тренировка
+    const fi=w.items.findIndex(it=>it.fin);
+    if(fi>=0){w.items.splice(fi,1);w.fin=0;continue}
+    break;
+  }
+}
+/* ДОБИВКА: последний подход до отказа — то, из-за чего тренировка запоминается */
+const FIN_PATS=['core','plyo','cardio','push','squat'];
+function addFinisher(w,L,R,p,ctx){
+  if(w.method==='tabata'||w.method==='amrap'||w.method==='emom')return;
+  const used=new Set(w.items.map(it=>it.ex));
+  const pool=Object.keys(EX).filter(id=>!used.has(id)&&FIN_PATS.includes(EX[id].pat)&&exOk(id,p.place,p.lv,(ctx&&ctx.eq)||[]));
+  if(!pool.length)return;
+  const id=pool[Math.floor(R()*pool.length)],e=EX[id];
+  const it=e.type==='time'
+    ?{ex:id,sets:[2,3,3][L],time:[45,60,75][L],rest:[30,25,20][L],fin:1}
+    :{ex:id,sets:[2,3,3][L],reps:[20,25,30][L],rest:[30,25,20][L],fin:1};
+  it.restAfter=0;
+  w.items.push(it);
+  w.fin=1;
 }
 function recentIds(n=3){const s=new Set();(S?S.workouts:[]).slice(-n).forEach(w=>w.ex.forEach(e=>s.add(e.id)));return s}
 /* шаги тренировки: порядок подходов зависит от методики */
 function buildSteps(w){
   const out=[],its=w.items,m=w.method||'classic',st=(i,s,rest,x)=>out.push(Object.assign({i,s,rest},x));
   const rt=(it,s)=>it.time?{time:it.time}:{reps:it.repsBy?it.repsBy[Math.min(s,it.repsBy.length)-1]:it.reps};
-  if(m==='circuit'){const R=w.rounds||3;for(let r=1;r<=R;r++)its.forEach((it,i)=>st(i,r,i===its.length-1?(r===R?0:(w.roundRest||75)):(w.gap??15),rt(it,r)))}
-  else if(m==='superset'){for(let a=0;a<its.length;a+=2){const b=a+1<its.length?a+1:null,sets=Math.max(its[a].sets,b!=null?its[b].sets:0);
-    for(let s=1;s<=sets;s++){if(s<=its[a].sets)st(a,s,b!=null&&s<=its[b].sets?10:(its[a].rest||60),rt(its[a],s));if(b!=null&&s<=its[b].sets)st(b,s,its[b].rest||60,rt(its[b],s))}}}
+  /* добивка идёт после основной части, а не внутри круга/суперсета */
+  const core=[];its.forEach((it,i)=>{if(!it.fin)core.push(i)});
+  const fins=[];its.forEach((it,i)=>{if(it.fin)fins.push(i)});
+  const tailFin=()=>fins.forEach(i=>{const it=its[i];for(let s=1;s<=it.sets;s++)st(i,s,s===it.sets?0:(it.rest??30),rt(it,s))});
+  if(m==='circuit'){const R=w.rounds||3;for(let r=1;r<=R;r++)core.forEach((i,k)=>st(i,r,k===core.length-1?(r===R?0:(w.roundRest||75)):(w.gap??15),rt(its[i],r)));tailFin()}
+  else if(m==='superset'){for(let x=0;x<core.length;x+=2){const a=core[x],b=x+1<core.length?core[x+1]:null,sets=Math.max(its[a].sets,b!=null?its[b].sets:0);
+    for(let s=1;s<=sets;s++){if(s<=its[a].sets)st(a,s,b!=null&&s<=its[b].sets?10:(its[a].rest||60),rt(its[a],s));if(b!=null&&s<=its[b].sets)st(b,s,its[b].rest||60,rt(its[b],s))}}tailFin()}
   else if(m==='emom'){const N=w.emom||12;for(let k=0;k<N;k++){const i=k%its.length;st(i,Math.floor(k/its.length)+1,60,{...rt(its[i],1),emom:1})}}
   else if(m==='amrap'){for(let r=1;r<=60;r++)its.forEach((it,i)=>st(i,r,0,rt(it,1)))}
   else its.forEach((it,i)=>{for(let s=1;s<=it.sets;s++)st(i,s,s===it.sets?(it.restAfter??it.rest??60):(it.rest??60),rt(it,s))});
@@ -1172,7 +1256,7 @@ function frames(id){
 }
 
 /* ---------- ui state ---------- */
-const ui={q:null,artSeed:null,tab:'today',trainSub:'build',b:null,draft:null,ai:{busy:false},libPlace:'all',libGrp:'Все',libQ:'',foodDate:null,fa:null,progSub:'body',wRange:60,rRange:'week',exSel:null,egg:0,pcA:null,pcB:null,vdl:null};
+const ui={q:null,artSeed:null,tab:'today',trainSub:'build',b:null,draft:null,ai:{busy:false},libPlace:'all',libGrp:'Все',libQ:'',foodDate:null,fa:null,progSub:'body',wRange:60,rRange:'week',exSel:null,egg:0,pcA:null,pcB:null,vdl:null,ecl:false};
 const TABS=[['today','Сегодня'],['train','Тренировки'],['timer','Таймер'],['food','Питание'],['progress','Прогресс']];
 function builder(){if(!ui.b){const p=S.profile;ui.b={place:p.place,focus:autoFocus(p.place),minutes:p.minutes,lv:p.level,method:'random'}}return ui.b}
 
@@ -1189,30 +1273,49 @@ function render(){
 function header(title,eyebrow){
   const d=new Date();
   return `<header class="top"><div class="stack" style="gap:8px"><div class="eyebrow">${eyebrow||WDL[d.getDay()]+' · '+fmtD(todayKey())}</div><h1>${title}</h1>${decoHTML()}</div>
-  <button class="who" data-act="tab" data-v="profile" aria-label="Профиль">${ic('profile')}</button></header>`+
+  <div class="top-acts"><button class="ecl-btn" data-act="eclipse" aria-label="Затмение" title="Затмение"><span class="ecl-sun"></span><span class="ecl-moon"></span></button>
+  <button class="who" data-act="tab" data-v="profile" aria-label="Профиль">${ic('profile')}</button></div></header>`+
   (S.demo?`<div class="banner"><p class="small"><b>Это пример данных</b> — чтобы было видно, как работают отчёты, ранги и графики. Ваши записи начнутся с чистого листа.</p><button class="btn primary sm" data-act="reset-demo">Начать со своих данных</button></div>`:'');
 }
 const placeChip=pl=>`<span class="chip">${ic(pl,14)} ${PLACES[pl].n}</span>`;
 const lvChip=l=>`<span class="lv"><span class="plate ${LVP[l]}" style="width:14px;height:14px"></span>${lvName(l)}</span>`;
-const exRows=(w,edit)=>`<ul class="exrows">${w.items.map((it,i)=>`<li><div class="thumb">${photo(it.ex,'sm')}</div><div class="nm">${w.method==='superset'?`<span class="chip" style="padding:1px 7px;margin-right:6px">${String.fromCharCode(65+Math.floor(i/2))}${i%2+1}</span>`:''}<button data-act="ex" data-v="${it.ex}">${esc(EX[it.ex].name)}</button><div class="sr">${rowText(w,it)}</div></div>${edit?`<button class="btn iconbtn ghost" data-act="${edit}-swap" data-v="${i}" aria-label="Заменить упражнение">${ic('swap',18)}</button><button class="btn iconbtn ghost" data-act="${edit}-del" data-v="${i}" aria-label="Убрать упражнение">${ic('x',18)}</button>`:''}</li>`).join('')}</ul>`;
+const exRows=(w,edit)=>`<ul class="exrows">${w.items.map((it,i)=>`<li><div class="thumb">${photo(it.ex,'sm')}</div><div class="nm">${it.fin?`<span class="chip fin">Добивка</span> `:''}${w.method==='superset'&&!it.fin?`<span class="chip" style="padding:1px 7px;margin-right:6px">${String.fromCharCode(65+Math.floor(i/2))}${i%2+1}</span>`:''}<button data-act="ex" data-v="${it.ex}">${esc(EX[it.ex].name)}</button><div class="sr">${rowText(w,it)}</div></div>${edit?`<button class="btn iconbtn ghost" data-act="${edit}-swap" data-v="${i}" aria-label="Заменить упражнение">${ic('swap',18)}</button><button class="btn iconbtn ghost" data-act="${edit}-del" data-v="${i}" aria-label="Убрать упражнение">${ic('x',18)}</button>`:''}</li>`).join('')}</ul>`;
 
 /* ---------- Сегодня ---------- */
 function splat(seed=7){if(sk()!=='berserk')return '';const R=rng(seed*7919+hash(skin()));let c='';for(let i=0;i<30;i++){const x=R()*200,y=R()*110,r=Math.pow(R(),3)*8+.5;c+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}"/>`;if(r>4&&R()<.7)c+=`<rect x="${(x-r*.22).toFixed(1)}" y="${y.toFixed(1)}" width="${(r*.44).toFixed(1)}" height="${(8+R()*28).toFixed(1)}" rx="${(r*.22).toFixed(1)}"/>`}return `<svg class="splat" viewBox="0 0 200 140" aria-hidden="true"><g fill="currentColor">${c}</g></svg>`}
 /* ---------- затмение: анимация на CSS/SVG, без библиотек, работает на телефоне ---------- */
-function eclipseCore(seed){
+function eclipseCore(seed,blood){
   const R=rng((seed||3)*104729);let stars='';
   for(let i=0;i<26;i++){const x=(R()*100).toFixed(1),y=(R()*62).toFixed(1),d=(R()*2.6).toFixed(1);stars+=`<i style="left:${x}%;top:${y}%;animation-delay:-${d}s"></i>`}
   return `<div class="sky"></div><div class="stars">${stars}</div>
     <svg viewBox="0 0 200 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <circle class="corona" cx="100" cy="60" r="30" fill="#F0C77A"/>
+      <circle class="corona" cx="100" cy="60" r="30" fill="${blood?'#C81A20':'#F0C77A'}"/>
       <g class="moon-g"><circle cx="100" cy="60" r="32" fill="#050403"/></g>
     </svg>`;
 }
-const eclipseMini=(cls='',cap='')=>`<div class="eclipse ${cls}" role="img" aria-label="Анимация солнечного затмения">${eclipseCore(5)}${cap?`<span class="cap">${esc(cap)}</span>`:''}</div>`;
-function eclipseBurst(){
-  const f=document.createElement('div');f.className='eclipse-full';f.setAttribute('aria-hidden','true');
-  f.innerHTML=eclipseCore(9);document.body.appendChild(f);setTimeout(()=>f.remove(),4700);
+/* капли крови, стекающие по экрану во время кровавого затмения */
+function bloodDrips(){
+  const R=rng(7717);let d='';
+  for(let i=0;i<14;i++){const x=(R()*100).toFixed(1),w=(4+R()*10).toFixed(1),h=(14+R()*46).toFixed(0),dl=(R()*1.4).toFixed(2),du=(2.2+R()*1.8).toFixed(2);
+    d+=`<i style="left:${x}%;width:${w}px;height:${h}px;animation-delay:${dl}s;animation-duration:${du}s"></i>`}
+  return `<div class="drips">${d}</div>`;
 }
+const eclipseMini=(cls='',cap='')=>`<div class="eclipse ${cls}" role="img" aria-label="Анимация солнечного затмения">${eclipseCore(5)}${cap?`<span class="cap">${esc(cap)}</span>`:''}</div>`;
+function eclipseBurst(blood){
+  const f=document.createElement('div');f.className='eclipse-full'+(blood?' blood':'');f.setAttribute('aria-hidden','true');
+  f.innerHTML=eclipseCore(9,blood)+(blood?bloodDrips():'');document.body.appendChild(f);setTimeout(()=>f.remove(),blood?5600:4700);
+}
+/* кровавое затмение: полный экран, гул и надпись */
+function bloodEclipse(){
+  if(ui.ecl)return;ui.ecl=true;ensureAudio();
+  eclipseBurst(true);
+  tone(96,1.6,0,.42,'sawtooth');
+  setTimeout(()=>tone(72,2.2,0,.34,'sawtooth'),1400);
+  setTimeout(()=>{try{bell(1)}catch(e){}},2600);
+  setTimeout(()=>toast(rand(ECLIPSE_LINES)),2300);
+  setTimeout(()=>{ui.ecl=false},5700);
+}
+const ECLIPSE_LINES=['Кровавое затмение. Клеймо горит — вставай и работай.','Небо почернело. Сегодня ты либо жертва, либо мечник.','Затмение не ждёт. Железо тоже.','Клеймённый не отдыхает. Ещё подход.','Когда солнце гаснет — остаётся только твоя воля.'];
 function artBanner(){
   const q=ui.q||(ui.q=quote()),has=UBG||(ART[sk()]||[]).length;
   if(!has)return quoteHTML(q);
@@ -1733,7 +1836,7 @@ let askCb=null;
 function ask(text,ok,cb){askCb=cb;modal(`<h2>${text}</h2><div class="row" style="justify-content:flex-end"><button class="btn" data-act="close-modal">Отмена</button><button class="btn primary" data-act="ask-ok">${ok}</button></div>`,true)}
 let toastT;function toast(t){const e=document.getElementById('toast');e.textContent=t;e.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>e.hidden=true,2800)}
 function egg(){ui.egg++;if(ui.egg<5)return;ui.egg=0;ensureAudio();
-  if(sk()==='berserk'){eclipseBurst();tone(110,1.4,0,.4,'sawtooth');setTimeout(()=>tone(220,1.8,0,.3,'sawtooth'),1900);setTimeout(()=>toast('Затмение началось. Иди тренируйся.'),1950)}
+  if(sk()==='berserk'){bloodEclipse()}
   else{const f=document.createElement('div');f.className='flash';document.body.appendChild(f);setTimeout(()=>f.remove(),1700);
     if(skin()==='rocky'){bell(3);toast('Динь-динь-динь! Бой начался. Где твой мешок?')}else toast('Ты нашёл секрет. Награда — ещё один подход.')}}
 
@@ -1765,6 +1868,7 @@ const ACT={
     for(const id of ids){try{const r=await fetch('video/'+id+'.webm',{cache:'reload'});if(!r.ok)fail++}catch(e){fail++}
       ui.vdl.done++;render()}
     ui.vdl=null;render();toast(fail?`Скачано, кроме ${fail} — попробуйте ещё раз при хорошей связи`:'Все видео скачаны. Теперь работают без интернета.')},
+  'eclipse':()=>bloodEclipse(),
   'photo-add':()=>document.getElementById('photo-file').click(),
   'photo-open':v=>{const p=PHOTOS.find(x=>x.id===v);if(!p)return;modal(`<div class="row between"><h2>${fmtD(p.d,{day:'numeric',month:'long',year:'numeric'})}</h2><button class="btn iconbtn ghost" data-act="close-modal" aria-label="Закрыть">${ic('x')}</button></div><img src="${p.img}" alt="Фото ${fmtD(p.d)}" style="width:100%;border-radius:var(--r-img);border:1px solid var(--line)"><button class="btn danger" style="align-self:flex-start" data-act="photo-del" data-v="${p.id}">${ic('trash',16)} Удалить фото</button>`)},
   'photo-del':v=>ask('Удалить это фото?','Удалить',()=>{PHOTOS=PHOTOS.filter(p=>p.id!==v);savePhotos();closeModal();render()}),
