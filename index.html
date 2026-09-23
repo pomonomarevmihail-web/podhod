@@ -817,6 +817,7 @@ function rng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(see
 const rand=a=>a[Math.floor(Math.random()*a.length)];
 
 const ICON={
+  download:'<path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
   today:'<rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M8.5 15l2 2 4-4"/>',
   train:'<path d="M6.5 7v10M3.5 9.5v5M17.5 7v10M20.5 9.5v5M6.5 12h11"/>',
   timer:'<circle cx="12" cy="13.5" r="7.5"/><path d="M12 10v3.5l2.5 1.5M9.5 2.5h5M19 6l1.5-1.5"/>',
@@ -1155,6 +1156,7 @@ function funFact(w){const v=w.vol||0;if(v>=1500)return`Ты поднял ${fmt(v
 
 /* ---------- photos ---------- */
 const hasVideo=id=>typeof VIDEO!=='undefined'&&VIDEO.has(id);
+const VIDEO_DL=(()=>{try{return 'serviceWorker' in navigator&&'caches' in window&&location.protocol.startsWith('http')}catch(e){return false}})();
 const photo=(id,cls='')=>{const vid=hasVideo(id)&&!cls.includes('sm')?`<span class="vbadge">${ic('play',12)} видео</span>`:'';
   return EX[id].one?`<div class="ph one ${cls}" role="img" aria-label="${esc(EX[id].name)}">${vid}<img src="img/${id}-0.jpg" alt="" decoding="async"><span class="tag">${esc(EX[id].grp[0])}</span></div>`
   :`<div class="ph ${cls}" role="img" aria-label="${esc(EX[id].name)}: исходное и конечное положение">${vid}<img class="a" src="img/${id}-0.jpg" alt="" decoding="async"><img class="b" src="img/${id}-1.jpg" alt="" decoding="async"><span class="tag a">1 · старт</span><span class="tag b">2 · финиш</span><span class="scrub"><i></i></span></div>`};
@@ -1170,7 +1172,7 @@ function frames(id){
 }
 
 /* ---------- ui state ---------- */
-const ui={q:null,artSeed:null,tab:'today',trainSub:'build',b:null,draft:null,ai:{busy:false},libPlace:'all',libGrp:'Все',libQ:'',foodDate:null,fa:null,progSub:'body',wRange:60,rRange:'week',exSel:null,egg:0};
+const ui={q:null,artSeed:null,tab:'today',trainSub:'build',b:null,draft:null,ai:{busy:false},libPlace:'all',libGrp:'Все',libQ:'',foodDate:null,fa:null,progSub:'body',wRange:60,rRange:'week',exSel:null,egg:0,pcA:null,pcB:null,vdl:null};
 const TABS=[['today','Сегодня'],['train','Тренировки'],['timer','Таймер'],['food','Питание'],['progress','Прогресс']];
 function builder(){if(!ui.b){const p=S.profile;ui.b={place:p.place,focus:autoFocus(p.place),minutes:p.minutes,lv:p.level,method:'random'}}return ui.b}
 
@@ -1555,6 +1557,8 @@ function vProfile(){
     <div class="stack"><h3>Свой фон</h3><p class="small muted" style="max-width:65ch">Поставьте любую картинку — например, любимый арт. Она появится на главном экране и перед тренировкой, хранится только на этом устройстве и никуда не загружается.</p>
     <div class="row">${UBG?`<img src="${UBG}" alt="Ваш фон" style="width:120px;aspect-ratio:3/2;object-fit:cover;border-radius:var(--r-img);border:1px solid var(--line)">`:''}<button class="btn" data-act="ubg-pick">${UBG?'Сменить картинку':'Выбрать картинку'}</button>${UBG?'<button class="btn ghost danger" data-act="ubg-del">Убрать</button>':''}<input type="file" id="ubg-file" accept="image/*" hidden></div>
     ${UBG?`<label class="switch"><span>Показывать фоном на всех экранах</span><input type="checkbox" data-st="ubgPage" ${S.settings.ubgPage?'checked':''}></label>`:''}</div></section>
+  ${VIDEO_DL?`<section class="panel"><h3>Видео офлайн</h3><p class="small muted" style="max-width:65ch">Видео техники (23 ролика, около 15 МБ) грузятся по мере просмотра. Можно скачать все сразу — тогда они будут открываться без интернета, например в зале с плохой связью.</p>
+    <div class="row">${ui.vdl?`<span class="small">Скачиваю… ${ui.vdl.done} из ${ui.vdl.total}</span>`:`<button class="btn" data-act="video-dl">${ic('download',16)} Скачать все видео (15 МБ)</button>`}</div></section>`:''}
   ${installHTML()}
   <section class="grid g2"><div class="panel"><h3>О вас</h3><div class="fields">
     <div class="field" style="grid-column:1/-1"><label for="pf-name">Имя</label><input class="input" id="pf-name" data-pf="name" value="${esc(p.name)}" placeholder="Как к вам обращаться"></div>
@@ -1756,6 +1760,11 @@ const ACT={
   install:async()=>{if(!INSTALL)return;INSTALL.prompt();try{const r=await INSTALL.userChoice;if(r.outcome==='accepted')toast('Готово! Ищите иконку на главном экране')}catch(e){}INSTALL=null;render()},
   'ubg-pick':()=>document.getElementById('ubg-file').click(),
   'ubg-del':()=>{UBG=null;try{localStorage.removeItem('podhod:ubg')}catch(e){}render();toast('Свой фон убран')},
+  'video-dl':async()=>{if(ui.vdl)return;const ids=[...VIDEO];ui.vdl={done:0,total:ids.length};render();
+    let fail=0;
+    for(const id of ids){try{const r=await fetch('video/'+id+'.webm',{cache:'reload'});if(!r.ok)fail++}catch(e){fail++}
+      ui.vdl.done++;render()}
+    ui.vdl=null;render();toast(fail?`Скачано, кроме ${fail} — попробуйте ещё раз при хорошей связи`:'Все видео скачаны. Теперь работают без интернета.')},
   'photo-add':()=>document.getElementById('photo-file').click(),
   'photo-open':v=>{const p=PHOTOS.find(x=>x.id===v);if(!p)return;modal(`<div class="row between"><h2>${fmtD(p.d,{day:'numeric',month:'long',year:'numeric'})}</h2><button class="btn iconbtn ghost" data-act="close-modal" aria-label="Закрыть">${ic('x')}</button></div><img src="${p.img}" alt="Фото ${fmtD(p.d)}" style="width:100%;border-radius:var(--r-img);border:1px solid var(--line)"><button class="btn danger" style="align-self:flex-start" data-act="photo-del" data-v="${p.id}">${ic('trash',16)} Удалить фото</button>`)},
   'photo-del':v=>ask('Удалить это фото?','Удалить',()=>{PHOTOS=PHOTOS.filter(p=>p.id!==v);savePhotos();closeModal();render()}),
