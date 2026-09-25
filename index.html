@@ -1454,6 +1454,55 @@ function shade(x,A,Bp,r,base,fog){const dx=Bp.x-A.x,dy=Bp.y-A.y,d=hypot(dx,dy)||
 function ball(x,P,r,base,fog){const c=mixc(base,COL.bg,fog),g=x.createRadialGradient(P.x-r*.35,P.y-r*.4,r*.1,P.x,P.y,r);
   g.addColorStop(0,rgb(mixc(c,[255,255,255],.35)));g.addColorStop(.6,rgb(c));g.addColorStop(1,rgb(mixc(c,[0,0,0],.45)));
   x.beginPath();x.arc(P.x,P.y,max(.5,r),0,2*PI);x.fillStyle=g;x.fill();x.strokeStyle='rgba(0,0,0,.25)';x.lineWidth=1;x.stroke()}
+
+/* ---------- объёмное тело ---------- */
+function frameOf(d,ref){let f=sub(ref,mul(d,dot(ref,d)));if(len(f)<1e-3)f=abs(d[1])<.9?cross(d,[0,1,0]):cross(d,[1,0,0]);f=nrm(f);return[cross(d,f),f]}
+function ring(c,u,v,rx,ry,out,n=12){for(let i=0;i<n;i++){const a=i/n*2*PI;out.push(add(c,add(mul(u,cos(a)*rx),mul(v,sin(a)*ry))))}}
+/* сечения вдоль отрезка A→B: [доля длины, радиус вбок, радиус вперёд, сдвиг вперёд] */
+function limbPts(A,Bp,secs,ref){const d0=sub(Bp,A),L=len(d0)||1e-3,d=mul(d0,1/L),[sd,f]=frameOf(d,ref),pts=[];
+  for(const[t,rs,rf,of]of secs)ring(add(add(A,mul(d,L*t)),mul(f,of||0)),sd,f,rs,rf,pts);return pts}
+/* сечения в системе координат части тела (x — вбок, y — вверх, z — вперёд) */
+function framePts(base,R,secs){const u=mv(R,[1,0,0]),v=mv(R,[0,0,1]),pts=[];for(const[y,rx,rz,oz]of secs)ring(add(base,mv(R,[0,y,oz||0])),u,v,rx,rz,pts);return pts}
+function hull(p0){const p=p0.slice().sort((a,b)=>a.x-b.x||a.y-b.y),cr=(o,a,b)=>(a.x-o.x)*(b.y-o.y)-(a.y-o.y)*(b.x-o.x),lo=[],up=[];
+  for(const q of p){while(lo.length>=2&&cr(lo[lo.length-2],lo[lo.length-1],q)<=0)lo.pop();lo.push(q)}
+  for(let i=p.length-1;i>=0;i--){const q=p[i];while(up.length>=2&&cr(up[up.length-2],up[up.length-1],q)<=0)up.pop();up.push(q)}
+  up.pop();lo.pop();return lo.concat(up)}
+function smooth(x,h){const n=h.length,m=(a,b)=>({x:(a.x+b.x)/2,y:(a.y+b.y)/2});let s0=m(h[n-1],h[0]);x.beginPath();x.moveTo(s0.x,s0.y);
+  for(let i=0;i<n;i++){const e=m(h[i],h[(i+1)%n]);x.quadraticCurveTo(h[i].x,h[i].y,e.x,e.y)}x.closePath()}
+function solidFill(x,h,base,fog){let a=1e9,b=-1e9,pa=h[0],pb=h[0];for(const p of h){const t=-.45*p.x-.89*p.y;if(t<a){a=t;pa=p}if(t>b){b=t;pb=p}}
+  const c=mixc(base,COL.bg,fog),g=x.createLinearGradient(pb.x,pb.y,pa.x,pa.y);
+  g.addColorStop(0,rgb(mixc(c,[255,255,255],.3)));g.addColorStop(.35,rgb(c));g.addColorStop(1,rgb(mixc(c,[0,0,0],.52)));
+  smooth(x,h);x.fillStyle=g;x.fill();x.strokeStyle='rgba(0,0,0,.3)';x.lineWidth=1;x.stroke()}
+function curve(x,P,pts,w,a){const pp=pts.map(P);x.beginPath();pp.forEach((p,i)=>i?x.lineTo(p.x,p.y):x.moveTo(p.x,p.y));x.strokeStyle=`rgba(0,0,0,${a})`;x.lineWidth=w;x.lineCap='round';x.stroke()}
+function bodyParts(J){const out=[],fwd=mv(J.R0,[0,0,1]),cf=mv(J.Rc,[0,0,1]);
+  const lumbR=(()=>{const d=nrm(sub(J.waist,J.pel)),[sd,f]=frameOf(d,fwd);return[sd[0],d[0],f[0],sd[1],d[1],f[1],sd[2],d[2],f[2]]})();
+  // таз и живот
+  out.push({tag:'hip',pts:framePts(J.pel,J.R0,[[-.13,.1,.07],[-.07,.155,.1,-.01],[0,.165,.105],[.07,.145,.1]])});
+  out.push({tag:'core',pts:framePts(J.pel,lumbR,[[.04,.14,.1],[.13,.135,.095,.005],[.23,.14,.1]]),dz:-.01,
+    lines:(x,P,cam)=>{if(dot(mv(lumbR,[0,0,1]),cam)<.15)return;const f=y=>add(J.pel,mv(lumbR,[0,y,.102]));curve(x,P,[f(.04),f(.13),f(.22)],1.2,.16);
+      for(const y of[.1,.16])curve(x,P,[add(J.pel,mv(lumbR,[-.07,y,.09])),add(J.pel,mv(lumbR,[0,y,.104])),add(J.pel,mv(lumbR,[.07,y,.09]))],1,.12)}});
+  // грудная клетка и плечевой пояс
+  out.push({tag:'chest',pts:framePts(J.waist,J.Rc,[[0,.14,.1],[.09,.165,.112,.01],[.17,.185,.118,.015],[.22,.2,.108,.005],[.26,.17,.085],[.285,.1,.06,-.01]]),
+    lines:(x,P,cam)=>{const R=J.Rc,W=J.waist,pt=(xx,y,z)=>add(W,mv(R,[xx,y,z]));
+      if(dot(cf,cam)>.15){curve(x,P,[pt(0,.08,.125),pt(0,.2,.13)],1.2,.18);curve(x,P,[pt(-.15,.12,.1),pt(-.07,.095,.125),pt(0,.1,.13),pt(.07,.095,.125),pt(.15,.12,.1)],1.3,.2)}
+      else if(dot(cf,cam)<-.15){curve(x,P,[pt(0,-.02,-.1),pt(0,.26,-.07)],1.3,.2);curve(x,P,[pt(-.12,.2,-.1),pt(-.05,.13,-.11)],1,.12);curve(x,P,[pt(.12,.2,-.1),pt(.05,.13,-.11)],1,.12)}}});
+  // шея и голова
+  out.push({tag:'neck',pts:limbPts(J.neck,add(J.neck,mv(J.Rh,[0,.09,.01])),[[-.1,.05,.045],[1,.045,.045]],cf),dz:-.02});
+  const H=J.head,Rh=J.Rh;
+  out.push({tag:'head',pts:framePts(H,Rh,[[-.09,.045,.055,.035],[-.07,.07,.08,.02],[-.02,.085,.098,.005],[.04,.088,.1],[.09,.075,.088,-.005],[.125,.04,.05,-.01]]),
+    lines:(x,P,cam)=>{const fz=mv(Rh,[0,0,1]);if(dot(fz,cam)<.05)return;const q=(xx,y,z)=>add(H,mv(Rh,[xx,y,z]));
+      const e1=P(q(-.035,.01,.093)),e2=P(q(.035,.01,.093)),n=P(q(0,-.02,.11));x.fillStyle='rgba(0,0,0,.45)';for(const e of[e1,e2]){x.beginPath();x.ellipse(e.x,e.y,max(.8,.012*e.k),max(.6,.007*e.k),0,0,2*PI);x.fill()}
+      x.fillStyle=rgb(mixc(COL.body,COL.acc,.3));x.beginPath();x.arc(n.x,n.y,max(1,.016*n.k),0,2*PI);x.fill();curve(x,P,[q(-.025,-.055,.09),q(0,-.06,.095),q(.025,-.055,.09)],1,.35)}});
+  for(const s of['l','r']){const sg=s==='l'?1:-1,sh=J[s+'sh'],el=J[s+'el'],wr=J[s+'wr'],hip=J[s+'hip'],kn=J[s+'kn'],an=J[s+'an'],toe=J[s+'toe'],heel=J[s+'heel'];
+    const ud=nrm(sub(el,sh)),fd=nrm(sub(wr,el)),wr0=sub(wr,mul(fd,.045));
+    out.push({tag:'sh',pts:limbPts(add(sh,mv(J.Rc,[sg*.012,.005,0])),add(sh,mul(ud,.11)),[[-.35,.05,.05],[0,.07,.068],[.5,.064,.062],[1,.052,.052]],cf),dz:.005});
+    out.push({tag:'ua',pts:limbPts(sh,el,[[.12,.058,.056],[.45,.052,.058,.006],[.85,.044,.044],[1.06,.036,.036]],cf)});
+    out.push({tag:'fa',pts:limbPts(el,wr0,[[-.06,.04,.038],[.22,.05,.043],[.7,.036,.03],[1.02,.027,.022]],ud)});
+    const pn=frameOf(fd,cf)[0];out.push({tag:'hand',pts:limbPts(sub(wr,mul(fd,.05)),add(wr,mul(fd,.045)),[[0,.028,.02],[.45,.045,.024],[1,.038,.02],[1.15,.022,.014]],pn),dz:.004});
+    out.push({tag:'th',pts:limbPts(hip,kn,[[-.1,.07,.07],[.08,.092,.088],[.4,.084,.082,.012],[.8,.064,.062],[1.04,.05,.05]],fwd)});
+    out.push({tag:'sn',pts:limbPts(kn,an,[[-.04,.05,.05],[.12,.052,.054],[.32,.05,.058,-.018],[.72,.036,.034],[1,.03,.03],[1.08,.024,.024]],fwd)});
+    const fdr=nrm(sub(toe,heel)),up=abs(fdr[1])<.9?[0,1,0]:fwd;out.push({tag:'ft',pts:limbPts(heel,toe,[[-.08,.028,.028],[.1,.036,.04,.01],[.55,.046,.028],[.95,.042,.018],[1.06,.03,.012]],up)})}
+  return out}
 /* снаряды */
 function props(J,tpl,time,o){const out=[],C=COL,pc=C.prop,metal=mixc(pc,[200,200,200],.3),cap=(a,b,r1,r2,col)=>out.push({t:'c',a,b,r1,r2,col:col||pc}),sph=(p,r,col)=>out.push({t:'s',p,r,col:col||pc});
   const disc=(p,n,r,col)=>out.push({t:'d',p,n:nrm(n),r,col:col||pc}),box=(c,sx,sy,sz,col)=>out.push({t:'b',c,s:[sx,sy,sz],col:col||pc}),line=(pts,w,col)=>out.push({t:'l',pts,w,col:col||metal});
@@ -1498,18 +1547,16 @@ function draw(cv,id,time,view,opts={}){
   const pr=props(J,tpl,time,o);
   if(pr.some(q=>q.t==='m')){const a=J.pel,ang=atan2(J.head[0]-(J.lan[0]+J.ran[0])/2,J.head[2]-(J.lan[2]+J.ran[2])/2),ca=cos(ang),sa=sin(ang),cz=(J.head[2]+J.lan[2]+J.ran[2])/3,cx0=(J.head[0]+J.lan[0]+J.ran[0])/3;
     const pts=[[-.33,-1],[.33,-1],[.33,1],[-.33,1]].map(([u,v])=>P([cx0+u*ca+v*.95*sa,.004,cz-u*sa+v*.95*ca]));x.beginPath();pts.forEach((p,i)=>i?x.lineTo(p.x,p.y):x.moveTo(p.x,p.y));x.closePath();x.fillStyle=rgb(mixc(C.acc,C.bg,.72),.85);x.fill()}
-  // собираем элементы и сортируем по глубине
+  // тело: объёмные части (сечения-эллипсы → выпуклая оболочка), сортировка по глубине
   const items=[],body=C.body,acc=C.acc,sec=C.sec,cOf=t=>hi.p.has(t)?acc:hi.s.has(t)?sec:body;
-  const segs=[['pel','waist',.125,.12,'core'],['waist','chest',.125,.145,'chest'],['lsh','rsh',.068,.068,'sh'],['lhip','rhip',.1,.1,'hip'],['neck','head',.045,.045,'neck'],
-    ['lsh','lel',.056,.046,'ua'],['rsh','rel',.056,.046,'ua'],['lel','lwr',.045,.035,'fa'],['rel','rwr',.045,.035,'fa'],
-    ['lhip','lkn',.088,.06,'th'],['rhip','rkn',.088,.06,'th'],['lkn','lan',.058,.042,'sn'],['rkn','ran',.058,.042,'sn'],['lheel','ltoe',.042,.03,'ft'],['rheel','rtoe',.042,.03,'ft']];
-  for(const[a,b,r1,r2,tag]of segs){const A=P(J[a]),Bp=P(J[b]);items.push({z:(A.z+Bp.z)/2,f:()=>{const fog=cl((fit.r*.6-(A.z+Bp.z)/2)/(fit.r*2.4),0,.35);capsule(x,A,Bp,r1*A.k,r2*Bp.k,shade(x,A,Bp,max(r1*A.k,r2*Bp.k),cOf(tag),fog),'rgba(0,0,0,.28)')}})}
-  {const Hh=P(J.head),nose=P(add(J.head,mv(J.Rh,[0,-.01,.1])));items.push({z:Hh.z,f:()=>{ball(x,Hh,B.hr*Hh.k,body,0);ball(x,nose,.028*nose.k,mixc(body,C.acc,.25),0)}})}
-  for(const s of['l','r']){const w=P(J[s+'wr']);items.push({z:w.z+.001,f:()=>ball(x,w,.042*w.k,cOf('fa'),0)})}
+  const cam=[sin(view.yaw*D)*cos(view.el*D),sin(view.el*D),cos(view.yaw*D)*cos(view.el*D)],fogOf=z=>cl((fit.r*.6-z)/(fit.r*2.4),0,.35);
+  for(const pt of bodyParts(J)){const pp=pt.pts.map(P),z=pp.reduce((a,p)=>a+p.z,0)/pp.length+(pt.dz||0);
+    items.push({z,f:()=>{const h=hull(pp);if(h.length<3)return;solidFill(x,h,cOf(pt.tag),fogOf(z));if(pt.lines)pt.lines(x,P,cam)}})}
+  const chestZ=P(J.chest).z;
   for(const q of pr){if(q.t==='c'){const A=P(q.a),Bp=P(q.b);items.push({z:(A.z+Bp.z)/2,f:()=>capsule(x,A,Bp,q.r1*A.k,q.r2*Bp.k,shade(x,A,Bp,max(q.r1*A.k,q.r2*Bp.k),q.col,0),'rgba(0,0,0,.3)')})}
     else if(q.t==='s'){const S=P(q.p);items.push({z:S.z,f:()=>ball(x,S,q.r*S.k,q.col,0)})}
     else if(q.t==='d'){const u=nrm(abs(q.n[1])<.9?cross(q.n,[0,1,0]):cross(q.n,[1,0,0])),v=cross(q.n,u),pts=[];for(let i=0;i<20;i++){const a=i/20*2*PI;pts.push(P(add(q.p,add(mul(u,cos(a)*q.r),mul(v,sin(a)*q.r)))))}
-      const c0=P(q.p);items.push({z:c0.z,f:()=>{x.beginPath();pts.forEach((p,i)=>i?x.lineTo(p.x,p.y):x.moveTo(p.x,p.y));x.closePath();x.fillStyle=rgb(mixc(q.col,[0,0,0],.12));x.fill();x.strokeStyle='rgba(0,0,0,.35)';x.stroke()}})}
+      const c0=P(q.p),see=q.r>.12&&c0.z>chestZ-.05;items.push({z:c0.z,f:()=>{x.save();if(see)x.globalAlpha=.42;x.beginPath();pts.forEach((p,i)=>i?x.lineTo(p.x,p.y):x.moveTo(p.x,p.y));x.closePath();x.fillStyle=rgb(mixc(q.col,[0,0,0],.12));x.fill();x.strokeStyle='rgba(0,0,0,.35)';x.stroke();if(q.r>.12){const ci=[];for(let i=0;i<pts.length;i++)ci.push({x:c0.x+(pts[i].x-c0.x)*.28,y:c0.y+(pts[i].y-c0.y)*.28});x.beginPath();ci.forEach((p,i)=>i?x.lineTo(p.x,p.y):x.moveTo(p.x,p.y));x.closePath();x.fillStyle='rgba(0,0,0,.35)';x.fill()}x.restore()}})}
     else if(q.t==='b'){const[cx0,cy0,cz0]=q.c,[sx,sy,sz]=q.s.map(v=>v/2),V=[];for(const i of[-1,1])for(const j of[-1,1])for(const k of[-1,1])V.push([cx0+i*sx,cy0+j*sy,cz0+k*sz]);
       const Pv=V.map(P),F=[[0,1,3,2,[-1,0,0]],[4,5,7,6,[1,0,0]],[0,1,5,4,[0,-1,0]],[2,3,7,6,[0,1,0]],[0,2,6,4,[0,0,-1]],[1,3,7,5,[0,0,1]]];
       items.push({z:P(q.c).z-.05,f:()=>{F.map(f=>[f,(Pv[f[0]].z+Pv[f[1]].z+Pv[f[2]].z+Pv[f[3]].z)/4]).sort((a,b)=>a[1]-b[1]).forEach(([f])=>{
@@ -1522,7 +1569,7 @@ const ease=t=>t*t*(3-2*t);
 function norms(tpl){if(!tpl._n){tpl._n=tpl.k.map(N);const n=tpl._n.length;tpl._t=tpl.t||Array(n).fill(1);tpl._dur=tpl._t.reduce((a,b)=>a+b,0)+.1*n}return tpl._n}
 function poseAt(tpl,time){const K=norms(tpl),n=K.length,ts=tpl._t;if(n===1)return K[0];let t=((time%tpl._dur)+tpl._dur)%tpl._dur;
   for(let i=0;i<n;i++){if(t<.1)return K[i];t-=.1;if(t<ts[i])return LERP(K[i],K[(i+1)%n],ease(t/ts[i]));t-=ts[i]}return K[0]}
-function fitOf(tpl){norms(tpl);const pts=[];for(let i=0;i<24;i++){const o=poseAt(tpl,tpl._dur*i/24),J=ground(solve(o),tpl.g,o.j);for(const[k]of PTS)pts.push(J[k]);pts.push([J.head[0],J.head[1]+.11,J.head[2]])}
+function fitOf(tpl){norms(tpl);const pts=[];for(let i=0;i<24;i++){const o=poseAt(tpl,tpl._dur*i/24),J=ground(solve(o),tpl.g,o.j);for(const[k]of PTS)pts.push(J[k]);pts.push([J.head[0],J.head[1]+.13,J.head[2]]);props(J,tpl,tpl._dur*i/24,o).forEach(q=>{if(q.t==='c'){pts.push(q.a,q.b)}else if(q.t==='s')pts.push(q.p);else if(q.t==='d'){pts.push(add(q.p,[0,q.r,0]),add(q.p,[0,-q.r,0]))}else if(q.t==='b'){const[a,b,c]=q.c,[u,v,w]=q.s.map(t=>t/2);pts.push([a-u,b+v,c-w],[a+u,b+v,c+w])}})}
   pts.push([0,0,0]);const mn=[9,9,9],mx=[-9,-9,-9];pts.forEach(p=>{for(let i=0;i<3;i++){mn[i]=min(mn[i],p[i]);mx[i]=max(mx[i],p[i])}});
   const c=mid(mn,mx);let r=0;pts.forEach(p=>r=max(r,len(sub(p,c))));return{c,r:max(r,.75)+.08,oy:.02}}
 
