@@ -705,6 +705,22 @@ body.pl-open .app{visibility:hidden}
 .plates i.sleeve{width:28px;height:12px;background:#b7bcc2;border-radius:2px}
 .progday summary{cursor:pointer;padding:6px 0}
 .prog.on{box-shadow:inset 0 0 0 2px var(--accent)}
+.rtctl{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.rtnum{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);font-weight:600}
+.rtnum .input{width:62px;padding:6px 8px;text-align:center}
+.pklist{display:flex;flex-direction:column;gap:6px;max-height:min(58vh,520px);overflow:auto;padding-right:2px}
+.pkrow{display:grid;grid-template-columns:72px 1fr 32px;gap:10px;align-items:center;text-align:left;padding:6px;border-radius:var(--r);border:1px solid var(--line);background:var(--surface2);color:var(--ink);cursor:pointer}
+.pkrow .thumb{display:block}
+.pkrow .pkn{display:flex;flex-direction:column;gap:2px;min-width:0}
+.pkrow .pkadd{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;border:1px solid var(--line);background:var(--surface)}
+.pkrow.on{border-color:var(--accent)}
+.pkrow.on .pkadd{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.libf{align-items:flex-end;gap:10px}
+.libf{flex-wrap:wrap;max-width:100%}
+.libf .field{flex:1 1 130px;min-width:0;max-width:240px}
+.libf select{width:100%;min-width:0;max-width:100%}
+.libmap .musmap{max-width:240px;margin:0}
+.cmpcol{min-width:0}
 </style>
 
 <script>try{var m=JSON.parse(localStorage.getItem('podhod:main')||'null');if(m&&m.settings&&m.settings.skin)document.documentElement.dataset.skin=m.settings.skin}catch(e){}</script>
@@ -1427,6 +1443,12 @@ const MID={legCurl:['hams','calves'],legExt:['quads',''],hipThrust:['glutes','ha
   knee:['abs quads','obl glutes'],clinchKnee:['abs quads','obl glutes fore'],frontKick:['quads abs','glutes hams'],lowKick:['quads obl glutes','abs calves'],
   slipRoll:['obl quads','abs calves'],sprawl:['glutes abs chest','quads triceps hams'],shotDrill:['quads glutes','abs hams'],shrimp:['obl abs glutes',''],bridgeRoll:['glutes lowback','abs obl'],techStand:['quads glutes triceps','abs obl'],
   elbow:['obl delts','abs'],overhand:['delts obl','triceps chest'],parry:['delts fore','obl'],bagSprint:['delts triceps','chest abs'],sideKick:['glutes quads obl','abs'],backKick:['glutes hams','abs obl'],switchKick:['quads obl glutes','abs calves']};
+/* уточнения после сверки всех упражнений */
+Object.assign(MID,{hangPike:['abs','obl quads fore lats'],hangRaise:['abs','obl quads fore'],warmup:['','delts quads glutes calves'],overheadSquat:['quads glutes delts','traps triceps abs lowback adduct'],
+  thruster:['quads glutes delts','triceps abs calves'],widePush:['chest delts','triceps abs'],declinePush:['chest delts','triceps abs'],pushSidePlank:['chest triceps delts','obl abs'],
+  crunch:['abs','obl'],deadBug:['abs','obl'],rope:['calves','quads delts fore'],bbRow:['lats midback','biceps rdelt lowback hams fore'],legPress:['quads glutes','adduct hams calves'],
+  inclinePress:['chest delts','triceps'],sumoSquat:['quads glutes adduct','lowback abs calves'],uppercut:['delts obl','biceps triceps abs calves'],bodyShots:['delts obl triceps','quads abs chest'],
+  highKick:['quads glutes obl','hams adduct abs calves'],sprawl:['abs glutes quads','chest triceps hams lowback'],chinup:['lats biceps','midback fore abs'],goblet:['quads glutes','adduct abs delts fore']});
 function musc(id){const e=typeof EX!=='undefined'&&EX[id];if(!e)return{p:[],s:[]};const src=MID[id]||(e.like&&MID[e.like])||MP[e.pat]||['',''];
   const sp=s=>s.split(' ').filter(Boolean);return{p:sp(src[0]),s:sp(src[1]).filter(x=>!src[0].includes(x))}}
 const HIL={chest:'chest',lats:'chest',midback:'chest',abs:'core',obl:'core',lowback:'core',delts:'sh',rdelt:'sh',traps:'sh',biceps:'ua',triceps:'ua',fore:'fa',glutes:'hip',quads:'th',hams:'th',adduct:'th',calves:'sn'};
@@ -1474,34 +1496,58 @@ function solidFill(x,h,base,fog){let a=1e9,b=-1e9,pa=h[0],pb=h[0];for(const p of
   g.addColorStop(0,rgb(mixc(c,[255,255,255],.3)));g.addColorStop(.35,rgb(c));g.addColorStop(1,rgb(mixc(c,[0,0,0],.52)));
   smooth(x,h);x.fillStyle=g;x.fill();x.strokeStyle='rgba(0,0,0,.3)';x.lineWidth=1;x.stroke()}
 function curve(x,P,pts,w,a){const pp=pts.map(P);x.beginPath();pp.forEach((p,i)=>i?x.lineTo(p.x,p.y):x.moveTo(p.x,p.y));x.strokeStyle=`rgba(0,0,0,${a})`;x.lineWidth=w;x.lineCap='round';x.stroke()}
+/* зоны мышц на поверхности части тела: θ=0 — перед части, 90 — бок (ось u), 180 — зад */
+const lerpSec=(secs,t)=>{if(t<=secs[0][0])return secs[0];for(let i=1;i<secs.length;i++)if(t<=secs[i][0]){const a=secs[i-1],b=secs[i],k=(t-a[0])/((b[0]-a[0])||1);return a.map((v,j)=>(v||0)+(((b[j]||0)-(v||0))*k))}return secs[secs.length-1]};
+function patchPts(c0,u,v,d,secs,t0,t1,thc,w,L){const pts=[];for(let i=0;i<=5;i++){const t=t0+(t1-t0)*i/5,[,rx,rz,of]=lerpSec(secs,t),c=add(add(c0,mul(d,t*L)),mul(v,of||0));
+    for(let j=0;j<=6;j++){const th=(thc-w+2*w*j/6)*D;pts.push(add(c,add(mul(u,sin(th)*rx*1.02),mul(v,cos(th)*rz*1.02))))}}
+  const th=thc*D;return{pts,n:nrm(add(mul(u,sin(th)),mul(v,cos(th))))}}
+function limbGeo(A,Bp,secs,ref){const d0=sub(Bp,A),L=len(d0)||1e-3,d=mul(d0,1/L),[u,v]=frameOf(d,ref),pts=[];
+  for(const[t,rs,rf,of]of secs)ring(add(add(A,mul(d,L*t)),mul(v,of||0)),u,v,rs,rf,pts);
+  return{pts,patch:(m,t0,t1,thc,w)=>({m,...patchPts(A,u,v,d,secs,t0,t1,thc,w,L)})}}
+function frameGeo(base,R,secs){const u=mv(R,[1,0,0]),v=mv(R,[0,0,1]),d=mv(R,[0,1,0]),pts=[];for(const[y,rx,rz,oz]of secs)ring(add(base,mv(R,[0,y,oz||0])),u,v,rx,rz,pts);
+  return{pts,patch:(m,y0,y1,thc,w)=>({m,...patchPts(base,u,v,d,secs,y0,y1,thc,w,1)})}}
 function bodyParts(J){const out=[],fwd=mv(J.R0,[0,0,1]),cf=mv(J.Rc,[0,0,1]);
   const lumbR=(()=>{const d=nrm(sub(J.waist,J.pel)),[sd,f]=frameOf(d,fwd);return[sd[0],d[0],f[0],sd[1],d[1],f[1],sd[2],d[2],f[2]]})();
-  // таз и живот
-  out.push({tag:'hip',pts:framePts(J.pel,J.R0,[[-.13,.1,.07],[-.07,.155,.1,-.01],[0,.165,.105],[.07,.145,.1]])});
-  out.push({tag:'core',pts:framePts(J.pel,lumbR,[[.04,.14,.1],[.13,.135,.095,.005],[.23,.14,.1]]),dz:-.01,
+  // таз: ягодичные сзади
+  {const g=frameGeo(J.pel,J.R0,[[-.13,.1,.07],[-.07,.155,.1,-.01],[0,.165,.105],[.07,.145,.1]]);
+   out.push({tag:'hip',pts:g.pts,mus:[g.patch('glutes',-.13,.02,-150,32),g.patch('glutes',-.13,.02,150,32),g.patch('adduct',-.13,-.07,0,22)]})}
+  // живот: пресс, косые, поясница
+  {const g=frameGeo(J.pel,lumbR,[[.04,.14,.1],[.13,.135,.095,.005],[.23,.14,.1]]);
+   out.push({tag:'core',pts:g.pts,dz:-.01,mus:[g.patch('abs',.05,.23,0,36),g.patch('obl',.06,.22,78,26),g.patch('obl',.06,.22,-78,26),g.patch('lowback',.04,.2,180,40)],
     lines:(x,P,cam)=>{if(dot(mv(lumbR,[0,0,1]),cam)<.15)return;const f=y=>add(J.pel,mv(lumbR,[0,y,.102]));curve(x,P,[f(.04),f(.13),f(.22)],1.2,.16);
-      for(const y of[.1,.16])curve(x,P,[add(J.pel,mv(lumbR,[-.07,y,.09])),add(J.pel,mv(lumbR,[0,y,.104])),add(J.pel,mv(lumbR,[.07,y,.09]))],1,.12)}});
-  // грудная клетка и плечевой пояс
-  out.push({tag:'chest',pts:framePts(J.waist,J.Rc,[[0,.14,.1],[.09,.165,.112,.01],[.17,.185,.118,.015],[.22,.2,.108,.005],[.26,.17,.085],[.285,.1,.06,-.01]]),
+      for(const y of[.1,.16])curve(x,P,[add(J.pel,mv(lumbR,[-.07,y,.09])),add(J.pel,mv(lumbR,[0,y,.104])),add(J.pel,mv(lumbR,[.07,y,.09]))],1,.12)}})}
+  // грудная клетка: грудные, широчайшие, середина спины, трапеции
+  {const g=frameGeo(J.waist,J.Rc,[[0,.14,.1],[.09,.165,.112,.01],[.17,.185,.118,.015],[.22,.2,.108,.005],[.26,.17,.085],[.285,.1,.06,-.01]]);
+   out.push({tag:'chest',pts:g.pts,mus:[g.patch('chest',.1,.235,-30,30),g.patch('chest',.1,.235,30,30),g.patch('lats',.01,.2,-125,30),g.patch('lats',.01,.2,125,30),
+     g.patch('midback',.1,.235,180,34),g.patch('traps',.225,.285,180,62),g.patch('abs',0,.07,0,30)],
     lines:(x,P,cam)=>{const R=J.Rc,W=J.waist,pt=(xx,y,z)=>add(W,mv(R,[xx,y,z]));
       if(dot(cf,cam)>.15){curve(x,P,[pt(0,.08,.125),pt(0,.2,.13)],1.2,.18);curve(x,P,[pt(-.15,.12,.1),pt(-.07,.095,.125),pt(0,.1,.13),pt(.07,.095,.125),pt(.15,.12,.1)],1.3,.2)}
-      else if(dot(cf,cam)<-.15){curve(x,P,[pt(0,-.02,-.1),pt(0,.26,-.07)],1.3,.2);curve(x,P,[pt(-.12,.2,-.1),pt(-.05,.13,-.11)],1,.12);curve(x,P,[pt(.12,.2,-.1),pt(.05,.13,-.11)],1,.12)}}});
-  // шея и голова
-  out.push({tag:'neck',pts:limbPts(J.neck,add(J.neck,mv(J.Rh,[0,.09,.01])),[[-.1,.05,.045],[1,.045,.045]],cf),dz:-.02});
+      else if(dot(cf,cam)<-.15){curve(x,P,[pt(0,-.02,-.1),pt(0,.26,-.07)],1.3,.2);curve(x,P,[pt(-.12,.2,-.1),pt(-.05,.13,-.11)],1,.12);curve(x,P,[pt(.12,.2,-.1),pt(.05,.13,-.11)],1,.12)}}})}
+  // шея (трапеции сзади) и голова
+  {const g=limbGeo(J.neck,add(J.neck,mv(J.Rh,[0,.09,.01])),[[-.1,.05,.045],[1,.045,.045]],cf);out.push({tag:'neck',pts:g.pts,dz:-.02,mus:[g.patch('traps',-.1,.5,180,70)]})}
   const H=J.head,Rh=J.Rh;
   out.push({tag:'head',pts:framePts(H,Rh,[[-.09,.045,.055,.035],[-.07,.07,.08,.02],[-.02,.085,.098,.005],[.04,.088,.1],[.09,.075,.088,-.005],[.125,.04,.05,-.01]]),
     lines:(x,P,cam)=>{const fz=mv(Rh,[0,0,1]);if(dot(fz,cam)<.05)return;const q=(xx,y,z)=>add(H,mv(Rh,[xx,y,z]));
       const e1=P(q(-.035,.01,.093)),e2=P(q(.035,.01,.093)),n=P(q(0,-.02,.11));x.fillStyle='rgba(0,0,0,.45)';for(const e of[e1,e2]){x.beginPath();x.ellipse(e.x,e.y,max(.8,.012*e.k),max(.6,.007*e.k),0,0,2*PI);x.fill()}
       x.fillStyle=rgb(mixc(COL.body,COL.acc,.3));x.beginPath();x.arc(n.x,n.y,max(1,.016*n.k),0,2*PI);x.fill();curve(x,P,[q(-.025,-.055,.09),q(0,-.06,.095),q(.025,-.055,.09)],1,.35)}});
   for(const s of['l','r']){const sg=s==='l'?1:-1,sh=J[s+'sh'],el=J[s+'el'],wr=J[s+'wr'],hip=J[s+'hip'],kn=J[s+'kn'],an=J[s+'an'],toe=J[s+'toe'],heel=J[s+'heel'];
-    const ud=nrm(sub(el,sh)),fd=nrm(sub(wr,el)),wr0=sub(wr,mul(fd,.045));
-    out.push({tag:'sh',pts:limbPts(add(sh,mv(J.Rc,[sg*.012,.005,0])),add(sh,mul(ud,.11)),[[-.35,.05,.05],[0,.07,.068],[.5,.064,.062],[1,.052,.052]],cf),dz:.005});
-    out.push({tag:'ua',pts:limbPts(sh,el,[[.12,.058,.056],[.45,.052,.058,.006],[.85,.044,.044],[1.06,.036,.036]],cf)});
-    out.push({tag:'fa',pts:limbPts(el,wr0,[[-.06,.04,.038],[.22,.05,.043],[.7,.036,.03],[1.02,.027,.022]],ud)});
+    const ud=nrm(sub(el,sh)),fd=nrm(sub(wr,el)),wr0=sub(wr,mul(fd,.045)),td=nrm(sub(kn,hip)),snd=nrm(sub(an,kn)),ftd=nrm(sub(toe,heel));
+    // дельты: перед и средний пучок, задний пучок
+    {const g=limbGeo(add(sh,mv(J.Rc,[sg*.012,.005,0])),add(sh,mul(ud,.11)),[[-.35,.05,.05],[0,.07,.068],[.5,.064,.062],[1,.052,.052]],cf);
+     out.push({tag:'sh',pts:g.pts,dz:.005,mus:[g.patch('delts',-.35,1,0,110),g.patch('rdelt',-.3,1,180,65)]})}
+    // плечо: бицепс со стороны сгиба локтя, трицепс сзади
+    {const ref=len(cross(ud,fd))>.25?fd:cf,g=limbGeo(sh,el,[[.12,.058,.056],[.45,.052,.058,.006],[.85,.044,.044],[1.06,.036,.036]],ref);
+     out.push({tag:'ua',pts:g.pts,mus:[g.patch('biceps',.2,.9,0,60),g.patch('triceps',.1,.95,180,70)]})}
+    {const g=limbGeo(el,wr0,[[-.06,.04,.038],[.22,.05,.043],[.7,.036,.03],[1.02,.027,.022]],ud);out.push({tag:'fa',pts:g.pts,mus:[g.patch('fore',-.05,.8,0,180)]})}
     const pn=frameOf(fd,cf)[0];out.push({tag:'hand',pts:limbPts(sub(wr,mul(fd,.05)),add(wr,mul(fd,.045)),[[0,.028,.02],[.45,.045,.024],[1,.038,.02],[1.15,.022,.014]],pn),dz:.004});
-    out.push({tag:'th',pts:limbPts(hip,kn,[[-.1,.07,.07],[.08,.092,.088],[.4,.084,.082,.012],[.8,.064,.062],[1.04,.05,.05]],fwd)});
-    out.push({tag:'sn',pts:limbPts(kn,an,[[-.04,.05,.05],[.12,.052,.054],[.32,.05,.058,-.018],[.72,.036,.034],[1,.03,.03],[1.08,.024,.024]],fwd)});
-    const fdr=nrm(sub(toe,heel)),up=abs(fdr[1])<.9?[0,1,0]:fwd;out.push({tag:'ft',pts:limbPts(heel,toe,[[-.08,.028,.028],[.1,.036,.04,.01],[.55,.046,.028],[.95,.042,.018],[1.06,.03,.012]],up)})}
+    // бедро: квадрицепс спереди (против сгиба колена), бицепс бедра сзади, приводящие изнутри
+    {const ref=len(cross(td,snd))>.25?mul(snd,-1):fwd,g=limbGeo(hip,kn,[[-.1,.07,.07],[.08,.092,.088],[.4,.084,.082,.012],[.8,.064,.062],[1.04,.05,.05]],ref);
+     const inn=dot(frameOf(td,ref)[0],sub(J.pel,hip))>0?90:-90;
+     out.push({tag:'th',pts:g.pts,mus:[g.patch('quads',.05,.95,0,62),g.patch('hams',.08,.9,180,55),g.patch('adduct',.05,.55,inn,30)]})}
+    // голень: икры сзади (против носка)
+    {const ref=len(cross(snd,ftd))>.25?ftd:fwd,g=limbGeo(kn,an,[[-.04,.05,.05],[.12,.052,.054],[.32,.05,.058,-.018],[.72,.036,.034],[1,.03,.03],[1.08,.024,.024]],ref);
+     out.push({tag:'sn',pts:g.pts,mus:[g.patch('calves',.05,.75,180,70)]})}
+    const up=abs(ftd[1])<.9?[0,1,0]:fwd;out.push({tag:'ft',pts:limbPts(heel,toe,[[-.08,.028,.028],[.1,.036,.04,.01],[.55,.046,.028],[.95,.042,.018],[1.06,.03,.012]],up)})}
   return out}
 /* снаряды */
 function props(J,tpl,time,o){const out=[],C=COL,pc=C.prop,metal=mixc(pc,[200,200,200],.3),cap=(a,b,r1,r2,col)=>out.push({t:'c',a,b,r1,r2,col:col||pc}),sph=(p,r,col)=>out.push({t:'s',p,r,col:col||pc});
@@ -1551,7 +1597,7 @@ function draw(cv,id,time,view,opts={}){
   const items=[],body=C.body,acc=C.acc,sec=C.sec,cOf=t=>hi.p.has(t)?acc:hi.s.has(t)?sec:body;
   const cam=[sin(view.yaw*D)*cos(view.el*D),sin(view.el*D),cos(view.yaw*D)*cos(view.el*D)],fogOf=z=>cl((fit.r*.6-z)/(fit.r*2.4),0,.35);
   for(const pt of bodyParts(J)){const pp=pt.pts.map(P),z=pp.reduce((a,p)=>a+p.z,0)/pp.length+(pt.dz||0);
-    items.push({z,f:()=>{const h=hull(pp);if(h.length<3)return;solidFill(x,h,cOf(pt.tag),fogOf(z));if(pt.lines)pt.lines(x,P,cam)}})}
+    items.push({z,f:()=>{const h=hull(pp);if(h.length<3)return;solidFill(x,h,body,fogOf(z));if(pt.mus)for(const mp of pt.mus){const lv=hi.p.has(mp.m)?1:hi.s.has(mp.m)?.5:0;if(!lv)continue;const vis=dot(mp.n,cam);if(vis<-.2)continue;musFill(x,hull(mp.pts.map(P)),lv*cl((vis+.2)/.45,0,1))}if(pt.lines)pt.lines(x,P,cam)}})}
   const chestZ=P(J.chest).z;
   for(const q of pr){if(q.t==='c'){const A=P(q.a),Bp=P(q.b);items.push({z:(A.z+Bp.z)/2,f:()=>capsule(x,A,Bp,q.r1*A.k,q.r2*Bp.k,shade(x,A,Bp,max(q.r1*A.k,q.r2*Bp.k),q.col,0),'rgba(0,0,0,.3)')})}
     else if(q.t==='s'){const S=P(q.p);items.push({z:S.z,f:()=>ball(x,S,q.r*S.k,q.col,0)})}
@@ -1564,7 +1610,8 @@ function draw(cv,id,time,view,opts={}){
     else if(q.t==='l'){const pp=q.pts.map(P);items.push({z:pp.reduce((a,p)=>a+p.z,0)/pp.length,f:()=>{x.beginPath();pp.forEach((p,i)=>i?x.lineTo(p.x,p.y):x.moveTo(p.x,p.y));x.strokeStyle=rgb(q.col);x.lineWidth=q.w;x.lineJoin='round';x.stroke()}})}}
   items.sort((a,b)=>a.z-b.z).forEach(it=>it.f());
   return J}
-function hiOf(id){const m=musc(id),p=new Set(),s=new Set();m.p.forEach(k=>HIL[k]&&p.add(HIL[k]));m.s.forEach(k=>HIL[k]&&!p.has(HIL[k])&&s.add(HIL[k]));return{p,s}}
+function hiOf(id){const m=musc(id);return{p:new Set(m.p),s:new Set(m.s)}}
+function musFill(x,h,a){if(h.length<3||a<=.02)return;x.save();x.globalAlpha=a*.92;smooth(x,h);const c=COL.acc;x.fillStyle=rgb(c);x.fill();x.globalAlpha=a*.5;x.strokeStyle=rgb(mixc(c,[0,0,0],.4));x.lineWidth=1;x.stroke();x.restore()}
 const ease=t=>t*t*(3-2*t);
 function norms(tpl){if(!tpl._n){tpl._n=tpl.k.map(N);const n=tpl._n.length;tpl._t=tpl.t||Array(n).fill(1);tpl._dur=tpl._t.reduce((a,b)=>a+b,0)+.1*n}return tpl._n}
 function poseAt(tpl,time){const K=norms(tpl),n=K.length,ts=tpl._t;if(n===1)return K[0];let t=((time%tpl._dur)+tpl._dur)%tpl._dur;
@@ -1719,10 +1766,10 @@ function setUbgFile(f){if(!f||!/^image\//.test(f.type)){toast('Выберите 
 const store={mode:'local',db:null,uid:null,dirty:new Set(),timer:null,chain:Promise.resolve(),ready:false,known:new Set()};
 const blankProfile=()=>({name:'',sex:'m',age:30,height:178,activity:1.55,goal:'keep',level:'beg',goalWeight:75,place:'home',days:[1,3,5],minutes:40,eq:[]});
 const blankSettings=()=>({sound:true,voice:true,skin:'berserk',ubgPage:false,bgv:true,voiceStyle:'auto',pl3d:false});
-const blank=()=>({v:2,demo:false,profile:blankProfile(),weights:[],workouts:[],food:{},water:{},customFoods:[],settings:blankSettings(),plan:null,week:null,camp:null,ecl:null,prog:null,notes:{},customEx:[]});
+const blank=()=>({v:2,demo:false,profile:blankProfile(),weights:[],workouts:[],food:{},water:{},customFoods:[],settings:blankSettings(),plan:null,week:null,camp:null,ecl:null,prog:null,notes:{},customEx:[],routines:[]});
 const monthOf=d=>'m-'+d.slice(0,7);
 function split(){
-  const docs={main:{v:2,demo:!!S.demo,profile:S.profile,weights:S.weights,settings:S.settings,customFoods:S.customFoods,plan:S.plan,week:S.week,camp:S.camp||null,ecl:S.ecl||null,prog:S.prog||null,notes:S.notes||{},customEx:S.customEx||[]}};
+  const docs={main:{v:2,demo:!!S.demo,profile:S.profile,weights:S.weights,settings:S.settings,customFoods:S.customFoods,plan:S.plan,week:S.week,camp:S.camp||null,ecl:S.ecl||null,prog:S.prog||null,notes:S.notes||{},customEx:S.customEx||[],routines:S.routines||[]}};
   const m=k=>docs[k]||(docs[k]={workouts:[],food:{},water:{}});
   S.workouts.forEach(w=>m(monthOf(w.d)).workouts.push(w));
   Object.entries(S.food).forEach(([d,a])=>{if(a.length)m(monthOf(d)).food[d]=a});
@@ -1731,7 +1778,7 @@ function split(){
 }
 function merge(docs){
   const s=blank(),mn=docs.main||{};
-  Object.assign(s,{demo:!!mn.demo,profile:Object.assign(blankProfile(),mn.profile||{}),weights:mn.weights||[],settings:Object.assign(blankSettings(),mn.settings||{}),customFoods:mn.customFoods||[],plan:mn.plan||null,week:mn.week||null,camp:mn.camp||null,ecl:mn.ecl||null,prog:mn.prog||null,notes:mn.notes||{},customEx:mn.customEx||[]});regCustom(s.customEx);
+  Object.assign(s,{demo:!!mn.demo,profile:Object.assign(blankProfile(),mn.profile||{}),weights:mn.weights||[],settings:Object.assign(blankSettings(),mn.settings||{}),customFoods:mn.customFoods||[],plan:mn.plan||null,week:mn.week||null,camp:mn.camp||null,ecl:mn.ecl||null,prog:mn.prog||null,notes:mn.notes||{},customEx:mn.customEx||[],routines:mn.routines||[]});regCustom(s.customEx);
   Object.entries(docs).forEach(([k,d])=>{if(!k.startsWith('m-'))return;(d.workouts||[]).forEach(w=>s.workouts.push(w));Object.assign(s.food,d.food||{});Object.assign(s.water,d.water||{})});
   s.workouts=s.workouts.filter(w=>w&&w.d&&Array.isArray(w.ex)).sort((a,b)=>a.ts-b.ts);s.weights.sort((a,b)=>a.d<b.d?-1:1);
   if(!['beg','mid','adv'].includes(s.profile.level))s.profile.level='beg';
@@ -2405,7 +2452,7 @@ function celebrate(){if(!fxOn())return;const k=skin(),c=document.createElement('
 }
 let lastNav='';
 const TAB_ORDER=['today','train','timer','food','progress','profile'];
-const SUB_ORDER={train:['build','camp','programs','challenges','library'],progress:['body','photos','exercises','muscles','report','history','awards']};
+const SUB_ORDER={train:['build','mine','camp','programs','challenges','library'],progress:['body','photos','exercises','muscles','report','history','awards']};
 const navKey=()=>ui.tab+'/'+(ui.tab==='train'?ui.trainSub:ui.tab==='progress'?ui.progSub:'');
 
 function render(){
@@ -2525,9 +2572,9 @@ const achHTML=([t,s,ok])=>`<div class="${ok?'':'no'}"><span class="plate ${ok?'y
 /* ---------- Тренировки ---------- */
 function vTrain(){
   const sub=ui.trainSub;
-  return header('Тренировки','Конструктор · кампания · программы · испытания')+
-  `<div class="seg" role="group" aria-label="Раздел">${[['build','Конструктор'],['camp','Кампания'],['programs','Программы'],['challenges','Испытания'],['library','Упражнения']].map(([k,n])=>`<button data-act="trainSub" data-v="${k}" aria-pressed="${sub===k}">${n}</button>`).join('')}</div>`+
-  (sub==='build'?vBuilder():sub==='camp'?vCamp():sub==='programs'?vPrograms():sub==='challenges'?vChallenges():vLibrary());
+  return header('Тренировки','Конструктор · мои · кампания · программы · испытания')+
+  `<div class="seg" role="group" aria-label="Раздел">${[['build','Конструктор'],['mine','Мои'],['camp','Кампания'],['programs','Программы'],['challenges','Испытания'],['library','Упражнения']].map(([k,n])=>`<button data-act="trainSub" data-v="${k}" aria-pressed="${sub===k}">${n}</button>`).join('')}</div>`+
+  (sub==='build'?vBuilder():sub==='mine'?vMine():sub==='camp'?vCamp():sub==='programs'?vPrograms():sub==='challenges'?vChallenges():vLibrary());
 }
 function vBuilder(){return recovHTML()+vBuilderMain()}
 function vBuilderMain(){
@@ -2546,19 +2593,69 @@ function vDraft(){const w=ui.draft;
   return `<section class="panel lift" id="draft"><div class="row">${placeChip(w.place)}${lvChip(w.lv)}<span class="chip">${esc(focusName(w.place,w.focus))}</span><span class="chip on">${esc(mName(w))}</span><span class="chip">≈ ${estMin(w)} мин</span>${w.kind==='ai'?`<span class="chip">${ic('spark',13)} от ИИ</span>`:''}</div>
     <h2 style="font-size:28px">${esc(w.title)}</h2><p class="muted">${esc(w.note||methodLine(w))}</p>
     ${exRows(w,'d')}
-    <div class="row"><button class="btn primary big" data-act="d-start">${ic('play',18)} ${GO[sk()]}!</button><button class="btn" data-act="d-plan">Сделать тренировкой дня</button><button class="btn ghost" data-act="b-gen">${ic('dice',16)} Пересобрать</button></div></section>`;
+    <div class="row"><button class="btn primary big" data-act="d-start">${ic('play',18)} ${GO[sk()]}!</button><button class="btn" data-act="d-plan">Сделать тренировкой дня</button><button class="btn ghost" data-act="b-gen">${ic('dice',16)} Пересобрать</button><button class="btn ghost" data-act="save-rt" data-v="draft">${ic('plus',16)} В мои тренировки</button></div></section>`;
 }
+/* ---------- свои тренировки (ручной конструктор, как «My workouts» в Lyfta) ---------- */
+const RT_M=[['classic','Классика','Подход за подходом, отдых после каждого.'],['superset','Суперсеты','Упражнения идут парами без отдыха между ними: 1+2, 3+4…'],['circuit','Круговая','Все упражнения подряд — это круг, потом отдых и следующий круг.']];
+function rtW(r){const w={id:newId(),title:r.name,place:r.place,focus:'full',lv:S.profile.level,minutes:S.profile.minutes,method:r.method,kind:'routine',rtId:r.id,
+  items:r.items.filter(i=>EX[i.ex]).map(i=>{const it={ex:i.ex,sets:r.method==='circuit'?(r.rounds||3):i.sets,rest:i.rest};if(EX[i.ex].type==='time')it.time=i.time||45;else it.reps=i.reps||10;return it}),rounds:r.rounds||3,roundRest:r.roundRest||60,gap:15};
+  if(r.warm&&w.place!=='fight')w.items.unshift({ex:'warmup',wu:1,sets:1,time:240,rest:15});return w}
+function rtFromW(w){return{id:'r'+Date.now().toString(36),name:w.title,place:w.place,method:['superset','circuit'].includes(w.method)?w.method:'classic',rounds:w.rounds||3,roundRest:w.roundRest||60,warm:1,
+  items:w.items.filter(i=>!i.wu&&EX[i.ex]).map(i=>({ex:i.ex,sets:i.sets||3,reps:i.reps||(i.repsBy&&i.repsBy[0])||10,time:i.time||45,rest:i.rest||60}))}}
+function vMine(){if(ui.rt)return vRtEdit();const rs=S.routines||[];
+  return `<p class="muted" style="max-width:70ch">Соберите тренировку сами: упражнения из библиотеки, подходы, повторы, отдых, суперсеты или круг. Сохраните — и запускайте в одно касание. Прогрессия подскажет вес по прошлому разу.</p>
+  <div class="row"><button class="btn primary" data-act="rt-new">${ic('plus',16)} Новая тренировка</button></div>
+  <section class="grid g2">${rs.map(r=>{const w=rtW(r);return `<div class="panel lift"><div class="row between"><h2>${esc(r.name)}</h2><span class="chip">≈ ${w.items.length?estMin(w):0} мин</span></div>
+    <div class="row">${placeChip(r.place)}<span class="chip on">${esc(METHODS[r.method].n)}</span>${r.method==='circuit'?`<span class="chip">${r.rounds||3} ${plural(r.rounds||3,'круг','круга','кругов')}</span>`:''}</div>${exRows(w)}
+    <div class="row"><button class="btn primary" data-act="rt-start" data-v="${r.id}" ${w.items.length?'':'disabled'}>${ic('play',16)} Начать</button><button class="btn sm" data-act="rt-edit" data-v="${r.id}">Изменить</button><button class="btn sm ghost" data-act="rt-dup" data-v="${r.id}">Копия</button><button class="btn iconbtn ghost" data-act="rt-del" data-v="${r.id}" aria-label="Удалить">${ic('trash',16)}</button></div></div>`}).join('')||'<div class="panel"><p class="muted">Пока нет своих тренировок. Создайте новую или сохраните понравившуюся из конструктора кнопкой «В мои тренировки».</p></div>'}</section>`}
+function vRtEdit(){const r=ui.rt,num=(i,k,v,l)=>`<label class="rtnum"><input class="input" type="number" inputmode="numeric" min="1" data-rti="${i}:${k}" value="${v}"><span>${l}</span></label>`;
+  return `<section class="panel lift"><div class="row between"><h2>${S.routines.some(x=>x.id===r.id)?'Изменить тренировку':'Новая тренировка'}</h2><button class="btn iconbtn ghost" data-act="rt-cancel" aria-label="Закрыть">${ic('x')}</button></div>
+    <div class="field"><label for="rt-n">Название</label><input class="input" id="rt-n" data-rt="name" maxlength="50" value="${esc(r.name)}"></div>
+    <div class="stack"><span class="flabel">Где тренируемся</span><div class="seg">${Object.entries(PLACES).map(([k,v])=>`<button data-act="rt-place" data-v="${k}" aria-pressed="${r.place===k}">${v.n}</button>`).join('')}</div></div>
+    <div class="stack"><span class="flabel">Как выполнять</span><div class="seg">${RT_M.map(([k,n])=>`<button data-act="rt-method" data-v="${k}" aria-pressed="${r.method===k}">${n}</button>`).join('')}</div><span class="small muted">${RT_M.find(x=>x[0]===r.method)[2]}</span></div>
+    <div class="row" style="gap:14px">${r.method==='circuit'?`<label class="rtnum"><input class="input" type="number" min="1" max="12" data-rt="rounds" value="${r.rounds||3}"><span>кругов</span></label><label class="rtnum"><input class="input" type="number" min="10" data-rt="roundRest" value="${r.roundRest||60}"><span>с отдыха между кругами</span></label>`:''}
+      <label class="cxchk"><input type="checkbox" data-rt="warm" ${r.warm?'checked':''}> Разминка в начале</label></div>
+    <ul class="exrows rtlist">${r.items.map((it,i)=>{const e=EX[it.ex];if(!e)return '';return `<li><div class="thumb">${photo(it.ex,'sm')}</div><div class="nm">${r.method==='superset'?`<span class="chip" style="padding:1px 7px;margin-right:6px">${String.fromCharCode(65+Math.floor(i/2))}${i%2+1}</span>`:''}<button data-act="ex" data-v="${it.ex}">${esc(e.name)}</button>
+      <div class="rtctl">${r.method==='circuit'?'':num(i,'sets',it.sets,'подх.')}${e.type==='time'?num(i,'time',it.time||45,'сек'):num(i,'reps',it.reps||10,'повт.')}${num(i,'rest',it.rest,'с отдых')}</div></div>
+      <button class="btn iconbtn ghost" data-act="rt-up" data-v="${i}" aria-label="Выше" ${i?'':'disabled'}>↑</button><button class="btn iconbtn ghost" data-act="rt-rm" data-v="${i}" aria-label="Убрать">${ic('x',18)}</button></li>`}).join('')}</ul>
+    ${r.items.length?'':'<p class="muted">Добавьте упражнения из библиотеки.</p>'}
+    <div class="row"><button class="btn" data-act="rt-add">${ic('plus',16)} Добавить упражнения</button></div>
+    <div class="row"><button class="btn primary" data-act="rt-save">Сохранить</button><button class="btn ghost" data-act="rt-cancel">Отмена</button></div></section>`}
+function pickList(){const q=(ui.pk.q||'').trim().toLowerCase(),g=ui.pk.g,pk=PLACES[ui.rt.place].k,have=new Set(ui.rt.items.map(i=>i.ex));
+  const l=Object.entries(EX).filter(([id,e])=>!e.hidden&&id!=='warmup'&&(e.pl.includes(pk)||ui.rt.place==='gym'&&e.pl.includes('h'))&&(g==='Все'||e.grp.includes(g))&&(!q||e.name.toLowerCase().includes(q)||e.equip.toLowerCase().includes(q)));
+  return l.slice(0,80).map(([id,e])=>`<button class="pkrow ${have.has(id)?'on':''}" data-act="rt-pick" data-v="${id}"><span class="thumb">${photo(id,'sm')}</span><span class="pkn"><b>${esc(e.name)}</b><small class="muted">${esc(e.grp.join(' · '))} · ${esc(e.equip)}</small></span><span class="pkadd" aria-hidden="true">${have.has(id)?'✓':'+'}</span></button>`).join('')||'<p class="muted small">Ничего не найдено.</p>'}
+function rtPicker(){ui.pk=ui.pk||{q:'',g:'Все'};
+  modal(`<div class="row between"><h2>Добавить упражнения</h2><button class="btn iconbtn ghost" data-act="rt-pick-done" aria-label="Готово">${ic('x')}</button></div>
+    <input class="input" id="pk-q" type="search" placeholder="Поиск: название или инвентарь" value="${esc(ui.pk.q)}" autocomplete="off">
+    <div class="row" id="pk-g">${GROUPS.map(g=>`<button class="chip ${ui.pk.g===g?'on':''}" data-act="pk-g" data-v="${g}">${g}</button>`).join('')}</div>
+    <div class="pklist" id="pk-list">${pickList()}</div>
+    <div class="row"><button class="btn primary" data-act="rt-pick-done">Готово · <span id="pk-n">${ui.rt.items.length}</span></button></div>`)}
+/* сравнение двух упражнений */
+function openCompare(a,b){if(!EX[a]||!EX[b])return;const rec=records(),cnt=id=>S.workouts.filter(w=>w.ex.some(e=>e.id===id)).length;
+  const col=id=>{const e=EX[id],m=M3D.musc(id),pr=rec[id];return `<div class="stack cmpcol"><h3>${esc(e.name)}</h3>${M3D.has(id)?M3D.html(id,{legend:false}):photo(id)}
+    <div class="row">${lvChip(e.lv)}<span class="chip">${esc(e.equip)}</span></div>${m.p.length?M3D.bodyMap(m,{label:e.name}):''}
+    <p class="small"><span class="mdot p"></span><b>${m.p.map(k=>M3D.MUS[k]).join(', ')||'—'}</b></p>${m.s.length?`<p class="small muted"><span class="mdot s"></span>${m.s.map(k=>M3D.MUS[k]).join(', ')}</p>`:''}
+    <p class="small muted">Ваш рекорд: ${pr?(pr.kg?fmt(pr.kg,1)+' кг × '+pr.kgR:pr.t?pr.t+' с':pr.r+' повт.'):'нет'} · выполнено ${cnt(id)} ${plural(cnt(id),'раз','раза','раз')}</p></div>`};
+  const ma=M3D.musc(a),mb=M3D.musc(b),both=ma.p.filter(k=>mb.p.includes(k)).map(k=>M3D.MUS[k]);
+  modal(`<div class="row between"><h2>Сравнение</h2><button class="btn iconbtn ghost" data-act="close-modal" aria-label="Закрыть">${ic('x')}</button></div>
+    <p class="small muted">${both.length?'Общие основные мышцы: '+both.join(', ').toLowerCase()+'. Одно можно заменять другим.':'Основные мышцы разные — это не взаимозаменяемые упражнения.'}</p>
+    <div class="grid g2">${col(a)}${col(b)}</div>`)}
 function vChallenges(){const list=CHALLENGES[sk()],th=SKINS.find(x=>x[0]===skin())[1];
   return `<p class="muted" style="max-width:70ch">Испытания меняются вместе с темой оформления: сейчас — «${esc(th)}». Сменить тему можно в профиле, и здесь появятся другие испытания. За каждое пройденное испытание — +20 XP сверху.</p>
   <section class="grid g2">${list.map(c=>{const w=challengeW(c),done=S.workouts.filter(x=>x.chId===c.id).length,isEcl=c.id==='eclipse';
     return `<div class="panel lift ch">${isEcl?eclipseMini('mini'):splat(hash(c.id)%50)}<div class="row between"><h2>${esc(c.n)}</h2>${done?`<span class="chip good">Пройдено ${done}×</span>`:''}</div><p class="muted">${esc(c.d)}</p><div class="row"><span class="chip on">${METHODS[c.m].n}</span><span class="chip">≈ ${estMin(w)} мин</span></div>${exRows(w)}<div class="row"><button class="btn primary" data-act="ch-start" data-v="${c.id}">${ic('play',16)} Принять вызов</button></div></div>`}).join('')}</section>`;
 }
+const LIB_EQ=[['none','Без инвентаря',/без инвентаря|коврик|^—$/i],['db','Гантели',/гантел/i],['bb','Штанга',/штанг/i],['kb','Гиря',/гир/i],['bar','Турник, брусья',/турник|брус|перекладин/i],['mach','Тренажёр, блок',/тренаж|блок|кроссовер/i],['bench','Скамья, опора',/скамь|опор|тумб|ступен|стул|платформ/i],['bag','Мешок',/мешок/i],['rope','Скакалка, канаты',/скакалк|канат/i]];
 function vLibrary(){
   const q=ui.libQ.trim().toLowerCase(),pk=ui.libPlace==='all'?null:PLACES[ui.libPlace].k;
-  const list=Object.entries(EX).filter(([id,e])=>!e.hidden&&(!pk||e.pl.includes(pk))&&(ui.libGrp==='Все'||e.grp.includes(ui.libGrp))&&(!q||e.name.toLowerCase().includes(q)||e.equip.toLowerCase().includes(q)));
+  const eqR=ui.libEq&&(LIB_EQ.find(x=>x[0]===ui.libEq)||[])[2];const list=Object.entries(EX).filter(([id,e])=>!e.hidden&&(!ui.libMus||M3D.musc(id).p.includes(ui.libMus))&&(!eqR||eqR.test(e.equip))&&(!pk||e.pl.includes(pk))&&(ui.libGrp==='Все'||e.grp.includes(ui.libGrp))&&(!q||e.name.toLowerCase().includes(q)||e.equip.toLowerCase().includes(q)));
   return `<div class="stack"><input class="input" id="lib-q" type="search" placeholder="Поиск: название или инвентарь" value="${esc(ui.libQ)}" aria-label="Поиск упражнений" style="max-width:420px">
   <div class="seg">${[['all','Все'],['home','Дом'],['gym','Зал'],['fight','Бой']].map(([k,n])=>`<button data-act="libPlace" data-v="${k}" aria-pressed="${ui.libPlace===k}">${n}</button>`).join('')}</div>
-  <div class="row">${GROUPS.map(g=>`<button class="chip ${ui.libGrp===g?'on':''}" data-act="libGrp" data-v="${g}">${g}</button>`).join('')}</div></div>
+  <div class="row">${GROUPS.map(g=>`<button class="chip ${ui.libGrp===g?'on':''}" data-act="libGrp" data-v="${g}">${g}</button>`).join('')}</div>
+  <div class="row libf"><label class="field"><span class="small muted">Мышца</span><select class="input" id="lib-mus"><option value="">Все мышцы</option>${Object.entries(M3D.MUS).map(([k,n])=>`<option value="${k}" ${ui.libMus===k?'selected':''}>${n}</option>`).join('')}</select></label>
+    <label class="field"><span class="small muted">Инвентарь</span><select class="input" id="lib-eq"><option value="">Любой</option>${LIB_EQ.map(([k,n])=>`<option value="${k}" ${ui.libEq===k?'selected':''}>${n}</option>`).join('')}</select></label>
+    ${ui.libMus||ui.libEq?`<button class="btn sm ghost" data-act="lib-clear">Сбросить</button>`:''}</div>
+  ${ui.libMus?`<div class="libmap">${M3D.bodyMap({p:[ui.libMus]},{label:M3D.MUS[ui.libMus]})}</div>`:''}</div>
   <div class="row between"><p class="small muted">${list.length} ${plural(list.length,'упражнение','упражнения','упражнений')} · у каждого — 3D-показ</p><button class="btn sm" data-act="cx-new">${ic('plus',15)} Своё упражнение</button></div>
   <div class="cards">${list.map(([id,e])=>`<button class="excard" data-act="ex" data-v="${id}">${photo(id)}<h3>${esc(e.name)}</h3><div class="meta"><span class="small muted">${esc(e.equip)}</span><span class="plate ${LVP[e.lv]}" style="width:12px;height:12px" title="${lvName(e.lv)}"></span></div></button>`).join('')||'<p class="muted">Ничего не найдено. Попробуйте другое слово или сбросьте фильтры.</p>'}</div>`;
 }
@@ -2577,6 +2674,7 @@ function openEx(id){
   ${(()=>{const mu=M3D.musc(id);return mu.p.length?`<div class="exmus"><div class="stack" style="gap:6px"><h3>Работающие мышцы</h3><p class="small"><span class="mdot p"></span><b>${mu.p.map(k=>M3D.MUS[k]).join(', ')}</b></p>${mu.s.length?`<p class="small muted"><span class="mdot s"></span>${mu.s.map(k=>M3D.MUS[k]).join(', ')}</p>`:''}</div>${M3D.bodyMap(mu,{label:'Работающие мышцы: '+e.name})}</div>`:''})()}
   <div class="stack"><h3>Заметка</h3><textarea class="input" rows="2" data-note="${id}" placeholder="Настройки тренажёра, хват, ощущения — появится во время тренировки">${esc((S.notes||{})[id]||'')}</textarea></div>
   ${(()=>{const sim=Object.keys(EX).filter(x=>x!==id&&!EX[x].hidden&&EX[x].pat===e.pat).slice(0,10);return sim.length?`<div class="stack"><h3>Похожие и замены</h3><div class="row">${sim.map(x=>`<button class="chip" data-act="ex" data-v="${x}">${esc(EX[x].name)}</button>`).join('')}</div></div>`:''})()}
+  <div class="field" style="max-width:420px"><label for="cmp-sel">Сравнить с другим упражнением</label><select class="input" id="cmp-sel" data-a="${id}"><option value="">Выберите…</option>${Object.keys(EX).filter(x=>x!==id&&!EX[x].hidden&&x!=='warmup').sort((a,b)=>(EX[b].pat===e.pat)-(EX[a].pat===e.pat)||EX[a].name.localeCompare(EX[b].name,'ru')).map(x=>`<option value="${x}">${esc(EX[x].name)}</option>`).join('')}</select></div>
   ${e.custom?`<div class="row"><button class="btn sm ghost danger" data-act="cx-del" data-v="${id}">${ic('trash',15)} Удалить своё упражнение</button></div>`:''}
   ${m?`<div class="stack"><h3>Ваш прогресс</h3><span class="small muted">${m.label}</span><div class="chart">${lineChart(h.map(x=>({d:x.d,v:metricOf(id,x).v})),{dec:m.k==='e1'?1:0,unit:m.k==='t'?' с':m.k==='e1'?' кг':''})}</div></div>`:''}`);
 }
@@ -2831,7 +2929,8 @@ function vHistory(){
     <div class="body">${w.ex.map(e=>`<div><b>${esc(EX[e.id]?EX[e.id].name:e.id)}</b> <span class="mono small muted">${e.sets.map(s=>s.t?s.t+'с':s.r+(s.kg?'×'+fmt(s.kg,1):'')).join(' · ')}</span></div>`).join('')}
     <button class="btn sm ghost danger" style="align-self:flex-start" data-act="wo-del" data-v="${w.id}">${ic('trash',15)} Удалить тренировку</button></div></details>`).join('')||'<p class="muted">Здесь появятся завершённые тренировки.</p>'}</div></section>`;
 }
-function musVol(days){const from=addDays(todayKey(),-(days-1)),v={};S.workouts.filter(w=>w.d>=from).forEach(w=>w.ex.forEach(e=>{if(!EX[e.id])return;const n=e.sets.filter(x=>!x.wu).length;if(!n)return;const m=M3D.musc(e.id);m.p.forEach(k=>v[k]=(v[k]||0)+n);m.s.forEach(k=>v[k]=(v[k]||0)+n*.5)}));return v}
+function musVol(days){const from=addDays(todayKey(),-(days-1));return musVolW(S.workouts.filter(w=>w.d>=from))}
+function musVolW(list){const v={};list.forEach(w=>w.ex.forEach(e=>{if(!EX[e.id])return;const n=e.sets.filter(x=>!x.wu).length;if(!n)return;const m=M3D.musc(e.id);m.p.forEach(k=>v[k]=(v[k]||0)+n);m.s.forEach(k=>v[k]=(v[k]||0)+n*.5)}));return v}
 function vMuscles(){const days=ui.musR||7,v=musVol(days),keys=Object.keys(M3D.MUS),mx=Math.max(1,...keys.map(k=>v[k]||0)),norm={};keys.forEach(k=>norm[k]=(v[k]||0)/mx);
   const wk=days/7,low=keys.filter(k=>(v[k]||0)/wk<4&&!['adduct','fore','traps','rdelt'].includes(k)),sorted=[...keys].sort((a,b)=>(v[b]||0)-(v[a]||0));
   return `<div class="seg" role="group">${[[7,'7 дней'],[30,'30 дней']].map(([d,l])=>`<button data-act="musR" data-v="${d}" aria-pressed="${days===d}">${l}</button>`).join('')}</div>
@@ -2943,7 +3042,8 @@ function renderPlayer(){
       <div style="width:100%;max-width:420px" class="stack"><div class="bar"><i style="width:${(rk.frac*100).toFixed(1)}%"></i></div><span class="small muted">${esc(rk.name)} · ${rk.next?`до «${esc(rk.next)}» ${fmt(rk.nextAt-totalXP())} XP`:'высший ранг'}</span></div>
       ${pr.length?`<div class="stack"><h3>Новые рекорды</h3><div class="row" style="justify-content:center">${pr.map(t=>`<span class="chip on">${esc(t)}</span>`).join('')}</div></div>`:''}
       ${quoteHTML(PL.q,true)}
-      <div class="row" style="justify-content:center">${w.kind!=='cooldown'?`<button class="btn" data-act="pl-cooldown">${ic('spark',16)} Растяжка 5 минут</button>`:''}<button class="btn" data-act="card">${ic('download',16)} Карточка итогов</button><button class="btn primary big" data-act="pl-exit">Готово</button></div></section>`;
+      ${(()=>{const v=musVolW([w]),mx=Math.max(0,...Object.values(v));if(!mx)return '';const n={};Object.keys(v).forEach(k=>n[k]=v[k]/mx);return `<div class="stack" style="width:100%;max-width:460px;gap:6px"><h3>Какие мышцы работали</h3>${M3D.bodyMap(n,{label:'Мышцы за тренировку'})}</div>`})()}
+      <div class="row" style="justify-content:center">${w.kind!=='cooldown'&&w.kind!=='routine'?`<button class="btn" data-act="save-rt" data-v="pl">${ic('plus',16)} В мои тренировки</button>`:''}${w.kind!=='cooldown'?`<button class="btn" data-act="pl-cooldown">${ic('spark',16)} Растяжка 5 минут</button>`:''}<button class="btn" data-act="card">${ic('download',16)} Карточка итогов</button><button class="btn primary big" data-act="pl-exit">Готово</button></div></section>`;
   }else if(PL.phase==='rest'){
     const nx=PL.items[st.i];
     body=`<section class="stack" style="align-items:center;gap:18px;padding-top:10px"><span class="eyebrow">${st.emom?'До следующей минуты':'Отдых'}</span>
@@ -3086,6 +3186,22 @@ const ACT={
   trainSub:v=>{ui.trainSub=v;render()},libPlace:v=>{ui.libPlace=v;render()},libGrp:v=>{ui.libGrp=v;render()},
   ex:v=>openEx(v),
   m3d:(v,el)=>M3D.act(v,el),
+  'lib-clear':()=>{ui.libMus='';ui.libEq='';render()},
+  'rt-new':()=>{ui.rt={id:'r'+Date.now().toString(36),name:'Моя тренировка',place:S.profile.place,method:'classic',rounds:3,roundRest:60,warm:1,items:[]};render();window.scrollTo(0,0)},
+  'rt-edit':v=>{const r=(S.routines||[]).find(x=>x.id===v);if(r){ui.rt=JSON.parse(JSON.stringify(r));render();window.scrollTo(0,0)}},
+  'rt-dup':v=>{const r=(S.routines||[]).find(x=>x.id===v);if(r){const c=JSON.parse(JSON.stringify(r));c.id='r'+Date.now().toString(36);c.name=r.name+' (копия)';S.routines.push(c);touch('main');render()}},
+  'rt-del':v=>ask('Удалить тренировку из «Моих»? История не пострадает.','Удалить',()=>{S.routines=(S.routines||[]).filter(x=>x.id!==v);touch('main');render()}),
+  'rt-start':v=>{const r=(S.routines||[]).find(x=>x.id===v);if(r)startWorkout(rtW(r))},
+  'rt-cancel':()=>{ui.rt=null;render()},
+  'rt-place':v=>{ui.rt.place=v;render()},'rt-method':v=>{ui.rt.method=v;render()},
+  'rt-up':v=>{const i=+v,a=ui.rt.items;if(i>0){[a[i-1],a[i]]=[a[i],a[i-1]];render()}},
+  'rt-rm':v=>{ui.rt.items.splice(+v,1);render()},
+  'rt-add':()=>rtPicker(),
+  'rt-pick':(v,el)=>{const a=ui.rt.items,i=a.findIndex(x=>x.ex===v);if(i>=0){a.splice(i,1);el.classList.remove('on');el.querySelector('.pkadd').textContent='+'}else{const e=EX[v];a.push(e.type==='time'?{ex:v,sets:3,time:45,rest:45}:{ex:v,sets:3,reps:e.w?10:12,rest:e.w?90:60});el.classList.add('on');el.querySelector('.pkadd').textContent='✓'}const n=document.getElementById('pk-n');if(n)n.textContent=a.length},
+  'pk-g':(v,el)=>{ui.pk.g=v;document.querySelectorAll('#pk-g .chip').forEach(b=>b.classList.toggle('on',b===el));document.getElementById('pk-list').innerHTML=pickList()},
+  'rt-pick-done':()=>{closeModal();render()},
+  'rt-save':()=>{const r=ui.rt;r.name=(r.name||'').trim()||'Моя тренировка';if(!r.items.length){toast('Добавьте хотя бы одно упражнение');return}S.routines=S.routines||[];const i=S.routines.findIndex(x=>x.id===r.id);if(i>=0)S.routines[i]=r;else S.routines.push(r);ui.rt=null;touch('main');render();toast('Сохранено в «Мои»')},
+  'save-rt':v=>{const w=v==='draft'?ui.draft:PL&&PL.w;if(!w)return;S.routines=S.routines||[];S.routines.push(rtFromW(w));touch('main');toast('Сохранено: Тренировки → Мои')},
   exmedia:(v,el)=>{const box=el.closest('.sheet')||document;el.parentNode.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b===el));box.querySelectorAll('.expane').forEach(p=>{p.hidden=p.dataset.pane!==v;if(p.hidden)p.querySelectorAll('video').forEach(x=>{try{x.pause()}catch(e){}})});M3D.mountAll(box)},
   'pl-media':()=>{S.settings.pl3d=!S.settings.pl3d;touch('main');renderPlayer()},
   'pl-rpe':(v,el)=>{PL.rpe=PL.rpe===+v?null:+v;el.parentNode.querySelectorAll('.chip').forEach(b=>b.classList.toggle('on',+b.dataset.v===PL.rpe))},
@@ -3199,7 +3315,7 @@ const ACT={
   'pl-skip':()=>{const i=curStep().i;PL.steps=PL.steps.slice(0,PL.k).concat(PL.steps.slice(PL.k).filter(x=>x.i!==i));if(PL.k>=PL.steps.length)finishWorkout();else startStep(false)}
 };
 function importFile(f){const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result),st=d.state||d;if(!st.profile||!Array.isArray(st.workouts))throw 0;
-  ask('Заменить текущие записи данными из файла?','Заменить',()=>{const old=Object.keys(split());S=merge({main:{profile:st.profile,weights:st.weights||[],settings:st.settings||{},customFoods:st.customFoods||[],plan:null,camp:st.camp||null,prog:st.prog||null,notes:st.notes||{},customEx:st.customEx||[]},'m-import':{workouts:st.workouts,food:st.food||{},water:st.water||{}}});S.demo=false;
+  ask('Заменить текущие записи данными из файла?','Заменить',()=>{const old=Object.keys(split());S=merge({main:{profile:st.profile,weights:st.weights||[],settings:st.settings||{},customFoods:st.customFoods||[],plan:null,camp:st.camp||null,prog:st.prog||null,notes:st.notes||{},customEx:st.customEx||[],routines:st.routines||[]},'m-import':{workouts:st.workouts,food:st.food||{},water:st.water||{}}});S.demo=false;
     new Set([...old,...store.known,...Object.keys(split())]).forEach(k=>touch(k));
     if(Array.isArray(d.photos)&&d.photos.length){PHOTOS=d.photos;savePhotos()}
     render();toast('Данные загружены')})}catch(e){toast('Это не файл резервной копии «Подхода»')}};r.readAsText(f)}
@@ -3212,6 +3328,9 @@ document.addEventListener('input',e=>{const t=e.target;
   if(t.id==='fa-q'){ui.fa.q=t.value;document.getElementById('fa-res').innerHTML=faResults()}
   if(t.id==='fa-g'){ui.fa.g=t.value;document.getElementById('fa-calc').innerHTML=faCalc()}
   if(t.dataset.fc)ui.fa['c'+t.dataset.fc]=t.value;
+  if(t.id==='pk-q'&&ui.pk){ui.pk.q=t.value;const l=document.getElementById('pk-list');if(l)l.innerHTML=pickList()}
+  if(t.dataset.rt&&ui.rt){const k=t.dataset.rt;ui.rt[k]=k==='name'?t.value:k==='warm'?(t.checked?1:0):Math.max(1,parseInt(t.value)||1)}
+  if(t.dataset.rti&&ui.rt){const[i,k]=t.dataset.rti.split(':'),it=ui.rt.items[+i];if(it)it[k]=Math.max(1,parseInt(t.value)||1)}
   if(t.dataset.note){S.notes=S.notes||{};const v=t.value.slice(0,300);if(v.trim())S.notes[t.dataset.note]=v;else delete S.notes[t.dataset.note];touch('main')}
   if(t.id==='p-kg'){const pp=document.getElementById('p-plates');if(pp)pp.textContent=platesTxt(parseFloat(t.value)||0)}
   if(t.dataset.calc){const c=calcS(),k=t.dataset.calc;c[k]=k==='lift'?t.value:parseFloat(t.value)||0;const set=(i,f)=>{const el=document.getElementById(i);if(el)el.innerHTML=f()};set('calc-1rm',rmHTML);set('calc-lvl',lvlHTML);set('calc-plates',platesHTML)}
@@ -3226,6 +3345,10 @@ document.addEventListener('change',e=>{const t=e.target;
   if(t.id==='cal-time'){ui.calTime=t.value;return}
   if(t.id==='voice-style'){S.settings.voiceStyle=t.value;touch('main');ensureAudio();say(coach('start'));return}
   if(t.id==='ex-sel'){ui.exSel=t.value;render();return}
+  if(t.id==='lib-mus'){ui.libMus=t.value;render();return}
+  if(t.id==='lib-eq'){ui.libEq=t.value;render();return}
+  if(t.id==='cmp-sel'&&t.value){openCompare(t.dataset.a,t.value);return}
+  if(t.dataset.rt==='warm'&&ui.rt){ui.rt.warm=t.checked?1:0;return}
   if(t.dataset.pf){const k=t.dataset.pf;let v=t.value;if(['age','height','goalWeight','activity'].includes(k))v=parseFloat(v)||S.profile[k];S.profile[k]=v;if(k==='level'){ui.b=null;S.plan=null;S.week=null}touch('main');render()}
   if(t.dataset.st){S.settings[t.dataset.st]=t.checked;touch('main');if(t.dataset.st==='ubgPage'){applyUbg();applyBgv()}if(t.dataset.st==='bgv')applyBgv();if(t.dataset.st==='voice'&&t.checked)say('Голос включён')}
   if(t.dataset.iv){T.iv[t.dataset.iv]=Math.max(t.dataset.iv==='rounds'?1:0,parseInt(t.value)||0);render()}
