@@ -2,6 +2,7 @@
 <html lang="ru" data-skin="berserk">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-iATiD9dPBM8w4Mzy72zmKx/bKGpxllEBRUZm+VdzX0w=' 'sha256-ndFEokoztTMGcCQzMwq1JaoCawGZlJx9vWzIzaXgXV8=' 'sha256-LmFhfPRkdhtjKCaBuTCFNmDSPqdlHR/HYhLjqNGWhJM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0A0909">
 <meta name="description" content="Дневник тренировок: программы по уровням, техника с фото, таймеры, питание, вес и отчёты.">
@@ -14,15 +15,221 @@
 <meta name="apple-mobile-web-app-title" content="Подход">
 <style>:root{padding-top:env(safe-area-inset-top,0px)}</style>
 <title>Подход</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@600;700&family=Cormorant:ital,wght@1,600&family=Oswald:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
+@font-face {
+  font-family: 'Cormorant';
+  font-style: italic;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/c4b3b008d2.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Cormorant';
+  font-style: italic;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/3778708308.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Cormorant SC';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/eb9f554294.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Cormorant SC';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/95a951a8f8.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Cormorant SC';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/59402eb5b1.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Cormorant SC';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/3c02a86f0e.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/b1b0412a2f.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/480c062501.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/b1b0412a2f.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/480c062501.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/ffb0f3eb29.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/cf48e3e1de.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/ffb0f3eb29.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/cf48e3e1de.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/ffb0f3eb29.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/cf48e3e1de.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/ffb0f3eb29.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/cf48e3e1de.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(fonts/ffb0f3eb29.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(fonts/cf48e3e1de.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/db22166c3d.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/ed56cbd3a8.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/db22166c3d.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/ed56cbd3a8.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/db22166c3d.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/ed56cbd3a8.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root{
   --bg:#ECEEE9; --surface:#FFFFFF; --surface2:#F4F5F1; --ink:#14181E; --muted:#5B636D; --line:#D6DAD2;
   --accent:#2446C8; --accent-soft:#E2E7FA; --on-accent:#FFFFFF;
   --plate-g:#2E8B57; --plate-y:#D9A400; --plate-r:#D0352A; --plate-ink-y:#231A00;
-  --good:#2B8453; --warn:#B87D00; --bad:#C3352B;
+  --good:#23704A; --warn:#8F6100; --bad:#C3352B;
   --shadow:0 1px 2px rgba(20,24,30,.05),0 10px 30px rgba(20,24,30,.07);
   --r:14px; --r-img:12px; --photo-filter:none;
   --f-display:'Oswald','Arial Narrow',sans-serif; --f-num:'Oswald','Arial Narrow',sans-serif;
@@ -48,7 +255,7 @@
   --bg:#0A0909; --surface:#131111; --surface2:#1B1817; --ink:#E8DFD2; --muted:#978C81; --line:#2E2826;
   --accent:#B3161C; --accent-soft:#2A1112; --on-accent:#F6EEE4;
   --plate-g:#6E737A; --plate-y:#9A6A2F; --plate-r:#C21A20; --plate-ink-y:#F6EEE4;
-  --good:#93A96C; --warn:#C8904A; --bad:#E0474B; --shadow:0 18px 40px rgba(0,0,0,.55);
+  --good:#93A96C; --warn:#C8904A; --bad:#E5555A; --accent-ink:#E24A4F; --shadow:0 18px 40px rgba(0,0,0,.55);
   --r:4px; --r-img:3px; --photo-filter:grayscale(1) contrast(1.28) brightness(.82);
   --f-display:'Cormorant SC','Cormorant',Georgia,serif; --h-weight:700; --h-track:.05em; --f-quote:'Cormorant','Cormorant SC',Georgia,serif;
   color-scheme:dark;
@@ -58,7 +265,7 @@
   --bg:#D3CFC7; --surface:#EEEBE5; --surface2:#E2DED6; --ink:#16161A; --muted:#57554F; --line:#B6B1A7;
   --accent:#B5121B; --accent-soft:#F0D5D1; --on-accent:#FFFFFF;
   --plate-g:#1F3A6B; --plate-y:#C99A1E; --plate-r:#B5121B; --plate-ink-y:#16161A;
-  --good:#2D6A3E; --warn:#9A6800; --bad:#B5121B; --shadow:4px 4px 0 #16161A;
+  --good:#245733; --warn:#7A5200; --bad:#B5121B; --accent-ink:#9E0E16; --shadow:4px 4px 0 #16161A;
   --r:6px; --r-img:4px; --photo-filter:sepia(.38) saturate(.85) contrast(1.08);
   --f-display:'Oswald','Arial Narrow',sans-serif; --h-weight:700; --h-track:.02em; --f-quote:'Oswald','Arial Narrow',sans-serif;
   color-scheme:light;
@@ -70,7 +277,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-body);
 img{max-width:100%}
 button,input,select{font:inherit;color:inherit}
 button{cursor:pointer}
-a{color:var(--accent)}
+a{color:var(--accent-ink,var(--accent))}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 h1,h2,h3,p{margin:0}
 h1{font:var(--h-weight) clamp(28px,5.4vw,42px)/1.02 var(--f-display);text-transform:uppercase;letter-spacing:var(--h-track);text-wrap:balance}
@@ -88,7 +295,7 @@ main{width:100%;max-width:1120px;margin:0 auto;padding-inline:16px;padding-block
 .nav .brand,.nav .n-profile{display:none}
 .nav button{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:10px;color:var(--muted);font-size:11px;font-weight:700}
 .nav button svg{width:22px;height:22px}
-.nav button[aria-current="page"]{color:var(--accent)}
+.nav button[aria-current="page"]{color:var(--accent-ink,var(--accent))}
 @media (min-width:900px){
   .app{grid-template-columns:220px 1fr}
   .nav{position:sticky;top:0;height:100vh;border-top:0;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:4px;padding:22px 14px}
@@ -218,7 +425,7 @@ button.chip{cursor:pointer}
 .rank .badge{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font:700 20px/1 var(--f-num);background:var(--accent);color:var(--on-accent);box-shadow:inset 0 0 0 4px rgba(0,0,0,.18)}
 .ladder{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
 .ladder li{display:grid;grid-template-columns:32px 1fr auto;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);align-items:center}
-.ladder li.cur{color:var(--accent);font-weight:800}
+.ladder li.cur{color:var(--accent-ink,var(--accent));font-weight:800}
 .ladder li.fut{color:var(--muted)}
 
 /* today & builder */
@@ -229,7 +436,7 @@ button.chip{cursor:pointer}
 .exrows li:last-child{border-bottom:0}
 .exrows .nm{flex:1;min-width:0}
 .exrows .nm button{background:none;border:0;padding:0;text-align:left;font-weight:700;color:var(--ink)}
-.exrows .nm button:hover{color:var(--accent)}
+.exrows .nm button:hover{color:var(--accent-ink,var(--accent))}
 .exrows .sr{font-family:var(--f-mono);font-size:13px;color:var(--muted);overflow-wrap:anywhere}
 .exrows .nm button{overflow-wrap:anywhere}
 .places{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
@@ -263,7 +470,7 @@ button.chip{cursor:pointer}
 .sheet.narrow{max-width:420px}
 ol.steps{margin:0;padding:0;list-style:none;counter-reset:s;display:flex;flex-direction:column;gap:10px}
 ol.steps li{counter-increment:s;display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}
-ol.steps li::before{content:counter(s);width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font:700 13px/1 var(--f-mono)}
+ol.steps li::before{content:counter(s);width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent-ink,var(--accent));display:grid;place-items:center;font:700 13px/1 var(--f-mono)}
 ul.warn{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
 ul.warn li{padding-left:18px;position:relative}
 ul.warn li::before{content:"";position:absolute;left:2px;top:.55em;width:8px;height:8px;border-radius:2px;background:var(--bad);transform:rotate(45deg)}
@@ -293,7 +500,7 @@ ul.warn li::before{content:"";position:absolute;left:2px;top:.55em;width:8px;hei
 .ring-fg{fill:none;stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset .25s linear}
 .ring-fg.rest{stroke:var(--good)} .ring-fg.over{stroke:var(--bad)}
 .countdown{font:600 clamp(64px,18vw,112px)/1 var(--f-num);font-variant-numeric:tabular-nums;text-align:center}
-.combo{font:var(--h-weight) clamp(30px,8vw,52px)/1.05 var(--f-display);text-transform:uppercase;letter-spacing:var(--h-track);text-align:center;color:var(--accent);min-height:1.1em;text-wrap:balance}
+.combo{font:var(--h-weight) clamp(30px,8vw,52px)/1.05 var(--f-display);text-transform:uppercase;letter-spacing:var(--h-track);text-align:center;color:var(--accent-ink,var(--accent));min-height:1.1em;text-wrap:balance}
 .combo-legend{font-size:12px;color:var(--muted);text-align:center}
 .intro{min-height:72vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center}
 
@@ -428,7 +635,7 @@ table.t td.n{font-family:var(--f-mono);font-size:13px;white-space:nowrap}
 .rcbar{height:5px;border-radius:3px;background:var(--line);overflow:hidden}.rcbar i{display:block;height:100%;border-radius:3px;background:var(--good);transition:width .6s}
 .rc.mid .rcbar i{background:var(--warn)}.rc.low .rcbar i{background:var(--bad)}.rc.low .num{color:var(--bad)}
 .lvrule{font-size:12.5px;line-height:1.45;padding:7px 10px;border-radius:calc(var(--r) - 2px);background:var(--accent-soft);color:var(--ink);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent)}
-.lvrule b{color:var(--accent)}
+.lvrule b{color:var(--accent-ink,var(--accent))}
 .ecl-card{border-color:var(--accent);background-image:radial-gradient(ellipse at 100% 0%,color-mix(in srgb,var(--accent) 22%,transparent),transparent 60%)}
 .ecl-list{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}.ecl-list li::marker{color:var(--accent)}
 .ecl-btn.armed{border-color:var(--accent);animation:armed 1.6s ease-in-out infinite}
@@ -478,7 +685,7 @@ table.t td.n{font-family:var(--f-mono);font-size:13px;white-space:nowrap}
   --bg:#E3E0DA; --surface:#F0EDE7; --surface2:#E7E3DC; --ink:#0F0E0E; --muted:#56514C; --line:#BDB7AE;
   --accent:#A8121A; --accent-soft:#F1D9D6; --on-accent:#F7F3EE;
   --plate-g:#55595E; --plate-y:#7A5424; --plate-r:#A8121A; --plate-ink-y:#F7F3EE;
-  --good:#3E5F2E; --warn:#8A5A12; --bad:#A8121A; --shadow:5px 5px 0 #0F0E0E;
+  --good:#3E5F2E; --warn:#7D5210; --bad:#A8121A; --shadow:5px 5px 0 #0F0E0E;
   --r:2px; --r-img:2px; --photo-filter:grayscale(1) contrast(1.35);
   --f-display:'Cormorant SC','Cormorant',Georgia,serif; --h-weight:700; --h-track:.05em; --f-quote:'Cormorant','Cormorant SC',Georgia,serif;
   --art-filter:grayscale(1) contrast(1.2); --art-shade:linear-gradient(180deg,rgba(227,224,218,0) 25%,rgba(227,224,218,.88) 72%,#E3E0DA); --art-ink:#0F0E0E; --art-ts:none;
@@ -651,7 +858,7 @@ body.pl-open .app{visibility:hidden}
 .ringwrap{animation:breathe 4s ease-in-out infinite}
 .ring-fg.rest{filter:drop-shadow(0 0 7px var(--accent))}
 @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
-.countdown.hot{animation:hot .5s cubic-bezier(.3,1.6,.5,1);color:var(--accent)}
+.countdown.hot{animation:hot .5s cubic-bezier(.3,1.6,.5,1);color:var(--accent-ink,var(--accent))}
 @keyframes hot{0%{transform:scale(1.28)}100%{transform:scale(1)}}
 .hitfx{position:fixed;left:50%;top:58%;z-index:46;pointer-events:none;width:0;height:0}
 .hitfx::before{content:"";position:absolute;left:-110px;top:-110px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--accent) 60%,transparent),transparent 62%);animation:hitRing .6s ease-out forwards}
@@ -1855,7 +2062,24 @@ const normPhotos=a=>(Array.isArray(a)?a:[]).filter(p=>p&&typeof p.img==='string'
 let LOAD_WARN=false;
 try{UBG=localStorage.getItem('podhod:ubg');if(UBG&&!IMG_RE.test(UBG))UBG=null}catch(e){}
 try{PHOTOS=normPhotos(JSON.parse(localStorage.getItem('podhod:photos')||'[]'))}catch(e){PHOTOS=[]}
-function savePhotos(){try{localStorage.setItem('podhod:photos',JSON.stringify(PHOTOS))}catch(e){toast('Не удалось сохранить — на устройстве мало места. Удалите старые фото.')}}
+/* фото и фон лежат в IndexedDB: там сотни мегабайт вместо ~5 МБ у localStorage, и они не мешают сохранению тренировок */
+const IDB={p:null,open(){return this.p||(this.p=new Promise((res,rej)=>{try{const r=indexedDB.open('podhod-media',1);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains('kv'))r.result.createObjectStore('kv')};r.onsuccess=()=>{const db=r.result;db.onversionchange=()=>{try{db.close()}catch(e){}IDB.p=null};res(db)};r.onerror=()=>rej(r.error);setTimeout(()=>rej(new Error('idb timeout')),4000)}catch(e){rej(e)}}))},
+  async get(k){const db=await this.open();return new Promise((res,rej)=>{const q=db.transaction('kv','readonly').objectStore('kv').get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)})},
+  async set(k,v){const db=await this.open();return new Promise((res,rej)=>{const tx=db.transaction('kv','readwrite');tx.objectStore('kv').put(v,k);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error)})},
+  async del(k){const db=await this.open();return new Promise((res,rej)=>{const tx=db.transaction('kv','readwrite');tx.objectStore('kv').delete(k);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error)})}};
+let MEDIA_IDB=false;
+async function loadMedia(){try{let ph=await IDB.get('photos'),ub=await IDB.get('ubg'),lp=null,lu=null;try{lp=localStorage.getItem('podhod:photos');lu=localStorage.getItem('podhod:ubg')}catch(e){}
+    if(lp!=null){if(!Array.isArray(ph)||!ph.length){try{ph=JSON.parse(lp)}catch(e){}}await IDB.set('photos',normPhotos(ph));try{localStorage.removeItem('podhod:photos')}catch(e){}}
+    if(lu!=null){if(!ub)ub=lu;await IDB.set('ubg',ub);try{localStorage.removeItem('podhod:ubg')}catch(e){}}
+    PHOTOS=normPhotos(ph);UBG=typeof ub==='string'&&IMG_RE.test(ub)?ub:null;MEDIA_IDB=true}catch(e){MEDIA_IDB=false}}
+function saveUbg(){if(MEDIA_IDB)return(UBG?IDB.set('ubg',UBG):IDB.del('ubg')).then(()=>true,()=>false);try{if(UBG)localStorage.setItem('podhod:ubg',UBG);else localStorage.removeItem('podhod:ubg');return Promise.resolve(true)}catch(e){return Promise.resolve(false)}}
+function savePhotos(){const bad=()=>toast('Не удалось сохранить фото — на устройстве мало места. Удалите старые фото.');if(MEDIA_IDB){IDB.set('photos',PHOTOS).catch(bad);return}try{localStorage.setItem('podhod:photos',JSON.stringify(PHOTOS))}catch(e){bad()}}
+/* картинки из data-URL один раз превращаем в blob-ссылки: разметка не тащит сотни килобайт при каждой перерисовке */
+function dataBlob(u){const i=u.indexOf(','),mime=u.slice(5,u.indexOf(';')),b=atob(u.slice(i+1)),a=new Uint8Array(b.length);for(let k=0;k<b.length;k++)a[k]=b.charCodeAt(k);return new Blob([a],{type:mime})}
+const OURL=new Map();
+function purl(p){let u=OURL.get(p.id);if(!u){try{u=URL.createObjectURL(dataBlob(p.img))}catch(e){u=p.img}OURL.set(p.id,u)}return u}
+let UBG_URL=null,UBG_SRC=null;
+function ubgUrl(){if(!UBG)return null;if(UBG_SRC!==UBG){if(UBG_URL&&UBG_URL.startsWith('blob:'))try{URL.revokeObjectURL(UBG_URL)}catch(e){}try{UBG_URL=URL.createObjectURL(dataBlob(UBG))}catch(e){UBG_URL=UBG}UBG_SRC=UBG}return UBG_URL}
 function addPhotoFile(f){if(!f||!/^image\//.test(f.type)){toast('Выберите картинку');return}
   const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>{
     const k=Math.min(1,1100/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);
@@ -1863,8 +2087,8 @@ function addPhotoFile(f){if(!f||!/^image\//.test(f.type)){toast('Выберит�
     PHOTOS.push({id:newId(),d:todayKey(),img:url});PHOTOS.sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:0);savePhotos();
     if(PHOTOS.length===1)ui.pcCompare=false;else{ui.pcA=PHOTOS[0].id;ui.pcB=PHOTOS[PHOTOS.length-1].id}
     render();toast('Фото добавлено')};img.onerror=()=>toast('Не удалось открыть картинку');img.src=r.result};r.readAsDataURL(f)}
-function applyUbg(){const el=document.getElementById('ubg');if(!el)return;const on=!!(UBG&&S&&S.settings.ubgPage);el.hidden=!on;if(on)el.style.backgroundImage=`url("${UBG}")`}
-function setUbgFile(f){if(!f||!/^image\//.test(f.type)){toast('Выберите картинку');return}const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>{const k=Math.min(1,1280/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);const url=c.toDataURL('image/jpeg',.82);UBG=url;try{localStorage.setItem('podhod:ubg',url);toast('Фон установлен')}catch(e){toast('Фон установлен, но на устройстве мало места — после перезапуска он пропадёт')}render()};img.onerror=()=>toast('Не удалось открыть картинку');img.src=r.result};r.readAsDataURL(f)}
+function applyUbg(){const el=document.getElementById('ubg');if(!el)return;const on=!!(UBG&&S&&S.settings.ubgPage);el.hidden=!on;if(on){const u=ubgUrl();if(el._u!==u){el._u=u;el.style.backgroundImage=`url("${u}")`}}}
+function setUbgFile(f){if(!f||!/^image\//.test(f.type)){toast('Выберите картинку');return}const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>{const k=Math.min(1,1280/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);const url=c.toDataURL('image/jpeg',.82);UBG=url;saveUbg().then(ok=>toast(ok?'Фон установлен':'Фон установлен, но на устройстве мало места — после перезапуска он пропадёт'));render()};img.onerror=()=>toast('Не удалось открыть картинку');img.src=r.result};r.readAsDataURL(f)}
 const store={mode:'local',db:null,uid:null,dirty:new Set(),timer:null,chain:Promise.resolve(),ready:false,known:new Set()};
 const blankProfile=()=>({name:'',sex:'m',age:30,height:178,activity:1.55,goal:'keep',level:'beg',goalWeight:75,place:'home',days:[1,3,5],minutes:40,eq:[]});
 const blankSettings=()=>({sound:true,voice:true,skin:'berserk',ubgPage:false,bgv:true,voiceStyle:'auto',pl3d:false,bar:20});
@@ -1945,7 +2169,8 @@ function flush(){
 }
 /* при сворачивании приложения всё несохранённое пишем сразу, без задержки */
 function flushNow(){plSave();if(!store.ready||!store.dirty.size)return;clearTimeout(store.timer);if(store.mode!=='db'){const docs=split();[...store.dirty].forEach(k=>{try{localStorage.setItem('podhod:'+k,JSON.stringify(docs[k]||{workouts:[],food:{},water:{}}));store.dirty.delete(k)}catch(e){}});try{localStorage.setItem('podhod:index',JSON.stringify([...new Set([...JSON.parse(localStorage.getItem('podhod:index')||'[]'),...Object.keys(docs)])]))}catch(e){}}else flush()}
-addEventListener('pagehide',flushNow);document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushNow()});
+addEventListener('pagehide',flushNow);
+addEventListener('storage',e=>{if(!e.key||!/^podhod:(main|m-\d{4}-\d{2})$/.test(e.key)||store.mode==='db'||PL||store.dirty.size||!store.ready)return;clearTimeout(ui._st);ui._st=setTimeout(()=>{const s2=loadLocal();if(s2){S=s2;render();toast('Данные обновлены из другой вкладки')}},300)});document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushNow()});
 
 async function writeDoc(k,data){
   if(store.mode==='db')await store.db.doc(`data/users/${store.uid}/${k}`).set(data);
@@ -1969,6 +2194,7 @@ function loadLocal(){
   return s;
 }
 async function boot(){
+  let late=false;const mp=loadMedia().then(()=>{if(late&&MEDIA_IDB)render()});try{await Promise.race([mp,new Promise(r=>setTimeout(r,1500))])}catch(e){}late=true;
   const local=loadLocal();
   S=local||makeDemo();ui.q=quote();
   render();splashRun();if(LOAD_WARN)setTimeout(()=>toast('Часть записей не прочиталась — копия сохранена, остальное восстановлено.'),2400);try{document.fonts.ready.then(navInd)}catch(e){}
@@ -2000,7 +2226,7 @@ async function resetAll(){
   try{await store.chain}catch(e){}for(const k of keys)if(k!=='main')await removeDoc(k);
   if(store.mode!=='db'){try{localStorage.setItem('podhod:index','["main"]')}catch(e){}}
   store.known=new Set(['main']);touch('main');if(store.ready){clearTimeout(store.timer);flush()}
-  if(!wasDemo){PHOTOS=[];try{localStorage.removeItem('podhod:photos')}catch(e){}}
+  if(!wasDemo){PHOTOS=[];OURL.clear();savePhotos();try{localStorage.removeItem('podhod:photos')}catch(e){}}
   ui.tab='profile';render();toast('Готово. Заполните профиль — от него считаются нормы и тренировки.');
 }
 
@@ -2327,10 +2553,10 @@ function vCamp(){
 
 /* ---------- файлы: поделиться или сохранить ---------- */
 async function deliverFile(blob,name,o={}){
-  const tryShare=async f=>{try{if(!(navigator.canShare&&navigator.canShare({files:[f]})))return false;await navigator.share({files:[f],title:o.title||'Подход',text:o.text||''});return true}catch(e){return !!(e&&e.name==='AbortError')}};
-  if(o.share!==false){if(await tryShare(new File([blob],name,{type:blob.type})))return 'shared';
-    if(o.alt&&await tryShare(new File([blob],o.alt,{type:'text/plain'})))return 'shared'}
-  try{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);return 'saved'}catch(e){return null}
+  let cancelled=false;const tryShare=async f=>{try{if(!(navigator.canShare&&navigator.canShare({files:[f]})))return false;await navigator.share({files:[f],title:o.title||'Подход',text:o.text||''});return true}catch(e){if(e&&e.name==='AbortError'){cancelled=true;return true}return false}};
+  if(o.share!==false){if(await tryShare(new File([blob],name,{type:blob.type})))return cancelled?'cancelled':'shared';
+    if(o.alt&&await tryShare(new File([blob],o.alt,{type:'text/plain'})))return cancelled?'cancelled':'shared'}
+  try{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>a.remove(),1500);setTimeout(()=>URL.revokeObjectURL(a.href),60000);return 'saved'}catch(e){return null}
 }
 
 /* ---------- карточка итогов тренировки (1080×1350, для Telegram и сторис) ---------- */
@@ -2577,7 +2803,7 @@ function applyBgv(){
   document.documentElement.classList.toggle('bgv-on',on);box.hidden=!on;
   const v=box.querySelector('video');
   if(!on){try{v.pause()}catch(e){}fxStop();bgvKey='';return}
-  const motion=!reduceMotion()&&!saveData(),portrait=innerHeight>=innerWidth,src=`bg/${k}-${portrait?'p':'l'}.mp4`,key=k+'|'+(motion?src:'still');
+  const motion=!reduceMotion()&&!saveData()&&!PL,portrait=innerHeight>=innerWidth,src=`bg/${k}-${portrait?'p':'l'}.mp4`,key=k+'|'+(motion?src:'still');
   if(key!==bgvKey){bgvKey=key;v.muted=true;v.playsInline=true;v.poster=`bg/${k}.jpg`;v.onerror=()=>{v.removeAttribute('src')};
     if(motion){v.src=src}else{v.removeAttribute('src')}try{v.load()}catch(e){}}
   if(motion&&document.visibilityState==='visible'&&v.getAttribute('src')){const p=v.play();if(p&&p.catch)p.catch(()=>{})}
@@ -2739,8 +2965,10 @@ const standalone=()=>{try{return matchMedia('(display-mode: standalone)').matche
 function installHTML(){if(window.claude||standalone())return '';
   if(INSTALL)return `<div class="banner"><p class="small"><b>Поставьте «Подход» на телефон</b> — иконка на главном экране, работает без интернета.</p><button class="btn primary sm" data-act="install">Установить</button></div>`;
   if(/iphone|ipad|ipod/i.test(navigator.userAgent))return `<div class="banner"><p class="small"><b>Поставить на iPhone:</b> кнопка «Поделиться» внизу Safari → «На экран Домой».</p></div>`;return ''}
-function weekAhead(){const tk=todayKey(),wk=ensureWeek(),end=addDays(wk.start,7),out=[];let changed=false;
-  for(let i=1;i<=7&&out.length<3;i++){const d=addDays(tk,i);if(!S.profile.days.includes(parseKey(d).getDay()))continue;let w=d<end?wk.plans[d]:null;if(!w){w=planFor(d);if(d<end){wk.plans[d]=w;changed=true}}out.push([d,w])}
+const AHEAD=new Map();
+function weekAhead(){const tk=todayKey(),wk=ensureWeek(),end=addDays(wk.start,7),out=[],p=S.profile;let changed=false;
+  for(let i=1;i<=7&&out.length<3;i++){const d=addDays(tk,i);if(!p.days.includes(parseKey(d).getDay()))continue;let w=d<end?wk.plans[d]:null;
+    if(!w){if(d<end){w=planFor(d);wk.plans[d]=w;changed=true}else{const k=[d,p.place,p.level,p.minutes,p.days.join('')].join('|');w=AHEAD.get(k);if(!w){w=planFor(d);AHEAD.set(k,w)}}}out.push([d,w])}
   if(changed&&store.ready)touch('main');return out}
 function vToday(){
   const tk=todayKey(),plan=ensurePlan(),w=plan.w,p=S.profile,wd=new Date().getDay(),isDay=p.days.includes(wd);
@@ -2885,6 +3113,8 @@ function exStatsHTML(id){const h=exHistory(id);if(!h.length)return '';const e=EX
   const sd=STR_STD[id],bw=(lastW()||{}).w;let lvl='';
   if(sd&&bw&&b.e1){const std=S.profile.sex==='f'?sd.f:sd.m;let i=-1;std.forEach((t,k)=>{if(b.e1/bw>=t)i=k});lvl=`<p class="small">Уровень силы: <b>${i<0?'ниже «Новичка»':STR_LV[i]}</b> · ×${fmt(b.e1/bw,2)} веса тела${std[i+1]?` · до «${STR_LV[i+1]}» ещё ${fmt(std[i+1]*bw-b.e1,1)} кг`:''}</p>`}
   return `<div class="stack"><h3>Рекорды</h3><div class="grid g4 prgrid">${tiles.map(([k,v,key])=>`<div class="stat"><span class="eyebrow">${k}</span><span class="v" style="font-size:22px">${v}</span>${dd(key)}</div>`).join('')}</div>${lvl}
+    ${(()=>{if(!e.w)return '';const best={};h.forEach(x=>x.sets.forEach(s=>{if(s.wu||!s.kg||!s.r)return;for(let r=1;r<=Math.min(s.r,12);r++)if(!best[r]||s.kg>best[r].kg)best[r]={kg:s.kg,d:x.d}}));const rs=[1,2,3,5,6,8,10,12].filter(r=>best[r]);
+      return rs.length?`<h3>Лучший вес на N повторов</h3><div class="tablewrap"><table class="t"><thead><tr><th>Повторов</th><th>Вес</th><th>Дата</th></tr></thead><tbody>${rs.map(r=>`<tr><td>${r}</td><td class="n">${fmt(best[r].kg,1)} кг</td><td class="n">${fmtD(best[r].d,{day:'numeric',month:'short'})}</td></tr>`).join('')}</tbody></table></div>`:''})()}
     <h3>Последние тренировки</h3><div class="tablewrap"><table class="t"><tbody>${[...h].reverse().slice(0,6).map(x=>`<tr><td>${fmtD(x.d,{day:'numeric',month:'short'})}</td><td class="n">${x.sets.filter(s=>!s.wu).map(s=>(s.t?s.t+'с':s.r+(s.kg?'×'+fmt(s.kg,1):''))+(s.rpe?'@'+s.rpe:'')).join(' · ')}</td></tr>`).join('')}</tbody></table></div></div>`}
 function openEx(id){
   const e=EX[id],pr=records()[id],h=exHistory(id);
@@ -2946,7 +3176,7 @@ function vTimer(){
 }
 /* ---------- калькуляторы: 1ПМ, уровень силы, блины ---------- */
 function e1rm(w,r){if(!(w>0)||!(r>0))return 0;if(r===1)return w;return(w*(1+r/30)+w*36/(37-Math.min(r,36)))/2}
-function calcS(){return ui.calc||(ui.calc={w:80,r:5,lift:'bbBench',kg:100,bar:S.settings.bar||20,bw:(lastW()||{}).w||75})}
+function calcS(){return ui.calc||(ui.calc={w:80,r:5,lift:'bbBench',kg:100,bar:S.settings.bar||20,bw:(lastW()||{}).w||75,wk:100,wr:5})}
 function rmHTML(){const c=calcS(),m=e1rm(c.w,c.r),R=[[100,1],[95,2],[90,4],[85,6],[80,8],[75,10],[70,12],[65,15],[60,18],[50,25]];
   if(!m)return '<p class="small muted">Введите вес и число повторов.</p>';
   return `<div class="stat"><span class="eyebrow">Максимум на один раз</span><span class="v">≈ ${fmt(m,1)}<small>кг</small></span></div>
@@ -2962,6 +3192,11 @@ function platesHTML(){const c=calcS(),p=platesOf(c.kg,c.bar);if(!p)return '<p cl
   const col={25:'#C0392B',20:'#2E5FBF',15:'#D9A400',10:'#2E8B57',5:'#EEE',2.5:'#555',1.25:'#999'};
   return `<div class="plates" aria-hidden="true"><i class="grip"></i>${p.out.map(x=>`<i style="height:${30+x*2.6}px;background:${col[x]}"></i>`).join('')}<i class="sleeve"></i></div>
     <p><b>${platesTxt(c.kg,c.bar)}</b></p><p class="small muted">Всего на штанге: ${kgS(c.kg-p.rest)} кг. Блины 25 · 20 · 15 · 10 · 5 · 2,5 · 1,25 кг.</p>`}
+function warmHTML(){const c=calcS(),wk=c.wk||0,bar=c.bar||20;if(!(wk>bar))return '<p class="small muted">Введите рабочий вес больше веса грифа.</p>';
+  const R=[[0,10,'Пустой гриф'],[.4,5,'40%'],[.6,3,'60%'],[.8,2,'80%'],[.9,1,'90% — только для тяжёлых сетов на 1–3 повтора']].filter(([p],i)=>i<4||c.wr<=3);
+  const rows=R.map(([p,r,l])=>{const kg=p?Math.max(bar,Math.round(wk*p/2.5)*2.5):bar;return `<tr><td>${l}</td><td class="n">${kgS(kg)} кг × ${r}</td><td class="small muted">${p?platesTxt(kg,bar).replace('На каждую сторону: ',''):'—'}</td></tr>`}).join('');
+  return `<div class="tablewrap"><table class="t"><thead><tr><th>Подход</th><th>Вес × повторы</th><th>Блины на сторону</th></tr></thead><tbody>${rows}<tr><td><b>Рабочий</b></td><td class="n"><b>${kgS(wk)} кг × ${c.wr||5}</b></td><td class="small muted">${platesTxt(wk,bar).replace('На каждую сторону: ','')}</td></tr></tbody></table></div>
+    <p class="small muted">Разминочные подходы лёгкие, без отказа, отдых 1–2 минуты. Они разогревают суставы и «настраивают» технику, не утомляя мышцы.</p>`}
 function vTools(){const c=calcS();
   return `<section class="grid g2 tools"><div class="panel lift"><h3>Расчётный максимум (1ПМ)</h3>
       <div class="fields"><div class="field"><label for="c-w">Вес, кг</label><input class="input" id="c-w" data-calc="w" type="number" inputmode="decimal" value="${c.w}"></div><div class="field"><label for="c-r">Повторы</label><input class="input" id="c-r" data-calc="r" type="number" inputmode="numeric" value="${c.r}"></div></div>
@@ -2971,7 +3206,10 @@ function vTools(){const c=calcS();
       <div id="calc-lvl" class="stack">${lvlHTML()}</div></div>
     <div class="panel lift"><h3>Блины на гриф</h3>
       <div class="fields"><div class="field"><label for="c-kg">Вес на штанге, кг</label><input class="input" id="c-kg" data-calc="kg" type="number" inputmode="decimal" step="2.5" value="${c.kg}"></div><div class="field"><label for="c-bar">Гриф</label><select class="input" id="c-bar" data-calc="bar">${[20,15,10].map(b=>`<option value="${b}" ${c.bar===b?'selected':''}>${b} кг</option>`).join('')}</select></div></div>
-      <div id="calc-plates" class="stack">${platesHTML()}</div></div></section>`}
+      <div id="calc-plates" class="stack">${platesHTML()}</div></div>
+    <div class="panel lift"><h3>Разминка перед рабочим весом</h3>
+      <div class="fields"><div class="field"><label for="c-wk">Рабочий вес, кг</label><input class="input" id="c-wk" data-calc="wk" type="number" inputmode="decimal" step="2.5" value="${c.wk}"></div><div class="field"><label for="c-wr">Повторов в рабочем</label><input class="input" id="c-wr" data-calc="wr" type="number" inputmode="numeric" value="${c.wr}"></div></div>
+      <div id="calc-warm" class="stack">${warmHTML()}</div></div></section>`}
 function swNow(){return T.sw.acc+(T.sw.run?Date.now()-T.sw.start:0)}
 function fmtSw(ms){return fmtDur(Math.floor(ms/1000))+'.'+Math.floor(ms%1000/100)}
 function paintSeg(cfg,segs,now,label){
@@ -3086,24 +3324,24 @@ function vPhotos(){
     <div class="fields"><div class="field"><label for="pc-a">Было</label><select class="input" id="pc-a">${list.slice().reverse().map(p=>`<option value="${p.id}" ${ui.pcA===p.id?'selected':''}>${fmtD(p.d,{day:'numeric',month:'long',year:'numeric'})}</option>`).join('')}</select></div>
       <div class="field"><label for="pc-b">Стало</label><select class="input" id="pc-b">${list.slice().reverse().map(p=>`<option value="${p.id}" ${ui.pcB===p.id?'selected':''}>${fmtD(p.d,{day:'numeric',month:'long',year:'numeric'})}</option>`).join('')}</select></div></div>
     ${photoCompareHTML(byId(ui.pcA),byId(ui.pcB))}</section>`:''}
-  <section class="grid g4">${list.map(p=>`<button class="pthumb" data-act="photo-open" data-v="${p.id}"><img src="${p.img}" alt="Фото ${fmtD(p.d)}" loading="lazy"><span>${fmtD(p.d,{day:'numeric',month:'short'})}</span></button>`).join('')||'<p class="muted">Пока нет фотографий. Добавляйте раз в 2–4 недели, чтобы через пару месяцев увидеть разницу.</p>'}</section>`;
+  <section class="grid g4">${list.map(p=>`<button class="pthumb" data-act="photo-open" data-v="${p.id}"><img src="${purl(p)}" alt="Фото ${fmtD(p.d)}" loading="lazy"><span>${fmtD(p.d,{day:'numeric',month:'short'})}</span></button>`).join('')||'<p class="muted">Пока нет фотографий. Добавляйте раз в 2–4 недели, чтобы через пару месяцев увидеть разницу.</p>'}</section>`;
 }
 function photoCompareHTML(a,b){
   if(!a||!b)return '';
-  return `<div class="pcompare" id="pcompare"><img src="${a.img}" alt="До"><div class="after" style="clip-path:inset(0 0 0 50%)"><img src="${b.img}" alt="После"></div><input type="range" min="0" max="100" value="50" id="pc-slider" aria-label="Перетащите, чтобы сравнить"><div class="pc-line" style="left:50%"></div>
+  return `<div class="pcompare" id="pcompare"><img src="${purl(a)}" alt="До"><div class="after" style="clip-path:inset(0 0 0 50%)"><img src="${purl(b)}" alt="После"></div><input type="range" min="0" max="100" value="50" id="pc-slider" aria-label="Перетащите, чтобы сравнить"><div class="pc-line" style="left:50%"></div>
     <span class="pc-tag a">${fmtD(a.d,{day:'numeric',month:'short'})}</span><span class="pc-tag b">${fmtD(b.d,{day:'numeric',month:'short'})}</span></div>`;
 }
 function vBody(){
   const ws=S.weights,lw=lastW(),bmi=bmiInfo(),gw=S.profile.goalWeight,tk=todayKey(),good=v=>(v<0)===(S.profile.goal!=='gain');
-  const from=ui.wRange==='all'?'0000':addDays(tk,-ui.wRange),sel=ws.filter(w=>w.d>=from),ch=sel.length>1?r1(sel[sel.length-1].w-sel[0].w):null,toGo=lw?r1(lw.w-gw):null;
+  const met=ui.wMet||'w',from=ui.wRange==='all'?'0000':addDays(tk,-ui.wRange),sel=ws.filter(w=>w.d>=from),msel=sel.filter(w=>w[met]),ch=sel.length>1?r1(sel[sel.length-1].w-sel[0].w):null,toGo=lw?r1(lw.w-gw):null;
   const mch=MEAS.map(([k,n])=>{const l=ws.filter(w=>w[k]);return l.length>1?`${n}: ${fmt(l[0][k],1)} → ${fmt(l[l.length-1][k],1)} см`:null}).filter(Boolean);
   return `<section class="grid g4">
     <div class="panel stat"><span class="eyebrow">Текущий вес</span><span class="v">${lw?fmt(lw.w,1):'—'}<small>кг</small></span><span class="small muted">${lw?fmtD(lw.d):'Нет записей'}</span></div>
     <div class="panel stat"><span class="eyebrow">Изменение</span><span class="v ${ch==null?'':'delta '+(good(ch)?'good':'bad')}">${ch==null?'—':(ch>0?'+':'')+fmt(ch,1)}<small>кг</small></span><span class="small muted">${ui.wRange==='all'?'за всё время':'за '+ui.wRange+' дней'}</span></div>
     <div class="panel stat"><span class="eyebrow">До цели ${fmt(gw,1)} кг</span><span class="v">${toGo==null?'—':fmt(Math.abs(toGo),1)}<small>кг</small></span><span class="small muted">${toGo==null?'':toGo===0?'Цель достигнута':toGo>0?'нужно сбросить':'нужно набрать'}</span></div>
     <div class="panel stat"><span class="eyebrow">Индекс массы тела</span><span class="v">${bmi?fmt(bmi.b,1):'—'}</span>${bmi?`<span class="small delta ${bmi.tone==='good'?'good':'bad'}">${bmi.cat}</span>`:''}</div></section>
-  <section class="panel lift"><div class="row between"><h3>Динамика веса</h3><div class="seg">${[[30,'30 дн'],[60,'60 дн'],[90,'90 дн'],['all','Всё']].map(([v,l])=>`<button data-act="wRange" data-v="${v}" aria-pressed="${ui.wRange==v}">${l}</button>`).join('')}</div></div>
-    <div class="chart">${lineChart(sel.map(w=>({d:w.d,v:w.w})),{goal:gw,unit:''})}</div>${mch.length?`<p class="small muted">${mch.join(' · ')}</p>`:''}</section>
+  <section class="panel lift"><div class="row between"><h3>Динамика</h3><div class="seg" role="group" aria-label="Что показать">${[['w','Вес'],...MEAS].filter(([k])=>k==='w'||ws.some(x=>x[k])).map(([k,n])=>`<button data-act="wMet" data-v="${k}" aria-pressed="${met===k}">${n}</button>`).join('')}</div><div class="seg">${[[30,'30 дн'],[60,'60 дн'],[90,'90 дн'],['all','Всё']].map(([v,l])=>`<button data-act="wRange" data-v="${v}" aria-pressed="${ui.wRange==v}">${l}</button>`).join('')}</div></div>
+    <div class="chart">${lineChart(msel.map(w=>({d:w.d,v:w[met]})),met==='w'?{goal:gw,unit:''}:{unit:' см'})}</div>${mch.length?`<p class="small muted">${mch.join(' · ')}</p>`:''}</section>
   <section class="grid g2">
     <div class="panel"><h3>Новая запись</h3><div class="fields"><div class="field"><label for="w-d">Дата</label><input class="input" id="w-d" type="date" value="${tk}" max="${tk}"></div><div class="field"><label for="w-v">Вес, кг</label><input class="input" id="w-v" type="number" step="0.1" inputmode="decimal" placeholder="${lw?fmt(lw.w,1):'75,0'}"></div>
       ${MEAS.map(([k,n])=>`<div class="field"><label for="w-${k}">${n}, см</label><input class="input" id="w-${k}" type="number" step="0.5" inputmode="decimal" placeholder="необязательно"></div>`).join('')}</div>
@@ -3137,7 +3375,7 @@ function vReport(){
   const mon=mondayOf(tk),weeks=Array.from({length:8},(_,i)=>{const s=addDays(mon,-7*(7-i)),e=addDays(s,6),l=S.workouts.filter(w=>w.d>=s&&w.d<=e);return{s,m:Math.round(l.reduce((a,w)=>a+w.dur,0)/60)}});
   const BW=680,BH=190,bp=28,mx=Math.max(60,...weeks.map(w=>w.m)),bw=(BW-bp*2)/8;
   const bars=weeks.map((w,i)=>{const h=(w.m/mx)*(BH-60),x=bp+i*bw+bw*.18,y=BH-28-h;return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${(bw*.64).toFixed(1)}" height="${Math.max(h,1).toFixed(1)}" rx="3" fill="var(--accent)" fill-opacity="${i===7?1:.55}"/><text x="${(x+bw*.32).toFixed(1)}" y="${(y-6).toFixed(1)}" text-anchor="middle" style="fill:var(--ink);font-weight:700">${w.m?w.m+' мин':''}</text><text x="${(x+bw*.32).toFixed(1)}" y="${BH-10}" text-anchor="middle">${fmtD(w.s,{day:'numeric',month:'short'})}</text>`}).join('');
-  const hs=addDays(mon,-77);let cells='';for(let i=0;i<84;i++){const d=addDays(hs,i),m=S.workouts.filter(w=>w.d===d).reduce((a,w)=>a+w.dur,0)/60;cells+=`<i class="${m===0?'':m<20?'l1':m<40?'l2':m<60?'l3':'l4'} ${d>tk?'fut':''}" title="${fmtD(d)}${m?': '+Math.round(m)+' мин':''}"></i>`}
+  const hs=addDays(mon,-77),byD={};S.workouts.forEach(w=>{if(w.d>=hs)byD[w.d]=(byD[w.d]||0)+(w.dur||0)});let cells='';for(let i=0;i<84;i++){const d=addDays(hs,i),m=(byD[d]||0)/60;cells+=`<i class="${m===0?'':m<20?'l1':m<40?'l2':m<60?'l3':'l4'} ${d>tk?'fut':''}" title="${fmtD(d)}${m?': '+Math.round(m)+' мин':''}"></i>`}
   const byPlace=Object.keys(PLACES).map(k=>[k,ws.filter(w=>w.place===k).length]),maxP=Math.max(1,...byPlace.map(x=>x[1]));
   const tile=(k,v,s,cls='')=>`<div class="panel stat"><span class="eyebrow">${k}</span><span class="v ${cls}">${v}</span><span class="small muted">${s}</span></div>`;
   return `<div class="seg" role="group">${[['week','Неделя'],['month','30 дней'],['all','Всё время']].map(([v,l])=>`<button data-act="rRange" data-v="${v}" aria-pressed="${R===v}">${l}</button>`).join('')}</div>
@@ -3203,7 +3441,7 @@ function vProfile(){
     <p class="small muted">Вместе с темой меняются фразы, ранги, названия уровней, картины, испытания и живой фон.</p>
     <label class="switch"><span>Живой фон: видео темы, частицы и зерно плёнки${saveData()?' (включён режим экономии трафика — будет картинка)':''}</span><input type="checkbox" data-st="bgv" ${S.settings.bgv!==false?'checked':''}></label>
     <div class="stack"><h3>Свой фон</h3><p class="small muted" style="max-width:65ch">Поставьте любую картинку — например, любимый арт. Она появится на главном экране и перед тренировкой, хранится только на этом устройстве и никуда не загружается.</p>
-    <div class="row">${UBG?`<img src="${UBG}" alt="Ваш фон" style="width:120px;aspect-ratio:3/2;object-fit:cover;border-radius:var(--r-img);border:1px solid var(--line)">`:''}<button class="btn" data-act="ubg-pick">${UBG?'Сменить картинку':'Выбрать картинку'}</button>${UBG?'<button class="btn ghost danger" data-act="ubg-del">Убрать</button>':''}<input type="file" id="ubg-file" accept="image/*" hidden></div>
+    <div class="row">${UBG?`<img src="${ubgUrl()}" alt="Ваш фон" style="width:120px;aspect-ratio:3/2;object-fit:cover;border-radius:var(--r-img);border:1px solid var(--line)">`:''}<button class="btn" data-act="ubg-pick">${UBG?'Сменить картинку':'Выбрать картинку'}</button>${UBG?'<button class="btn ghost danger" data-act="ubg-del">Убрать</button>':''}<input type="file" id="ubg-file" accept="image/*" hidden></div>
     ${UBG?`<label class="switch"><span>Показывать фоном на всех экранах</span><input type="checkbox" data-st="ubgPage" ${S.settings.ubgPage?'checked':''}></label>`:''}</div></section>
   ${VIDEO_DL?`<section class="panel"><h3>Видео офлайн</h3><p class="small muted" style="max-width:65ch">Видео техники (23 ролика, около 15 МБ) грузятся по мере просмотра. Можно скачать все сразу — тогда они будут открываться без интернета, например в зале с плохой связью.</p>
     <div class="row">${ui.vdl?`<span class="small">Скачиваю… ${ui.vdl.done} из ${ui.vdl.total}</span>`:`<button class="btn" data-act="video-dl">${ic('download',16)} Скачать все видео (15 МБ)</button>`}</div></section>`:''}
@@ -3235,7 +3473,8 @@ function vProfile(){
     <h3>Данные</h3><p class="small muted">${store.mode==='db'?'Записи хранятся в вашем личном разделе этого приложения — они видны только вам и доступны с любого устройства.':'Записи хранятся на этом устройстве. Время от времени скачивайте резервную копию.'}</p>
     <p class="small muted">Копия переносит все записи на другое устройство: скачайте её на одном и загрузите на другом.</p>
     <div class="row">${DL||!window.claude?`<button class="btn" data-act="export">Скачать резервную копию</button>`:''}<button class="btn" data-act="import">Загрузить копию</button><button class="btn" data-act="transfer">Перенести на другое устройство</button><input type="file" id="imp" accept="application/json,.json,text/plain,.txt" hidden></div>
-    <p class="small muted">Перенос: отправьте файл себе (например, в «Избранное» Telegram), откройте «Подход» на другом устройстве и нажмите «Загрузить копию». Фото прогресса переносятся тоже. Автоматической синхронизации нет — для неё нужен свой сервер.</p>
+    ${PHOTOS.length?`<label class="cxchk"><input type="checkbox" id="exp-ph" ${ui.expPh!==false?'checked':''}> Включать в копию фото прогресса (${PHOTOS.length}) — снимите, если отправляете файл через мессенджер</label>`:''}
+    <p class="small muted">Перенос: отправьте файл себе (например, в «Избранное» Telegram), откройте «Подход» на другом устройстве и нажмите «Загрузить копию». Автоматической синхронизации нет — для неё нужен свой сервер.</p>
     <button class="btn danger" style="align-self:flex-start" data-act="reset-ask">${ic('trash',16)} Удалить все записи</button></div></section>
   <details class="panel"><summary style="cursor:pointer;font-weight:700">Источники фотографий и видео</summary><p class="small muted">Фото упражнений для дома и зала — Free Exercise DB (github.com/yuhonas/free-exercise-db), общественное достояние. Видео — Wikimedia Commons: часть роликов сняли Центры по контролю заболеваний США (CDC), общественное достояние, часть — автор FitnessScape по лицензии CC BY 3.0. Фото единоборств — Wikimedia Commons:</p>
     <ul class="small" style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px">${Object.entries(ART_CREDITS).map(([k,c])=>`<li>Картина темы: ${esc(c[0])}, ${esc(c[1])}, ${esc(c[2])} — <a href="${esc(c[3])}" target="_blank" rel="noopener">страница файла</a></li>`).join('')}${Object.entries(BG_CREDITS).map(([k,c])=>`<li>Живой фон «${esc((SKINS.find(x=>x[0]===k)||[k,k])[1])}»: ${esc(c[0])}, ${esc(c[1])}, ${esc(c[2])} — <a href="${esc(c[3])}" target="_blank" rel="noopener">страница файла</a></li>`).join('')}${Object.entries(VIDEO_CREDITS).map(([id,c])=>`<li>Видео «${esc(EX[id].name)}»: ${esc(c[0])}, ${esc(c[1])}, ${esc(c[2])} — <a href="${esc(c[3])}" target="_blank" rel="noopener">страница файла</a></li>`).join('')}${Object.entries(CREDITS).map(([id,c])=>`<li>${esc(EX[id].name)}: «${esc(c[0])}», ${esc(c[1])}, ${esc(c[2])} — <a href="${esc(c[3])}" target="_blank" rel="noopener">страница файла</a></li>`).join('')}</ul></details>`;
@@ -3275,10 +3514,11 @@ function startWorkout(w,planId,o={}){
 const curStep=()=>PL.steps[PL.k];
 const stepTarget=st=>st.drop?'до отказа':st.time?(st.time>=60&&st.time%60===0?st.time/60+' мин':st.time+' с'):st.reps+(st.fail?'+ · до отказа':' повт.');
 function stepLabel(st){if(st.wu)return 'Разминка';if(st.ramp)return 'Разминочный · '+st.ramp+'% веса';if(st.drop)return 'Дроп-сет · вес −25%';const m=PL.method,it=PL.items[st.i];if(it.fin)return `Добивка · подход ${st.s} из ${it.sets}`;if(m==='circuit')return `Круг ${st.s} из ${PL.w.rounds}`;if(m==='amrap')return `Круг ${st.s}`;if(m==='emom'){const ws=PL.steps.filter(x=>!x.wu);return `Минута ${ws.indexOf(st)+1} из ${ws.length}`}if(m==='tabata')return `Интервал ${st.s} из 8`;return `${isRound(it.ex)?'Раунд':'Подход'} ${st.s} из ${it.sets}`}
-function artBg(seed){const u=UBG,l=ART[sk()]||[];if(u)return u;if(!l.length)return null;return 'art/'+l[Math.floor(seed*l.length)%l.length]+'.jpg'}
+function artBg(seed){const u=ubgUrl(),l=ART[sk()]||[];if(u)return u;if(!l.length)return null;return 'art/'+l[Math.floor(seed*l.length)%l.length]+'.jpg'}
 function renderPlayer(){
   const el=document.getElementById('player');closeFull();
-  if(!PL){el.hidden=true;el.innerHTML='';el.classList.remove('enter');document.body.style.overflow='';document.body.classList.remove('pl-open');wake();return}
+  if(!PL){const was=!el.hidden;el.hidden=true;el.innerHTML='';el.classList.remove('enter');document.body.style.overflow='';document.body.classList.remove('pl-open');wake();if(was)applyBgv();return}
+  if(!document.body.classList.contains('pl-open')){document.body.classList.add('pl-open');applyBgv()}
   el.hidden=false;document.body.classList.add('pl-open');el.classList.toggle('ecl',!!PL.w.ecl);
   const st=curStep(),it=st&&PL.items[st.i],ex=it&&EX[it.ex];
   const pct=PL.method==='amrap'&&PL.capEnd?clamp((Date.now()-(PL.capEnd-PL.w.cap*1000))/(PL.w.cap*1000),0,1):PL.phase==='done'?1:PL.k/PL.steps.length;
@@ -3301,13 +3541,13 @@ function renderPlayer(){
     const w=PL.saved,pr=PL.newPR||[],rk=rankOf(totalXP()),up=rk.i>PL.rk0,sets=w.ex.reduce((a,e)=>a+e.sets.filter(s=>!s.wu).length,0),ni=Math.max(1,PL.items.filter(x=>!x.wu).length);
     const extra=PL.method==='amrap'?['Кругов',Math.floor(sets/ni)+(sets%ni?' + '+sets%ni:'')]:['Подходов',sets];
     body=`<section class="panel lift" style="align-items:center;text-align:center;gap:18px;position:relative;overflow:hidden">${splat(23)}<span class="plate xl ${LVP[PL.lv]}"></span><h1>${up?'Новый ранг!':'Тренировка завершена'}</h1>${decoHTML()}
-      ${up?`<p style="font:var(--h-weight) 24px/1.2 var(--f-display);text-transform:uppercase;color:var(--accent)">${esc(rk.name)}</p>`:''}
+      ${up?`<p style="font:var(--h-weight) 24px/1.2 var(--f-display);text-transform:uppercase;color:var(--accent-ink,var(--accent))">${esc(rk.name)}</p>`:''}
       <div class="grid g4" style="width:100%">${[['Время',fmtMin(w.dur)],extra,['Объём',fmt(w.vol)+' кг'],['Опыт','+'+w.xp+' XP']].map(([k,v])=>`<div class="stat"><span class="eyebrow">${k}</span><span class="v">${v}</span></div>`).join('')}</div>
       <p>${esc(funFact(w))}</p>
-      ${PL.progDone?`<span class="chip on">${esc(progOf(PL.w.progId).n)}: тренировка ${PL.progDone} выполнена</span>`:''}${PL.progFin?`<p style="font:var(--h-weight) 20px/1.2 var(--f-display);text-transform:uppercase;color:var(--accent)">Программа пройдена!</p>`:''}
+      ${PL.progDone?`<span class="chip on">${esc(progOf(PL.w.progId).n)}: тренировка ${PL.progDone} выполнена</span>`:''}${PL.progFin?`<p style="font:var(--h-weight) 20px/1.2 var(--f-display);text-transform:uppercase;color:var(--accent-ink,var(--accent))">Программа пройдена!</p>`:''}
       ${PL.partial?`<p class="small muted" style="max-width:52ch">Выполнено меньше 70% подходов — тренировка в истории, но ${PL.partial} не засчитана. В следующий раз получится.</p>`:''}
       ${PL.w.ecl?`<span class="chip on">Клеймо погасло · опыт ×${fmt(PL.w.eclX||1.5,1)}</span>`:''}
-      ${PL.campWon?`<p style="font:var(--h-weight) 22px/1.2 var(--f-display);text-transform:uppercase;color:var(--accent)">Путь к Затмению пройден. Клеймо твоё.</p>`:PL.w.campId&&S.camp?`<span class="chip on">Путь к Затмению: ${campSessions().filter(x=>S.camp.done[x.id]).length} / 16</span>`:''}
+      ${PL.campWon?`<p style="font:var(--h-weight) 22px/1.2 var(--f-display);text-transform:uppercase;color:var(--accent-ink,var(--accent))">Путь к Затмению пройден. Клеймо твоё.</p>`:PL.w.campId&&S.camp?`<span class="chip on">Путь к Затмению: ${campSessions().filter(x=>S.camp.done[x.id]).length} / 16</span>`:''}
       <div style="width:100%;max-width:420px" class="stack"><div class="bar"><i style="width:${(rk.frac*100).toFixed(1)}%"></i></div><span class="small muted">${esc(rk.name)} · ${rk.next?`до «${esc(rk.next)}» ${fmt(rk.nextAt-totalXP())} XP`:'высший ранг'}</span></div>
       ${pr.length?`<div class="stack"><h3>Новые рекорды</h3><div class="row" style="justify-content:center">${pr.map(t=>`<span class="chip on">${esc(t)}</span>`).join('')}</div></div>`:''}
       ${quoteHTML(PL.q,true)}
@@ -3425,8 +3665,9 @@ let ruVoice=null;
 function say(t){if(!S.settings.voice||!t)return;try{const ss=window.speechSynthesis;if(!ss)return;const g=voiceStyle()==='guts',vs=(ss.getVoices()||[]).filter(v=>/^ru/i.test(v.lang));
   let v=g?vs.find(x=>/pavel|dmitr|yuri|yury|maxim|ivan|nikolai|male|муж/i.test(x.name)):null;if(!v)v=vs[0]||null;
   ss.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='ru-RU';if(v)u.voice=v;u.rate=g?.9:1.08;u.pitch=g?.55:1;ss.speak(u)}catch(e){}}
-let WL=null;
-async function wake(on){const need=on||!!PL||T.rd.st.run||T.iv.st.run||T.rs.run;try{if(need&&!WL&&navigator.wakeLock){WL=await navigator.wakeLock.request('screen');WL.addEventListener('release',()=>{WL=null})}else if(!need&&WL){await WL.release();WL=null}}catch(e){}}
+let WL=null,WLP=null;
+const wakeNeed=on=>!!(on||PL||T.rd.st.run||T.iv.st.run||T.rs.run);
+async function wake(on){if(WLP)return;try{if(wakeNeed(on)&&!WL&&navigator.wakeLock){WLP=navigator.wakeLock.request('screen');const l=await WLP;WLP=null;WL=l;l.addEventListener('release',()=>{if(WL===l)WL=null});if(!wakeNeed(on)){await l.release();WL=null}}else if(!wakeNeed(on)&&WL){const l=WL;WL=null;await l.release()}}catch(e){WLP=null}}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')wake()});
 
 function tick(){
@@ -3545,7 +3786,7 @@ const ACT={
   'week-open':v=>{const w=ensureWeek().plans[v]||planFor(v);ui.draft=JSON.parse(JSON.stringify(w));ui.tab='train';ui.trainSub='build';render();const d=document.getElementById('draft');if(d)d.scrollIntoView({block:'start'})},
   install:async()=>{if(!INSTALL)return;INSTALL.prompt();try{const r=await INSTALL.userChoice;if(r.outcome==='accepted')toast('Готово! Ищите иконку на главном экране')}catch(e){}INSTALL=null;render()},
   'ubg-pick':()=>document.getElementById('ubg-file').click(),
-  'ubg-del':()=>{UBG=null;try{localStorage.removeItem('podhod:ubg')}catch(e){}render();toast('Свой фон убран')},
+  'ubg-del':()=>{UBG=null;saveUbg();render();toast('Свой фон убран')},
   'video-dl':async()=>{if(ui.vdl)return;const ids=[...VIDEO];ui.vdl={done:0,total:ids.length};render();
     let fail=0;
     for(const id of ids){try{const r=await fetch('video/'+id+'.webm',{cache:'reload'});if(!r.ok)fail++}catch(e){fail++}
@@ -3563,12 +3804,12 @@ const ACT={
     const r=await deliverFile(b,'podhod-'+PL.saved.d+'.jpg',{text:'Тренировка в «Подходе»'});if(r==='saved')toast('Карточка сохранена в «Загрузки»')},
   'cal-ics':async()=>{const t=icsText();if(!t){toast('Сначала выберите дни тренировок');return}
     const r=await deliverFile(new Blob([t],{type:'text/calendar'}),'podhod-trenirovki.ics',{share:false});if(r)toast('Файл календаря сохранён — откройте его, и телефон предложит добавить тренировки')},
-  'transfer':async()=>{const json=JSON.stringify({app:'podhod',v:2,exported:new Date().toISOString(),state:S,photos:PHOTOS}),nm='podhod-perenos-'+todayKey();
+  'transfer':async()=>{const json=backupJSON(),nm='podhod-perenos-'+todayKey();
     const r=await deliverFile(new Blob([json],{type:'application/json'}),nm+'.json',{alt:nm+'.txt',text:'Резервная копия «Подхода». На другом устройстве: Профиль → Загрузить копию.'});
     if(r==='saved')toast('Файл сохранён в «Загрузки» — отправьте его на другое устройство')},
   'photo-add':()=>document.getElementById('photo-file').click(),
-  'photo-open':v=>{const p=PHOTOS.find(x=>x.id===v);if(!p)return;modal(`<div class="row between"><h2>${fmtD(p.d,{day:'numeric',month:'long',year:'numeric'})}</h2><button class="btn iconbtn ghost" data-act="close-modal" aria-label="Закрыть">${ic('x')}</button></div><img src="${p.img}" alt="Фото ${fmtD(p.d)}" style="width:100%;border-radius:var(--r-img);border:1px solid var(--line)"><button class="btn danger" style="align-self:flex-start" data-act="photo-del" data-v="${p.id}">${ic('trash',16)} Удалить фото</button>`)},
-  'photo-del':v=>ask('Удалить это фото?','Удалить',()=>{PHOTOS=PHOTOS.filter(p=>p.id!==v);savePhotos();closeModal();render()}),
+  'photo-open':v=>{const p=PHOTOS.find(x=>x.id===v);if(!p)return;modal(`<div class="row between"><h2>${fmtD(p.d,{day:'numeric',month:'long',year:'numeric'})}</h2><button class="btn iconbtn ghost" data-act="close-modal" aria-label="Закрыть">${ic('x')}</button></div><img src="${purl(p)}" alt="Фото ${fmtD(p.d)}" style="width:100%;border-radius:var(--r-img);border:1px solid var(--line)"><button class="btn danger" style="align-self:flex-start" data-act="photo-del" data-v="${p.id}">${ic('trash',16)} Удалить фото</button>`)},
+  'photo-del':v=>ask('Удалить это фото?','Удалить',()=>{PHOTOS=PHOTOS.filter(p=>p.id!==v);const u=OURL.get(v);if(u&&u.startsWith('blob:'))try{URL.revokeObjectURL(u)}catch(e){}OURL.delete(v);savePhotos();closeModal();render()}),
   'b-method':v=>{builder().method=v;render()},
   'plan-ai':()=>runAI('plan'),'ai-stop':()=>{ui.ai.ctl&&ui.ai.ctl.abort()},
   'plan-swap':v=>{editW(S.plan.w,'swap',v);touch('main');render()},'plan-del':v=>{editW(S.plan.w,'del',v);touch('main');render()},
@@ -3581,7 +3822,7 @@ const ACT={
   'q-weight':()=>{if(addWeight(todayKey(),document.getElementById('q-weight').value))render()},
   'w-add':()=>{const ex={};MEAS.forEach(([k])=>ex[k]=document.getElementById('w-'+k).value);if(addWeight(document.getElementById('w-d').value||todayKey(),document.getElementById('w-v').value,ex))render()},
   'w-del':v=>{S.weights=S.weights.filter(w=>w.d!==v);touch('main');render()},
-  wRange:v=>{ui.wRange=v==='all'?'all':+v;render()},rRange:v=>{ui.rRange=v;render()},progSub:v=>{ui.progSub=v;render()},
+  wRange:v=>{ui.wRange=v==='all'?'all':+v;render()},wMet:v=>{ui.wMet=v;render()},rRange:v=>{ui.rRange=v;render()},progSub:v=>{ui.progSub=v;render()},
   'wo-del':v=>ask('Удалить эту тренировку из истории?','Удалить',()=>{const w=S.workouts.find(x=>x.id===v);S.workouts=S.workouts.filter(x=>x.id!==v);if(w)touch(w.d);render()}),
   fdate:v=>{const d=addDays(ui.foodDate||todayKey(),+v);if(d<=todayKey()){ui.foodDate=d;ui.fa=null;render()}},
   'f-copy':()=>{const d=ui.foodDate||todayKey();S.food[d]=(S.food[addDays(d,-1)]||[]).map(x=>Object.assign({},x,{id:newId()}));touch(d);render();toast('Меню повторено')},
@@ -3597,9 +3838,9 @@ const ACT={
   'pf-day':v=>{const d=+v,a=S.profile.days;S.profile.days=a.includes(d)?a.filter(x=>x!==d):[...a,d].sort();touch('main');render()},
   'pf-min':v=>{S.profile.minutes=+v;ui.b=null;S.plan=null;S.week=null;touch('main');render()},
   'pf-eq':v=>{const a=S.profile.eq||[];S.profile.eq=a.includes(v)?a.filter(x=>x!==v):[...a,v];touch('main');render()},
-  'export':async()=>{const json=JSON.stringify({app:'podhod',v:2,exported:new Date().toISOString(),state:S,photos:PHOTOS}),name='podhod-'+todayKey()+'.json';
+  'export':async()=>{const json=backupJSON(),name='podhod-'+todayKey()+'.json';
     if(DL){try{await DL.save({filename:name,data:json});toast('Копия сохранена')}catch(e){if(e&&e.code!=='declined')toast('Не удалось сохранить файл. Попробуйте ещё раз.')}return}
-    try{const blob=new Blob([json],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);toast('Копия сохранена в «Загрузки»')}catch(e){toast('Не удалось сохранить файл')}},
+    const r=await deliverFile(new Blob([json],{type:'application/json'}),name,{share:false});toast(r?'Копия сохранена в «Загрузки»':'Не удалось сохранить файл')},
   'import':()=>document.getElementById('imp').click(),
   tmode:v=>{T.mode=v;render()},
   'rd-toggle':()=>{const st=T.rd.st;ensureAudio();if(st.run){st.acc+=Date.now()-st.start;st.run=false}else{st.start=Date.now();st.run=true}wake();render()},
@@ -3643,13 +3884,15 @@ const ACT={
     if(PL.k>=PL.steps.length){finishWorkout();return}toast('Заменил: '+e.name);startStep(false)},
   'pl-skip':()=>{const i=curStep().i;PL.steps=PL.steps.slice(0,PL.k).concat(PL.steps.slice(PL.k).filter(x=>x.i!==i));PL.undoVal=null;if(PL.k>=PL.steps.length){finishWorkout();return}fixRests();startStep(false)}
 };
+/* фото прогресса — личные: в копию попадают, только если отмечено */
+const backupJSON=()=>JSON.stringify({app:'podhod',v:2,exported:new Date().toISOString(),state:S,photos:ui.expPh===false?[]:PHOTOS});
 function importFile(f){if(f.size>80e6){toast('Файл слишком большой для копии «Подхода»');return}
   const r=new FileReader();r.onload=()=>{let d,st;try{d=JSON.parse(r.result);st=d&&typeof d==='object'?(d.state||d):null;if(!st||typeof st!=='object'||!st.profile||!Array.isArray(st.workouts))throw 0}catch(e){toast('Это не файл резервной копии «Подхода»');return}
   const ph=Array.isArray(d.photos)?normPhotos(d.photos):null;
   ask(`Заменить текущие записи данными из файла?${ph&&ph.length?' Фото прогресса тоже заменятся ('+ph.length+').':' Фото на этом устройстве останутся.'}`,'Заменить',()=>{let ns;
     try{ns=merge({main:{profile:st.profile,weights:st.weights,settings:st.settings,customFoods:st.customFoods,plan:null,week:null,camp:st.camp,ecl:st.ecl,prog:st.prog,notes:st.notes,customEx:st.customEx,routines:st.routines},'m-import':{workouts:st.workouts,food:st.food,water:st.water}})}catch(e){toast('Файл повреждён — данные не загружены');return}
     const old=Object.keys(split());S=ns;S.demo=false;new Set([...old,...store.known,...Object.keys(split())]).forEach(k=>touch(k));
-    if(ph&&ph.length){PHOTOS=ph;savePhotos()}
+    if(ph&&ph.length){PHOTOS=ph;OURL.clear();savePhotos()}
     render();toast('Данные загружены')})};r.readAsText(f)}
 document.addEventListener('click',e=>{ensureAudio();const el=e.target.closest('[data-act]');if(!el||el.tagName==='DETAILS')return;const f=ACT[el.dataset.act];if(f){if(el.tagName!=='INPUT')e.preventDefault();f(el.dataset.v,el,e)}});
 document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
@@ -3666,7 +3909,7 @@ document.addEventListener('input',e=>{const t=e.target;
   if(t.dataset.rti&&ui.rt){const[i,k]=t.dataset.rti.split(':'),it=ui.rt.items[+i],lim={sets:20,reps:200,time:3600,rest:600};if(it&&lim[k])it[k]=clamp(parseInt(t.value)||1,k==='rest'?0:1,lim[k])}
   if(t.dataset.note){S.notes=S.notes||{};const v=t.value.slice(0,300);if(v.trim())S.notes[t.dataset.note]=v;else delete S.notes[t.dataset.note];touch('main')}
   if(t.id==='p-kg'){const pp=document.getElementById('p-plates');if(pp)pp.textContent=platesTxt(parseFloat(t.value)||0)}
-  if(t.dataset.calc){const c=calcS(),k=t.dataset.calc,lim={w:1000,r:100,kg:1000,bw:400,bar:20};c[k]=k==='lift'?(STR_STD[t.value]?t.value:c.lift):clamp(parseFloat(String(t.value).replace(',','.'))||0,0,lim[k]||1000);const set=(i,f)=>{const el=document.getElementById(i);if(el)el.innerHTML=f()};set('calc-1rm',rmHTML);set('calc-lvl',lvlHTML);set('calc-plates',platesHTML)}
+  if(t.dataset.calc){const c=calcS(),k=t.dataset.calc,lim={w:1000,r:100,kg:1000,bw:400,bar:20,wk:1000,wr:30};c[k]=k==='lift'?(STR_STD[t.value]?t.value:c.lift):clamp(parseFloat(String(t.value).replace(',','.'))||0,0,lim[k]||1000);const set=(i,f)=>{const el=document.getElementById(i);if(el)el.innerHTML=f()};set('calc-1rm',rmHTML);set('calc-lvl',lvlHTML);set('calc-plates',platesHTML);set('calc-warm',warmHTML)}
   if(t.id==='pc-slider'){const w=document.getElementById('pcompare');if(w){w.querySelector('.after').style.clipPath=`inset(0 0 0 ${t.value}%)`;w.querySelector('.pc-line').style.left=t.value+'%'}}
 });
 document.addEventListener('change',e=>{const t=e.target;
@@ -3676,6 +3919,7 @@ document.addEventListener('change',e=>{const t=e.target;
   if(t.id==='pc-a'){ui.pcA=t.value;render();return}
   if(t.id==='pc-b'){ui.pcB=t.value;render();return}
   if(t.id==='cal-time'){ui.calTime=t.value;return}
+  if(t.id==='exp-ph'){ui.expPh=t.checked;return}
   if(t.id==='voice-style'){S.settings.voiceStyle=t.value;touch('main');ensureAudio();say(coach('start'));return}
   if(t.id==='ex-sel'){ui.exSel=t.value;render();return}
   if(t.id==='lib-mus'){ui.libMus=t.value;render();return}
