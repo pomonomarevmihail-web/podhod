@@ -2,7 +2,7 @@
 <html lang="ru" data-skin="berserk">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-iATiD9dPBM8w4Mzy72zmKx/bKGpxllEBRUZm+VdzX0w=' 'sha256-ndFEokoztTMGcCQzMwq1JaoCawGZlJx9vWzIzaXgXV8=' 'sha256-LmFhfPRkdhtjKCaBuTCFNmDSPqdlHR/HYhLjqNGWhJM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-iATiD9dPBM8w4Mzy72zmKx/bKGpxllEBRUZm+VdzX0w=' 'sha256-QrUuWnAUv5N6cwyT/QYYuYnv/BU1/wo/jn6ibW4w+d4=' 'sha256-LmFhfPRkdhtjKCaBuTCFNmDSPqdlHR/HYhLjqNGWhJM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0A0909">
 <meta name="description" content="Дневник тренировок: программы по уровням, техника с фото, таймеры, питание, вес и отчёты.">
@@ -1423,7 +1423,7 @@ const mv=(A,v)=>[A[0]*v[0]+A[1]*v[1]+A[2]*v[2],A[3]*v[0]+A[4]*v[1]+A[5]*v[2],A[6
 const Rx=a=>{const c=cos(a*D),s=sin(a*D);return[1,0,0,0,c,-s,0,s,c]},Ry=a=>{const c=cos(a*D),s=sin(a*D);return[c,0,s,0,1,0,-s,0,c]},Rz=a=>{const c=cos(a*D),s=sin(a*D);return[c,-s,0,s,c,0,0,0,1]};
 
 /* ---------- скелет: рост ≈ 1,8 м; лицо смотрит в +z, левая сторона тела — +x ---------- */
-const B={lumb:.23,thor:.28,neck:.07,hr:.105,shW:.185,shY:-.055,hipW:.095,hipY:-.05,ua:.29,fa:.31,th:.44,sh:.43,ft:.18};
+const B={lumb:.23,thor:.28,neck:.075,hr:.105,shW:.196,shY:-.055,hipW:.09,hipY:-.05,ua:.29,fa:.31,th:.44,sh:.43,ft:.18};
 const DEF={x:0,y:.99,z:0,yaw:0,pit:0,rol:0,tw:0,sp:0,st:0,ss:0,nk:0,hy:0,hr:0,j:0,pt:0,tip:0,to:10,sh:0};
 const HANG=[.21,-.63,.04];
 function limbN(P,side,arm){
@@ -1765,52 +1765,69 @@ function frameGeo(base,R,secs){const u=mv(R,[1,0,0]),v=mv(R,[0,0,1]),d=mv(R,[0,1
 function relief(g,list){return(x,P,cam)=>{for(const[t0,t1,a0,a1,al]of list){const am=(a0+a1)/2;if(dot(g.nOf(am),cam)<.2)continue;const pts=[];for(let i=0;i<=4;i++){const k=i/4;pts.push(g.at(t0+(t1-t0)*k,a0+(a1-a0)*k))}curve(x,P,pts,1.1,al)}}}
 function bodyParts(J){const out=[],fwd=mv(J.R0,[0,0,1]),cf=mv(J.Rc,[0,0,1]);
   const lumbR=(()=>{const d=nrm(sub(J.waist,J.pel)),[sd,f]=frameOf(d,fwd);return[sd[0],d[0],f[0],sd[1],d[1],f[1],sd[2],d[2],f[2]]})();
-  // таз: ягодичные сзади
-  {const g=frameGeo(J.pel,J.R0,[[-.13,.1,.07],[-.07,.155,.1,-.01],[0,.165,.105],[.07,.145,.1]]);
+  // таз: узкий мужской, ягодичные сзади
+  {const g=frameGeo(J.pel,J.R0,[[-.13,.098,.074,-.004],[-.07,.143,.1,-.012],[0,.15,.102],[.07,.136,.097]]);
    out.push({tag:'hip',col:'cloth',pts:g.pts,mus:[g.patch('glutes',-.13,.02,-150,32),g.patch('glutes',-.13,.02,150,32),g.patch('adduct',-.13,-.07,0,22)]})}
-  // живот: пресс, косые, поясница
-  {const g=frameGeo(J.pel,lumbR,[[.04,.14,.1],[.13,.135,.095,.005],[.23,.14,.1]]);
-   out.push({tag:'core',pts:g.pts,dz:-.01,mus:[g.patch('abs',.05,.23,0,36),g.patch('obl',.06,.22,78,26),g.patch('obl',.06,.22,-78,26),g.patch('lowback',.04,.2,180,40)],
-    lines:(x,P,cam)=>{if(dot(mv(lumbR,[0,0,1]),cam)<.15)return;const f=y=>add(J.pel,mv(lumbR,[0,y,.102]));curve(x,P,[f(.04),f(.13),f(.22)],1.2,.16);
-      for(const y of[.1,.16])curve(x,P,[add(J.pel,mv(lumbR,[-.07,y,.09])),add(J.pel,mv(lumbR,[0,y,.104])),add(J.pel,mv(lumbR,[.07,y,.09]))],1,.12)}})}
-  // грудная клетка: грудные, широчайшие, середина спины, трапеции
-  {const g=frameGeo(J.waist,J.Rc,[[0,.14,.1],[.09,.165,.112,.01],[.17,.185,.118,.015],[.22,.2,.108,.005],[.26,.17,.085],[.285,.1,.06,-.01]]);
-   out.push({tag:'chest',pts:g.pts,mus:[g.patch('chest',.1,.235,-30,30),g.patch('chest',.1,.235,30,30),g.patch('lats',.01,.2,-125,30),g.patch('lats',.01,.2,125,30),
-     g.patch('midback',.1,.235,180,34),g.patch('traps',.225,.285,180,62),g.patch('abs',0,.07,0,30)],
+  // живот: узкая талия, кубики пресса, косые, поясница
+  {const g=frameGeo(J.pel,lumbR,[[.04,.13,.095],[.13,.124,.091,.006],[.23,.134,.098]]);
+   out.push({tag:'core',pts:g.pts,dz:-.01,mus:[g.patch('abs',.05,.23,13,12),g.patch('abs',.05,.23,-13,12),g.patch('obl',.06,.22,74,22),g.patch('obl',.06,.22,-74,22),g.patch('lowback',.02,.22,166,11),g.patch('lowback',.02,.22,194,11)],
+    lines:(x,P,cam)=>{if(dot(mv(lumbR,[0,0,1]),cam)<.15)return;const f=y=>add(J.pel,mv(lumbR,[0,y,.1]));curve(x,P,[f(.035),f(.13),f(.235)],1.4,.22);
+      for(const y of[.085,.14,.19])curve(x,P,[add(J.pel,mv(lumbR,[-.062,y+.006,.088])),add(J.pel,mv(lumbR,[-.03,y,.1])),add(J.pel,mv(lumbR,[0,y+.004,.102])),add(J.pel,mv(lumbR,[.03,y,.1])),add(J.pel,mv(lumbR,[.062,y+.006,.088]))],1.1,.17);
+      for(const sg of[1,-1])curve(x,P,[add(J.pel,mv(lumbR,[sg*.075,.02,.08])),add(J.pel,mv(lumbR,[sg*.09,.12,.075])),add(J.pel,mv(lumbR,[sg*.1,.22,.08]))],1,.13)}})}
+  // грудная клетка: V-силуэт — широкая спина под мышками, глубокая грудь
+  {const g=frameGeo(J.waist,J.Rc,[[0,.134,.098],[.08,.162,.108,.008],[.15,.194,.12,.018],[.2,.214,.117,.012],[.245,.2,.1],[.275,.158,.08,-.008],[.293,.1,.06,-.012]]);
+   out.push({tag:'chest',pts:g.pts,mus:[g.patch('chest',.1,.235,-30,30),g.patch('chest',.1,.235,30,30),g.patch('lats',.01,.2,-120,30),g.patch('lats',.01,.2,120,30),g.patch('lats',.185,.24,-148,13),g.patch('lats',.185,.24,148,13),
+     g.patch('serr',.085,.165,-67,9),g.patch('serr',.085,.165,67,9),g.patch('midback',.1,.235,180,30),g.patch('traps',.06,.2,180,11),g.patch('traps',.225,.285,180,62),g.patch('abs',0,.07,13,12),g.patch('abs',0,.07,-13,12)],
     lines:(x,P,cam)=>{const R=J.Rc,W=J.waist,pt=(xx,y,z)=>add(W,mv(R,[xx,y,z]));
-      if(dot(cf,cam)>.15){curve(x,P,[pt(0,.08,.125),pt(0,.2,.13)],1.2,.18);curve(x,P,[pt(-.15,.12,.1),pt(-.07,.095,.125),pt(0,.1,.13),pt(.07,.095,.125),pt(.15,.12,.1)],1.3,.2);
-        curve(x,P,[pt(-.16,.262,.075),pt(-.08,.268,.09),pt(-.02,.258,.1)],1,.14);curve(x,P,[pt(.16,.262,.075),pt(.08,.268,.09),pt(.02,.258,.1)],1,.14)}
-      else if(dot(cf,cam)<-.15){curve(x,P,[pt(0,-.02,-.1),pt(0,.26,-.07)],1.3,.2);curve(x,P,[pt(-.12,.2,-.1),pt(-.05,.13,-.11)],1,.12);curve(x,P,[pt(.12,.2,-.1),pt(.05,.13,-.11)],1,.12)}}})}
-  // шея (трапеции сзади) и голова
-  {const g=limbGeo(J.neck,add(J.neck,mv(J.Rh,[0,.09,.01])),[[-.1,.05,.045],[1,.045,.045]],cf);out.push({tag:'neck',pts:g.pts,dz:-.02,mus:[g.patch('traps',-.1,.5,180,70)]})}
+      if(dot(cf,cam)>.15){curve(x,P,[pt(0,.1,.14),pt(0,.215,.132)],1.3,.2);
+        curve(x,P,[pt(-.16,.262,.075),pt(-.08,.27,.092),pt(-.02,.26,.102)],1.1,.16);curve(x,P,[pt(.16,.262,.075),pt(.08,.27,.092),pt(.02,.26,.102)],1.1,.16);
+        for(const sg of[1,-1])curve(x,P,[pt(sg*.175,.16,.09),pt(sg*.16,.075,.1),pt(sg*.15,.02,.098)],1,.12)}
+      else if(dot(cf,cam)<-.15){curve(x,P,[pt(0,-.02,-.1),pt(0,.26,-.07)],1.4,.22);for(const sg of[1,-1]){curve(x,P,[pt(sg*.13,.215,-.104),pt(sg*.06,.14,-.112),pt(sg*.03,.02,-.1)],1.1,.15);curve(x,P,[pt(sg*.05,.24,-.1),pt(sg*.12,.225,-.1),pt(sg*.17,.2,-.09)],1,.12)}}}})}
+  // грудные мышцы: веер от грудины к плечу, нижний край поднимается к подмышке
+  {const secs=[[0,.134,.098],[.08,.162,.108,.008],[.15,.194,.12,.018],[.2,.214,.117,.012],[.245,.2,.1],[.275,.158,.08,-.008],[.293,.1,.06,-.012]];
+   const surf=(xx,y)=>{const[,rx,rz,oz]=lerpSec(secs,y),k=cl(xx/rx,-.98,.98);return(oz||0)+rz*sqrt(1-k*k)};
+   const PEC=[[.012,.252],[.06,.26],[.115,.254],[.16,.236],[.186,.208],[.178,.176],[.15,.148],[.1,.122],[.05,.11],[.014,.114]];
+   for(const sg of[1,-1]){const at=(xx,y,dz)=>add(J.waist,mv(J.Rc,[sg*xx,y,surf(xx,y)+dz]));const cx=.095,cy=.19;
+     const pts=[];for(const[xx,y]of PEC){pts.push(at(xx,y,.003));pts.push(at(cx+(xx-cx)*.55,cy+(y-cy)*.55,.024))}
+     out.push({tag:'pec',dz:.006,pts,mus:[{m:'chest',n:cf,get:()=>pts}],lines:(x,P,cam)=>{if(dot(cf,cam)<.2)return;curve(x,P,[at(.02,.112,.006),at(.07,.114,.012),at(.13,.132,.01),at(.17,.165,.006)],1.2,.2)}})}}
+  // трапеции: скат от шеи к плечам
+  {const g=frameGeo(J.neck,J.Rc,[[-.06,.2,.072,-.022],[-.02,.16,.07,-.026],[.03,.09,.06,-.022],[.07,.062,.054,-.012]]);
+   out.push({tag:'traps',dz:-.004,pts:g.pts,mus:[g.patch('traps',-.06,.07,180,85),g.patch('traps',-.02,.07,0,55)]})}
+  // шея: мощная
+  {const g=limbGeo(J.neck,add(J.neck,mv(J.Rh,[0,.095,.01])),[[-.1,.062,.056],[.6,.056,.052],[1,.052,.05]],cf);out.push({tag:'neck',pts:g.pts,dz:-.02,mus:[g.patch('traps',-.1,.5,180,70)],
+    lines:(x,P,cam)=>{if(dot(cf,cam)<.2)return;for(const sg of[1,-1])curve(x,P,[add(J.neck,mv(J.Rh,[sg*.046,.085,-.004])),add(J.neck,mv(J.Rh,[sg*.036,.04,.03])),add(J.neck,mv(J.Rc,[sg*.014,-.015,.052]))],1.1,.2)}})}
   const H=J.head,Rh=J.Rh;
-  for(const e of[1,-1])out.push({tag:'ear',dz:-.002,pts:framePts(add(H,mv(Rh,[e*.087,-.004,-.006])),Rh,[[-.022,.008,.014],[0,.014,.02],[.022,.008,.013]])});
-  /* волосы — участки поверхности головы: рисуются только те, что смотрят в камеру */
-  const hg=frameGeo(H,Rh,[[-.09,.045,.055,.035],[-.07,.07,.08,.02],[-.02,.085,.098,.005],[.04,.088,.1],[.09,.075,.088,-.005],[.125,.04,.05,-.01]]);
-  out.push({tag:'head',pts:hg.pts,hair:[hg.patch('h',-.055,.118,180,80),hg.patch('h',.015,.118,100,40),hg.patch('h',.015,.118,-100,40),hg.patch('h',.07,.124,0,72),Object.assign(hg.patch('h',.1,.128,0,180),{n:mv(Rh,[0,1,0])})],
+  for(const e of[1,-1])out.push({tag:'ear',dz:-.002,pts:framePts(add(H,mv(Rh,[e*.088,-.004,-.006])),Rh,[[-.024,.008,.014],[0,.014,.021],[.024,.008,.013]])});
+  /* голова: широкая челюсть и подбородок; волосы и щетина — участки поверхности, видимые с камеры */
+  const hg=frameGeo(H,Rh,[[-.098,.05,.05,.042],[-.075,.079,.08,.022],[-.03,.086,.096,.008],[.035,.088,.1],[.09,.076,.088,-.005],[.125,.042,.05,-.01]]);
+  out.push({tag:'head',pts:hg.pts,hair:[hg.patch('h',-.055,.118,180,80),hg.patch('h',.015,.118,100,40),hg.patch('h',.015,.118,-100,40),hg.patch('h',.072,.124,0,72),Object.assign(hg.patch('h',.1,.128,0,180),{n:mv(Rh,[0,1,0])})],
+    beard:[hg.patch('b',-.098,-.035,0,62),hg.patch('b',-.08,-.01,70,26),hg.patch('b',-.08,-.01,-70,26)],
     lines:(x,P,cam)=>{const fz=mv(Rh,[0,0,1]);if(dot(fz,cam)<.05)return;const q=(xx,y,z)=>add(H,mv(Rh,[xx,y,z]));
-      const e1=P(q(-.035,.01,.093)),e2=P(q(.035,.01,.093)),n=P(q(0,-.02,.11));x.fillStyle='rgba(0,0,0,.45)';for(const e of[e1,e2]){x.beginPath();x.ellipse(e.x,e.y,max(.8,.012*e.k),max(.6,.007*e.k),0,0,2*PI);x.fill()}
-      x.fillStyle=rgb(mixc(COL.body,COL.acc,.3));x.beginPath();x.arc(n.x,n.y,max(1,.016*n.k),0,2*PI);x.fill();curve(x,P,[q(-.025,-.055,.09),q(0,-.06,.095),q(.025,-.055,.09)],1,.35)}});
+      const e1=P(q(-.034,.008,.094)),e2=P(q(.034,.008,.094)),n=P(q(0,-.022,.112));x.fillStyle='rgba(0,0,0,.5)';for(const e of[e1,e2]){x.beginPath();x.ellipse(e.x,e.y,max(.8,.012*e.k),max(.6,.0065*e.k),0,0,2*PI);x.fill()}
+      for(const sg of[1,-1])curve(x,P,[q(sg*.056,.026,.086),q(sg*.034,.034,.097),q(sg*.012,.03,.1)],max(1.2,.008*e1.k),.5);
+      x.fillStyle=rgb(mixc(COL.body,[0,0,0],.18));x.beginPath();x.ellipse(n.x,n.y,max(1,.012*n.k),max(1,.016*n.k),0,0,2*PI);x.fill();
+      curve(x,P,[q(-.026,-.058,.092),q(0,-.061,.097),q(.026,-.058,.092)],1.2,.42)}});
   for(const s of['l','r']){const sg=s==='l'?1:-1,sh=J[s+'sh'],el=J[s+'el'],wr=J[s+'wr'],hip=J[s+'hip'],kn=J[s+'kn'],an=J[s+'an'],toe=J[s+'toe'],heel=J[s+'heel'];
     const ud=nrm(sub(el,sh)),fd=nrm(sub(wr,el)),wr0=sub(wr,mul(fd,.045)),td=nrm(sub(kn,hip)),snd=nrm(sub(an,kn)),ftd=nrm(sub(toe,heel));
-    // дельты: перед и средний пучок, задний пучок
-    {const g=limbGeo(add(sh,mv(J.Rc,[sg*.012,.005,0])),add(sh,mul(ud,.11)),[[-.35,.05,.05],[0,.07,.068],[.5,.064,.062],[1,.052,.052]],cf);
-     out.push({tag:'sh',pts:g.pts,dz:.005,mus:[g.patch('delts',-.35,1,0,110),g.patch('rdelt',-.3,1,180,65)]})}
-    // плечо: бицепс со стороны сгиба локтя, трицепс сзади
-    {const ref=len(cross(ud,fd))>.25?fd:cf,g=limbGeo(sh,el,[[.12,.058,.056],[.45,.052,.058,.006],[.85,.044,.044],[1.06,.036,.036]],ref),ou=dot(g.u,sub(el,J.chest))>0?90:-90;
-     out.push({tag:'ua',pts:g.pts,mus:[g.patch('biceps',.2,.9,0,60),g.patch('triceps',.1,.95,180,70)],lines:relief(g,[[.22,.86,ou,ou*.95,.16],[.18,.62,ou*1.55,ou*1.75,.1]])})}
-    {const g=limbGeo(el,wr0,[[-.06,.04,.038],[.22,.05,.043],[.7,.036,.03],[1.02,.027,.022]],ud);out.push({tag:'fa',pts:g.pts,mus:[g.patch('fore',-.05,.8,0,180)]})}
-    const pn=frameOf(fd,cf)[0];out.push({tag:'hand',pts:limbPts(sub(wr,mul(fd,.05)),add(wr,mul(fd,.045)),[[0,.028,.02],[.45,.045,.024],[1,.038,.02],[1.15,.022,.014]],pn),dz:.004});
-    // бедро: квадрицепс спереди (против сгиба колена), бицепс бедра сзади, приводящие изнутри
-    {const ref=len(cross(td,snd))>.25?mul(snd,-1):fwd,g=limbGeo(hip,kn,[[-.1,.07,.07],[.08,.092,.088],[.4,.084,.082,.012],[.8,.064,.062],[1.04,.05,.05]],ref);
+    // дельты: крупные «шары» плеч
+    {const g=limbGeo(add(sh,mv(J.Rc,[sg*.014,.008,0])),add(sh,mul(ud,.125)),[[-.35,.056,.056],[0,.08,.077],[.5,.073,.07],[1,.056,.056]],cf);
+     const os=dot(g.u,sub(sh,J.neck))>0?90:-90;out.push({tag:'sh',pts:g.pts,dz:.005,mus:[g.patch('rdelt',-.3,1,180,48),g.patch('delts',-.35,1,0,46),g.patch('delts',-.35,1,os,44)]})}
+    // плечо: объёмный бицепс со стороны сгиба, подкова трицепса сзади
+    {const ref=len(cross(ud,fd))>.25?fd:cf,g=limbGeo(sh,el,[[.12,.066,.064],[.45,.059,.068,.011],[.85,.047,.047],[1.06,.038,.038]],ref),ou=dot(g.u,sub(el,J.chest))>0?90:-90;
+     out.push({tag:'ua',pts:g.pts,mus:[g.patch('triceps',.08,.9,180+ou*.36,32),g.patch('triceps',.1,.72,180-ou*.5,30),g.patch('biceps',.18,.88,0,46)],lines:relief(g,[[.22,.86,ou,ou*.95,.18]])})}
+    {const g=limbGeo(el,wr0,[[-.06,.045,.041],[.22,.056,.047],[.7,.039,.032],[1.02,.029,.024]],ud);out.push({tag:'fa',pts:g.pts,mus:[g.patch('fore',-.05,.78,180,72),g.patch('fore',-.05,.8,0,72)],lines:relief(g,[[.05,.6,70,40,.1]])})}
+    const pn=frameOf(fd,cf)[0];out.push({tag:'hand',pts:limbPts(sub(wr,mul(fd,.05)),add(wr,mul(fd,.05)),[[0,.03,.022],[.45,.049,.026],[1,.042,.022],[1.15,.024,.015]],pn),dz:.004});
+    // бедро: мощный квадрицепс с «каплей» над коленом, бицепс бедра сзади
+    {const ref=len(cross(td,snd))>.25?mul(snd,-1):fwd,g=limbGeo(hip,kn,[[-.1,.074,.072],[.08,.097,.092],[.4,.09,.087,.015],[.8,.069,.065],[1.04,.052,.052]],ref);
      const inn=dot(frameOf(td,ref)[0],sub(J.pel,hip))>0?90:-90;
-     out.push({tag:'th',pts:g.pts,mus:[g.patch('quads',.05,.95,0,62),g.patch('hams',.08,.9,180,55),g.patch('adduct',.05,.55,inn,30)],
-       lines:relief(g,[[.2,.86,-inn*.42,-inn*.3,.15],[.58,.9,inn*.5,inn*.12,.17],[.2,.8,180,180,.1],[.12,.5,inn*.9,inn*.7,.09]])});
-     const gs=limbGeo(hip,kn,[[-.1,.074,.074],[.08,.097,.093],[.3,.093,.09,.012]],ref);out.push({tag:'shorts',col:'cloth',dz:.012,pts:gs.pts})}
-    // голень: икры сзади (против носка)
-    {const ref=len(cross(snd,ftd))>.25?ftd:fwd,g=limbGeo(kn,an,[[-.04,.05,.05],[.12,.052,.054],[.32,.05,.058,-.018],[.72,.036,.034],[1,.03,.03],[1.08,.024,.024]],ref);
-     out.push({tag:'sn',pts:g.pts,mus:[g.patch('calves',.05,.75,180,70)],lines:relief(g,[[.1,.42,180,180,.13],[.4,.62,160,120,.1],[.4,.62,-160,-120,.1]])})}
-    const up=abs(ftd[1])<.9?[0,1,0]:fwd;out.push({tag:'ft',col:'shoe',pts:limbPts(heel,toe,[[-.1,.031,.03],[.1,.039,.043,.01],[.55,.049,.031],[.95,.045,.021],[1.08,.032,.014]],up)})}
+     out.push({tag:'th',pts:g.pts,mus:[g.patch('adduct',.05,.55,inn,28),g.patch('hams',.12,.9,180+inn*.28,24),g.patch('hams',.1,.88,180-inn*.28,26),
+       g.patch('quads',.12,.9,-inn*.55,30),g.patch('quads',.55,.95,inn*.45,26),g.patch('quads',.08,.85,0,22)],
+       lines:relief(g,[[.15,.75,-inn*.95,-inn*.85,.12]])});
+     const gs=limbGeo(hip,kn,[[-.1,.079,.077],[.08,.102,.097],[.3,.098,.094,.013]],ref);out.push({tag:'shorts',col:'cloth',dz:.012,pts:gs.pts})}
+    // голень: икра «ромбом» сзади
+    {const ref=len(cross(snd,ftd))>.25?ftd:fwd,g=limbGeo(kn,an,[[-.04,.052,.052],[.12,.057,.059],[.3,.056,.066,-.024],[.5,.046,.05,-.012],[.74,.037,.035],[1,.031,.031],[1.08,.025,.025]],ref);
+     const i2=dot(g.u,sub(J.pel,kn))>0?90:-90;out.push({tag:'sn',pts:g.pts,mus:[g.patch('calves',.42,.82,180,70),g.patch('shin',.08,.72,-i2*.25,20),g.patch('calves',.06,.46,180+i2*.44,28),g.patch('calves',.06,.52,180-i2*.44,30)]})}
+    const up=abs(ftd[1])<.9?[0,1,0]:fwd;out.push({tag:'ft',col:'shoe',pts:limbPts(heel,toe,[[-.1,.032,.031],[.1,.04,.044,.01],[.55,.05,.032],[.95,.046,.022],[1.08,.033,.015]],up)})}
   return out}
 /* снаряды */
 function props(J,tpl,time,o){const out=[],C=COL,pc=C.prop,metal=mixc(pc,[200,200,200],.3),cap=(a,b,r1,r2,col)=>out.push({t:'c',a,b,r1,r2,col:col||pc}),sph=(p,r,col)=>out.push({t:'s',p,r,col:col||pc});
@@ -1855,7 +1872,7 @@ function draw(cv,id,time,view,opts={}){
   // тень: каждая часть тела и снаряда проецируется на пол косым светом сверху
   {const sx=.2,sz=.13,sp=p=>P([p[0]-p[1]*sx,0,p[2]-p[1]*sz]);x.beginPath();
    const addH=pp=>{const h=hull(pp);if(h.length<3)return;x.moveTo(h[0].x,h[0].y);for(let i=1;i<h.length;i++)x.lineTo(h[i].x,h[i].y);x.closePath()};
-   for(const pt of parts){if(pt.tag==='hair'||pt.tag==='ear')continue;const pp=[];for(let i=0;i<pt.pts.length;i+=2)pp.push(sp(pt.pts[i]));addH(pp)}
+   for(const pt of parts){if(pt.tag==='ear'||pt.tag==='pec')continue;const pp=[];for(let i=0;i<pt.pts.length;i+=2)pp.push(sp(pt.pts[i]));addH(pp)}
    for(const q of pr){if(q.t==='b'&&q.c[1]-q.s[1]/2<.02)continue;if(q.t==='c'){const a=q.a,b=q.b,r=max(q.r1,q.r2);if(a[1]<.03&&b[1]<.03)continue;addH([sp(add(a,[r,0,0])),sp(add(a,[-r,0,0])),sp(add(a,[0,0,r])),sp(add(a,[0,0,-r])),sp(add(b,[r,0,0])),sp(add(b,[-r,0,0])),sp(add(b,[0,0,r])),sp(add(b,[0,0,-r]))])}
      else if(q.t==='s'){const pp=[];for(let i=0;i<8;i++){const a=i/8*2*PI;pp.push(sp(add(q.p,[cos(a)*q.r,0,sin(a)*q.r])))}addH(pp)}
      else if(q.t==='d'&&q.r>.1){const u=nrm(abs(q.n[1])<.9?cross(q.n,[0,1,0]):cross(q.n,[1,0,0])),v=cross(q.n,u),pp=[];for(let i=0;i<10;i++){const a=i/10*2*PI;pp.push(sp(add(q.p,add(mul(u,cos(a)*q.r),mul(v,sin(a)*q.r)))))}addH(pp)}}
@@ -1870,6 +1887,8 @@ function draw(cv,id,time,view,opts={}){
   for(const pt of parts){const pp=pt.pts.map(P);let z=0;for(const p of pp)z+=p.z;z=z/pp.length+(pt.dz||0);
     items.push({z,f:()=>{const h=hull(pp);if(h.length<3)return;const fog=fogOf(z);solidFill(x,h,pt.col?C[pt.col]:body,fog);
       if(pt.hair){const hc=rgb(mixc(C.hair,C.bg,fog));for(const hp of pt.hair){const vis=dot(hp.n,cam);if(vis<-.12)continue;const hh=hull(hp.get().map(P));if(hh.length<3)continue;x.save();x.globalAlpha=cl((vis+.12)/.3,0,1);smooth(x,hh);x.fillStyle=hc;x.fill();x.restore()}}
+      if(pt.beard){const bc=rgb(mixc(C.hair,C.bg,fog));for(const bp of pt.beard){const vis=dot(bp.n,cam);if(vis<.05)continue;const hh=hull(bp.get().map(P));if(hh.length<3)continue;x.save();x.globalAlpha=.3*cl((vis-.05)/.3,0,1);smooth(x,hh);x.fillStyle=bc;x.fill();x.restore()}}
+      if(pt.mus&&!pt.col&&!opts.lite)for(const mp of pt.mus){if(!DEFM.has(mp.m)||hi.p.has(mp.m)||hi.s.has(mp.m))continue;const vis=dot(mp.n,cam);if(vis<.12)continue;defFill(x,hull(mp.get().map(P)),body,fog,.5*cl((vis-.12)/.4,0,1))}
       if(pt.mus)for(const mp of pt.mus){const lv=hi.p.has(mp.m)?1:hi.s.has(mp.m)?.5:0;if(!lv)continue;const vis=dot(mp.n,cam);if(vis<-.2)continue;musFill(x,hull(mp.get().map(P)),lv*cl((vis+.2)/.45,0,1))}
       if(pt.lines)pt.lines(x,P,cam)}})}
   const chestZ=P(J.chest).z;
@@ -1886,6 +1905,11 @@ function draw(cv,id,time,view,opts={}){
   return J}
 const HIC=Object.create(null);
 function hiOf(id){if(HIC[id])return HIC[id];const m=musc(id),r={p:new Set(m.p),s:new Set(m.s)};if(!(typeof EX!=='undefined'&&EX[id]&&EX[id].custom))HIC[id]=r;return r}
+/* рельеф: каждая мышца — отдельный освещённый объём, даже без подсветки */
+const DEFM=new Set(['chest','abs','obl','delts','rdelt','biceps','triceps','fore','quads','hams','calves','lats','traps','midback','lowback','serr','shin','adduct']);
+function defFill(x,h,base,fog,a){if(h.length<3||a<=.02)return;let lo=1e9,hi2=-1e9,pa=h[0],pb=h[0];for(const p of h){const t=-.45*p.x-.89*p.y;if(t<lo){lo=t;pa=p}if(t>hi2){hi2=t;pb=p}}
+  const c=mixc(base,COL.bg,fog),g=x.createLinearGradient(pb.x,pb.y,pa.x,pa.y);g.addColorStop(0,rgb(mixc(c,[255,255,255],.4)));g.addColorStop(.45,rgb(mixc(c,[255,255,255],.1)));g.addColorStop(1,rgb(mixc(c,[0,0,0],.42)));
+  x.save();x.globalAlpha=a;smooth(x,h);x.fillStyle=g;x.fill();x.globalAlpha=a*.55;x.strokeStyle='rgba(0,0,0,.4)';x.lineWidth=1;x.stroke();x.restore()}
 function musFill(x,h,a){if(h.length<3||a<=.02)return;x.save();x.globalAlpha=a*.92;smooth(x,h);const c=COL.acc;x.fillStyle=rgb(c);x.fill();x.globalAlpha=a*.5;x.strokeStyle=rgb(mixc(c,[0,0,0],.4));x.lineWidth=1;x.stroke();x.restore()}
 const ease=t=>t*t*(3-2*t);
 function norms(tpl){if(!tpl._n){tpl._n=tpl.k.map(N);const n=tpl._n.length;tpl._w=tpl._n.map(toW);tpl._t=tpl.t||Array(n).fill(1);tpl._dur=tpl._t.reduce((a,b)=>a+b,0)+.1*n}return tpl._n}
@@ -1901,9 +1925,10 @@ const LIVE=new Set();
 function destroy(el){const a=el&&el._m3d;if(!a)return;a.stop();try{a.io&&a.io.disconnect()}catch(e){}try{a.ro&&a.ro.disconnect()}catch(e){}const cv=el.querySelector('canvas');if(cv){cv.width=cv.height=0}LIVE.delete(el);el._m3d=null}
 function sweep(){for(const el of[...LIVE])if(!el.isConnected)destroy(el)}
 function mount(el){const id=el.dataset.m3d,key=keyOf(id);if(!key)return null;const tpl=T[key],cv=el.querySelector('canvas');if(!cv)return null;
-  const st={yaw:tpl.v,el:tpl.e,t:0,sp:1,play:!(typeof matchMedia!=='undefined'&&matchMedia('(prefers-reduced-motion: reduce)').matches),last:0,raf:0,vis:true,drag:null,cost:0,odd:0};
+  const st={yaw:tpl.v,el:tpl.e,t:0,sp:1,play:!(typeof matchMedia!=='undefined'&&matchMedia('(prefers-reduced-motion: reduce)').matches),last:0,raf:0,vis:true,drag:null,cost:0,odd:0,slow:0,lite:false};
   const size=()=>{const dpr=min(2,window.devicePixelRatio||1),full=el.classList.contains('m3d-full'),w=max(10,(full?innerWidth:cv.parentNode.clientWidth)|0),h=max(10,(full?innerHeight-(el.querySelector('.m3d-bar')||{offsetHeight:60}).offsetHeight:el.dataset.h?+el.dataset.h:w*(w<520?.92:.7))|0);cv.style.height=h+'px';cv.width=w*dpr;cv.height=h*dpr;cv._dpr=dpr};
-  size();const paint=()=>{const t0=performance.now();draw(cv,id,st.t,st,{ghost:st.ghost});st.cost=st.cost*.9+(performance.now()-t0)*.1};paint();if(!st.play)el.classList.add('paused');
+  size();/* слабый телефон: если кадр стабильно дороже 16 мс, рельеф без подсветки отключается до конца показа */
+  const paint=()=>{const t0=performance.now();draw(cv,id,st.t,st,{ghost:st.ghost,lite:st.lite});st.cost=st.cost*.9+(performance.now()-t0)*.1;if(st.cost>16&&++st.slow>20)st.lite=true};paint();if(!st.play)el.classList.add('paused');
   const want=()=>(st.play||st.orbit)&&st.vis&&document.visibilityState==='visible'&&el.isConnected;
   /* медленный телефон: если кадр дороже 12 мс, рисуем через кадр (30 к/с) */
   const loop=now=>{st.raf=0;if(!el.isConnected){destroy(el);return}if(!want())return;const dt=st.last?min(.05,(now-st.last)/1000):0;st.last=now;
@@ -1959,30 +1984,41 @@ function thumb(id,w=330,h=220){colors();const k=id+'|'+colKey+'|'+w+'x'+h;if(TH[
 /* ---------- карта мышц (своя схема, спереди и сзади) ---------- */
 function bodyMap(val,o={}){ // val: {muscle: 0..1} или {p:[..],s:[..]}
   const v={};if(val.p){val.p.forEach(k=>v[k]=1);(val.s||[]).forEach(k=>v[k]=v[k]||.45)}else Object.assign(v,val);
-  const f=k=>{const x=v[k]||0;return x>0?`fill="var(--accent)" fill-opacity="${(.18+.82*x).toFixed(2)}"`:'fill="var(--line)"'};
+  const f=k=>{const x=v[k]||0;return x>0?`fill="var(--accent)" fill-opacity="${(.2+.8*x).toFixed(2)}"`:'fill="var(--line)"'};
   const t=k=>`<title>${MUS[k]}${v[k]?'':' — не нагружены'}</title>`;
-  const pair=(k,a)=>`<g ${f(k)}>${t(k)}${a}</g>`;
+  /* каждая мышца — по головкам; тонкий зазор между ними рисует обводка цветом фона */
+  const pair=(k,a)=>`<g ${f(k)} stroke="var(--surface2)" stroke-width=".7" stroke-linejoin="round">${t(k)}${a}${mir(a)}</g>`;
   const mir=s=>`<g transform="translate(100,0) scale(-1,1)">${s}</g>`;
-  const base='fill="var(--surface2)" stroke="var(--line)" stroke-width="1"';
-  const sil=`<g ${base}><circle cx="50" cy="15" r="10.5"/><path d="M44 25h12v7H44z"/><path d="M31 34Q50 28 69 34L73 60 70 98Q50 104 30 98L27 60Z"/><path d="M30 36 21 62 18 100 24 101 30 66 33 50Z"/><path d="M70 36 79 62 82 100 76 101 70 66 67 50Z"/><path d="M31 96Q50 104 69 96L66 146 64 190H55L51 128 49 128 45 190H36L34 146Z"/></g>`;
-  const front=sil+pair('traps',`<path d="M44 29 35 35 44 34Z"/>`+mir(`<path d="M44 29 35 35 44 34Z"/>`))+pair('delts',`<ellipse cx="31" cy="41" rx="7" ry="8.5"/><ellipse cx="69" cy="41" rx="7" ry="8.5"/>`)
-    +pair('chest',`<path d="M49.3 37H37Q31 42 34 53Q42 58 49.3 55Z"/>`+mir(`<path d="M49.3 37H37Q31 42 34 53Q42 58 49.3 55Z"/>`))
-    +pair('biceps',`<ellipse cx="27" cy="59" rx="4.6" ry="10" transform="rotate(8 27 59)"/><ellipse cx="73" cy="59" rx="4.6" ry="10" transform="rotate(-8 73 59)"/>`)
-    +pair('fore',`<ellipse cx="22.5" cy="82" rx="4" ry="12" transform="rotate(8 22.5 82)"/><ellipse cx="77.5" cy="82" rx="4" ry="12" transform="rotate(-8 77.5 82)"/>`)
-    +pair('abs',[58,68.5,79,89.5].map(y=>`<rect x="43.5" y="${y}" width="6" height="9.4" rx="2"/><rect x="50.5" y="${y}" width="6" height="9.4" rx="2"/>`).join(''))
-    +pair('obl',`<path d="M35.5 57Q33 76 38 94L42.5 94 42.5 58Z"/>`+mir(`<path d="M35.5 57Q33 76 38 94L42.5 94 42.5 58Z"/>`))
-    +pair('quads',`<path d="M33.5 104Q35 100 44 104L48 116 46 146Q40 150 36 146Q31 128 33.5 104Z"/>`+mir(`<path d="M33.5 104Q35 100 44 104L48 116 46 146Q40 150 36 146Q31 128 33.5 104Z"/>`))
-    +pair('adduct',`<path d="M45 104 49.2 106 49 126 47 118Z"/>`+mir(`<path d="M45 104 49.2 106 49 126 47 118Z"/>`))
-    +pair('calves',`<ellipse cx="39.5" cy="166" rx="4.4" ry="15"/><ellipse cx="60.5" cy="166" rx="4.4" ry="15"/>`);
-  const back=sil+pair('traps',`<path d="M50 27 36 38 50 44 64 38Z"/>`)+pair('midback',`<path d="M40 41 50 45 60 41 57 62 50 67 43 62Z"/>`)
-    +pair('rdelt',`<ellipse cx="31" cy="42" rx="7" ry="8.5"/><ellipse cx="69" cy="42" rx="7" ry="8.5"/>`)
-    +pair('lats',`<path d="M37 46Q32 62 41 85L47 79 42 50Z"/>`+mir(`<path d="M37 46Q32 62 41 85L47 79 42 50Z"/>`))
-    +pair('triceps',`<ellipse cx="27" cy="59" rx="4.8" ry="10.5" transform="rotate(8 27 59)"/><ellipse cx="73" cy="59" rx="4.8" ry="10.5" transform="rotate(-8 73 59)"/>`)
-    +pair('fore',`<ellipse cx="22.5" cy="82" rx="4" ry="12" transform="rotate(8 22.5 82)"/><ellipse cx="77.5" cy="82" rx="4" ry="12" transform="rotate(-8 77.5 82)"/>`)
-    +pair('lowback',`<rect x="43" y="72" width="6" height="22" rx="3"/><rect x="51" y="72" width="6" height="22" rx="3"/>`)
-    +pair('glutes',`<path d="M49.3 97Q38 94 33.5 102Q33 114 40 117Q47 118 49.3 112Z"/>`+mir(`<path d="M49.3 97Q38 94 33.5 102Q33 114 40 117Q47 118 49.3 112Z"/>`))
-    +pair('hams',`<path d="M34.5 118Q42 121 48 118L47 146Q41 150 36.5 146Q33 132 34.5 118Z"/>`+mir(`<path d="M34.5 118Q42 121 48 118L47 146Q41 150 36.5 146Q33 132 34.5 118Z"/>`))
-    +pair('calves',`<ellipse cx="40" cy="164" rx="5.4" ry="14"/><ellipse cx="60" cy="164" rx="5.4" ry="14"/>`);
+  const base='fill="var(--surface2)" stroke="var(--line)" stroke-width="1" stroke-linejoin="round"';
+  // мужской силуэт: широкие плечи, узкая талия
+  const half=`<path d="M50 23.5H44.5L43.5 28Q36 30 29 33Q21 36.5 21 45Q17.5 53 18.5 62Q15 75 16.5 89L15.5 96Q17 101 21 100L23.5 91Q27.5 77 27 64L28.5 48Q30.5 70 36 88L34.5 99Q33 122 35 145Q32.5 165 37.5 186L35 190Q39 192.5 46 191L46.5 186Q49.5 165 48 146Q50 124 49.5 104H50Z"/>`;
+  const sil=`<g ${base}><circle cx="50" cy="13.5" r="9.5"/>${half}${mir(half)}</g>`;
+  const neckF=`<path d="M46 22.5 45 28" fill="none" stroke="var(--line)" stroke-width=".8"/>`;
+  const front=sil+`<g opacity=".9">${neckF}${mir(neckF)}</g>`
+    +pair('traps',`<path d="M44.5 27Q38 30 31 33L43 32.2Z"/>`)
+    +pair('delts',`<path d="M30 33.5Q22.5 35.5 21.5 44.5Q23.5 49 27.5 47Q27 40 33.5 36Z"/><path d="M21.5 45Q20 51 22 53L24.5 48Z"/>`)
+    +pair('chest',`<path d="M49.4 34.5 43 34.2Q36 35 31.5 37.5Q28 41 29 47.5Q35.5 53.5 42 52.5Q46.5 52 49.4 50.5Z"/>`)
+    +pair('biceps',`<path d="M22.5 49Q19.5 55 21 61.5Q24.5 63 27 59.5Q28.5 53 27.5 47.5Z"/>`)
+    +pair('fore',`<path d="M19.5 63.5Q16.5 72 17.2 84L20.5 88.5Q23.8 79 26.8 65.5Q23 62.5 19.5 63.5Z"/>`)
+    +pair('abs',`<rect x="43.6" y="54" width="5.7" height="7.2" rx="1.8"/><rect x="43.6" y="62.3" width="5.7" height="7.2" rx="1.8"/><rect x="43.8" y="70.6" width="5.5" height="7" rx="1.8"/><path d="M44 78.8H49.3V95Q46 93.5 44.8 88Z"/>`)
+    +pair('obl',`<path d="M37.3 57.5Q35.2 72 38.5 89L43 92.5 42.6 56.5Z"/>`)
+    +(()=>{const sr=[['33 52.5','37.3 54.5','33.6 56.6'],['33.4 57.5','37.4 59.5','34.2 61.4'],['34.3 62.4','37.6 64','35 66']].map(p=>`<path d="M${p[0]}L${p[1]}L${p[2]}Z"/>`).join('');return `<g fill="var(--line)" stroke="var(--surface2)" stroke-width=".6"><title>Зубчатые мышцы</title>${sr}${mir(sr)}</g>`})()
+    +pair('quads',`<path d="M35.6 104Q32.2 122 35.6 142L39.2 140.5Q38.2 121 40.3 105.5Z"/><path d="M40.7 104.5Q39.4 122 41.2 138.5L45.3 138.5Q47.2 122 45.7 104.5Z"/><path d="M45.2 127.5Q49.4 132 47.8 143.5L42.3 143.5Q42.8 134 45.2 127.5Z"/>`)
+    +pair('adduct',`<path d="M46.2 102.5 49.4 104.5 49.1 126.5Q46.3 116 46.2 102.5Z"/>`)
+    +pair('calves',`<path d="M45.8 150Q48.8 158 46.8 171L44.6 168.5Q45 158 45.8 150Z"/><path d="M36.7 150Q34.6 158 36.6 168.5L38.2 165.5Q37.7 156 36.7 150Z"/>`)
+    +`<path d="M39.5 150Q38.7 164 40.5 180" fill="none" stroke="var(--line)" stroke-width=".8"/><path d="M60.5 150Q61.3 164 59.5 180" fill="none" stroke="var(--line)" stroke-width=".8"/>`;
+  const back=sil
+    +pair('traps',`<path d="M50 23.5 44.5 27.5Q37 31 30.5 33.8L41.5 38 50 59Z"/>`)
+    +pair('rdelt',`<path d="M30 34Q22.5 36 21.5 45Q23.8 49.5 28 46.5Q27.5 40 33.5 37.4Z"/>`)
+    +pair('midback',`<path d="M42.5 39 37.5 41.5 39.5 50.5 48.2 53.5Z"/>`)
+    +pair('lats',`<path d="M31.5 41.8 37.2 42.8 35.6 47.5 30.4 46.2Z"/><path d="M35.4 48Q30.8 59 39.8 86.5L47.3 80.5Q43.3 64 40.8 53Z"/>`)
+    +pair('triceps',`<path d="M22.5 46Q19.3 53.5 21 61.5Q24.5 63.5 27.2 59.5Q28.6 52 27.6 46.5Z"/><path d="M24.5 50.5Q24.8 56 26.3 58.3" fill="none" stroke="var(--surface2)" stroke-width=".8"/>`)
+    +pair('fore',`<path d="M19.5 63.5Q16.5 72 17.2 84L20.5 88.5Q23.8 79 26.8 65.5Q23 62.5 19.5 63.5Z"/>`)
+    +pair('lowback',`<path d="M44.3 61.5Q43.2 78 45.2 94.5L49.2 94.5 49.2 61.5Z"/>`)
+    +pair('glutes',`<path d="M49.4 96.5Q39 94 35.2 101.5Q34.2 113 41 116.5Q47 117.5 49.4 112.5Z"/>`)
+    +pair('hams',`<path d="M36.2 118.5Q34 131 36.6 144.5L41 144.5Q41 131 42 118.5Z"/><path d="M42.5 118.5Q42 132 42.2 144.5L47.2 144.5Q48.6 130 48 118.5Z"/>`)
+    +pair('calves',`<path d="M36.8 148.5Q33.6 158 37 170.5Q40 172.5 41.1 168.5Q41.3 157 41 148.5Z"/><path d="M41.6 148.5Q41.6 158 42.1 169Q45 171.5 47 168.5Q48.6 158 46.6 148.5Z"/>`)
+    +`<path d="M50 60V95" fill="none" stroke="var(--line)" stroke-width=".8"/>`;
   return `<svg class="musmap ${o.cls||''}" viewBox="0 0 220 200" role="img" aria-label="${esc3(o.label||'Карта мышц')}"><g>${front}</g><g transform="translate(118,0)">${back}</g>
     <text x="50" y="199" text-anchor="middle" class="mm-t">спереди</text><text x="168" y="199" text-anchor="middle" class="mm-t">сзади</text></svg>`}
 const esc3=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -2194,9 +2230,9 @@ function loadLocal(){
   return s;
 }
 async function boot(){
-  let late=false;const mp=loadMedia().then(()=>{if(late&&MEDIA_IDB)render()});try{await Promise.race([mp,new Promise(r=>setTimeout(r,1500))])}catch(e){}late=true;
   const local=loadLocal();
   S=local||makeDemo();ui.q=quote();
+  let late=false;const mp=loadMedia().then(()=>{if(late&&MEDIA_IDB)render()});try{await Promise.race([mp,new Promise(r=>setTimeout(r,1500))])}catch(e){}late=true;
   render();splashRun();if(LOAD_WARN)setTimeout(()=>toast('Часть записей не прочиталась — копия сохранена, остальное восстановлено.'),2400);try{document.fonts.ready.then(navInd)}catch(e){}
   let c=window.claude;for(let i=0;i<10&&!(c&&c.use);i++){await new Promise(r=>setTimeout(r,100));c=window.claude}
   if(c&&c.use){
