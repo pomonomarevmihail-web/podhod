@@ -2,7 +2,7 @@
 <html lang="ru" data-skin="berserk">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-iATiD9dPBM8w4Mzy72zmKx/bKGpxllEBRUZm+VdzX0w=' 'sha256-aoJ0K4sQOEftAi/2vLP1rn/JeSWF3ms5hZMgS545490=' 'sha256-LmFhfPRkdhtjKCaBuTCFNmDSPqdlHR/HYhLjqNGWhJM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-iATiD9dPBM8w4Mzy72zmKx/bKGpxllEBRUZm+VdzX0w=' 'sha256-VBX+3Sad2E12h3zNvKEjxP5DnkSdTC1E1mTfFsFKvzA=' 'sha256-LmFhfPRkdhtjKCaBuTCFNmDSPqdlHR/HYhLjqNGWhJM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0A0909">
 <meta name="description" content="Дневник тренировок: программы по уровням, техника с фото, таймеры, питание, вес и отчёты.">
@@ -537,6 +537,20 @@ ul.warn li::before{content:"";position:absolute;left:2px;top:.55em;width:8px;hei
 .fset{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}.fset:first-child{border-top:0}
 .fmenu{margin:0;padding-left:18px;font-size:13px;display:flex;flex-direction:column;gap:3px}
 .fmenus>summary{cursor:pointer}
+.trst{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.trst .v{font-size:22px}
+.trday>.stack{padding-top:10px;border-top:1px solid var(--line)}
+.trcheck{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.trcheck li{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}.trcheck li:first-child{border-top:0}
+.trcheck .ck{width:26px;height:26px;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center;font-weight:800;line-height:1;color:var(--on-accent);background:transparent;padding:0}
+.trcheck button.ck{cursor:pointer;border-color:var(--muted)}.trcheck li.done .ck{background:var(--accent);border-color:var(--accent)}.trcheck li.done .nm{color:var(--muted)}
+.trcal{display:flex;flex-direction:column;gap:6px;max-width:520px}
+.trw{display:grid;grid-template-columns:30px repeat(7,1fr);gap:6px;align-items:center}
+.trc{position:relative;height:40px;border-radius:10px;border:1px solid var(--line);background:var(--surface2);color:var(--ink);font:700 13px/1 var(--f-mono);display:grid;place-items:center;padding:0;cursor:pointer}
+.trc i{position:absolute;bottom:4px;left:50%;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:currentColor;opacity:.75}
+.trc.full{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}.trc.half{background:var(--accent-soft);border-color:var(--accent)}
+.trc.low{border-color:var(--accent);border-style:dashed}.trc.miss{opacity:.6}.trc.fut{opacity:.45;border-style:dotted}
+.trc.today{outline:2px solid var(--ink);outline-offset:1px}.trc.sel{box-shadow:0 0 0 3px var(--accent-soft),0 0 0 4px var(--accent)}
+.trc.sm{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:middle;cursor:default}
 @media (max-width:560px){.results .fr .pk{flex-direction:column;align-items:flex-start;gap:2px}.results .fr .fplus{min-width:0;padding:0 12px}}
 .glasses{display:flex;gap:6px;flex-wrap:wrap}
 .glass{width:26px;height:34px;border:2px solid var(--line);border-radius:3px 3px 8px 8px;background:none;padding:0}
@@ -1321,8 +1335,51 @@ const FOOD_MENUS=[
   {id:'cut',n:'Сушка: много белка',d:'Белка ≈ 2 г на кг веса, углеводы — в первой половине дня, вечером — белок и овощи.',items:[['b','Омлет',200],['b','Хлеб цельнозерновой',30],['b','Помидор',120],['l','Индейка, грудка запечённая',180],['l','Булгур варёный',150],['l','Салат из овощей с маслом',200],['s','Творог 2%',180],['s','Черника',80],['d','Куриная грудка на гриле',170],['d','Брокколи',200],['d','Кефир 1%',250]]},
   {id:'mass',n:'Набор массы',d:'Профицит калорий, 4–5 приёмов пищи, углеводы вокруг тренировки.',items:[['b','Овсяные хлопья сухие',80],['b','Молоко 2,5%',250],['b','Банан',120],['b','Арахисовая паста',20],['l','Рис варёный',250],['l','Стейк говяжий жареный',200],['l','Салат из овощей с маслом',150],['s','Протеиновый коктейль на молоке',330],['s','Ореховая смесь',30],['d','Макароны варёные',250],['d','Лосось',150],['d','Творог 5%',180]]},
   {id:'veg',n:'Вегетарианское',d:'Белок из яиц, молочного и бобовых. Больше овощей и цельных круп.',items:[['b','Сырники',180],['b','Сметана 15%',20],['b','Клубника',100],['l','Суп чечевичный',300],['l','Хлеб ржаной',60],['l','Греческий салат',200],['s','Скир',140],['s','Миндаль',20],['d','Нут варёный',150],['d','Киноа варёная',150],['d','Овощное рагу',250]]},
-  {id:'fast',n:'Быстрое и простое',d:'Минимум готовки: всё покупается в магазине или варится за 15 минут.',items:[['b','Творог 5%',180],['b','Мёд',10],['b','Банан',120],['l','Гречка варёная',200],['l','Курица гриль',180],['l','Огурец',150],['s','Кефир 2,5%',250],['s','Хлебцы ржаные',20],['d','Яйцо куриное',110],['d','Тунец консервированный',120],['d','Салат из овощей с маслом',200]]}
+  {id:'fast',n:'Быстрое и простое',d:'Минимум готовки: всё покупается в магазине или варится за 15 минут.',items:[['b','Творог 5%',180],['b','Мёд',10],['b','Банан',120],['l','Гречка варёная',200],['l','Курица гриль',180],['l','Огурец',150],['s','Кефир 2,5%',250],['s','Хлебцы ржаные',20],['d','Яйцо куриное',110],['d','Тунец консервированный',120],['d','Салат из овощей с маслом',200]]},
+  {id:'cut2',n:'Сушка: рыба и крупы',d:'Лёгкая рыба, бурый рис и много овощей — сытно при небольшом количестве калорий.',items:[['b','Овсянка на воде',200],['b','Яичный белок',100],['b','Яблоко',180],['l','Горбуша',150],['l','Рис бурый варёный',150],['l','Капуста брюссельская',150],['s','Скир',140],['s','Грейпфрут',150],['d','Тилапия',180],['d','Овощная смесь замороженная',250],['d','Кефир 1%',250]]},
+  {id:'cut3',n:'Сушка: курица и овощи',d:'Суп на обед, творог утром и лёгкий ужин из индейки с овощами.',items:[['b','Творог 0%',180],['b','Черника',80],['b','Хлебцы ржаные',20],['l','Суп куриный с лапшой',300],['l','Куриная грудка на гриле',150],['l','Салат из овощей с маслом',150],['s','Йогурт греческий 2%',140],['s','Миндаль',15],['d','Фарш индейки',150],['d','Кабачок',200],['d','Гречка варёная',120]]},
+  {id:'mass2',n:'Масса: паста и мясо',d:'Плотные приёмы пищи с пастой, картофелем и курицей, творог и орехи между ними.',items:[['b','Яичница',110],['b','Хлеб цельнозерновой',60],['b','Сыр 45%',30],['b','Банан',120],['l','Паста болоньезе',400],['l','Греческий салат',150],['s','Творог 5%',180],['s','Мёд',20],['s','Грецкие орехи',30],['d','Картофель запечённый',300],['d','Куриное бедро запечённое без кожи',200],['d','Огурец',150]]},
+  {id:'mass3',n:'Масса: рис и рыба',d:'Каша с арахисовой пастой, плов, протеиновый коктейль и лосось с рисом вечером.',items:[['b','Овсянка на молоке',300],['b','Арахисовая паста',20],['b','Банан',120],['l','Плов с курицей',350],['l','Салат из овощей с маслом',150],['s','Протеиновый коктейль на молоке',330],['s','Финики',40],['d','Лосось',180],['d','Рис басмати варёный',250],['d','Брокколи',150]]},
+  {id:'bal2',n:'Домашнее',d:'Привычная еда: сырники, щи, котлеты с пюре, рыба с булгуром.',items:[['b','Сырники',180],['b','Сметана 15%',20],['l','Щи',300],['l','Котлеты куриные',140],['l','Картофельное пюре',200],['s','Яблоко',180],['s','Кефир 2,5%',250],['d','Треска',180],['d','Булгур варёный',150],['d','Помидор',150]]}
 ];
+/* ---------- планы «тренировки + питание» с отслеживанием по дням ----------
+   kf — калории от суточной нормы (TDEE), pk/fk — белок и жиры в граммах на кг веса. В дни тренировок калорий на 5% больше (за счёт углеводов), в дни отдыха — на 5% меньше.
+   prog — программы по месту: берётся первая, что подходит по уровню и инвентарю. menus — меню дня по кругу. */
+const TRACK_PLANS=[
+  {id:'cut8',n:'Сушка за 8 недель',goal:'lose',wk:8,kf:.8,pk:2.2,fk:.8,prog:{gym:['ul4','sl5'],home:['dbhome','home3'],fight:['kick','box']},menus:['cut','cut2','cut3','fast'],
+    habits:[['sleep','Сон 7+ часов'],['steps','8 000+ шагов'],['sweet','Без сладких напитков']],
+    d:'Минус 4–6 кг жира за два месяца без потери силы: дефицит около 20%, много белка, 3–4 силовые в неделю и шаги каждый день. В дни тренировок углеводов больше, в дни отдыха — меньше.'},
+  {id:'mass12',n:'Набор массы за 12 недель',goal:'gain',wk:12,kf:1.1,pk:1.8,fk:1,prog:{gym:['phul','ss3'],home:['dbhome','bwrr','home3'],fight:['mma','box']},menus:['mass','mass2','mass3'],
+    habits:[['sleep','Сон 8 часов'],['meals','4–5 приёмов пищи']],
+    d:'Плюс 3–5 кг за три месяца, в основном мышцы: профицит около 10%, белок 1,8 г на кг, силовая программа с прибавкой весов. Нормальный темп — 0,25–0,5% веса в неделю.'},
+  {id:'start30',n:'Старт с нуля: 30 дней',goal:'keep',len:30,wk:5,kf:.95,pk:1.6,fk:.9,prog:{gym:['ss3'],home:['home3'],fight:['box']},menus:['bal','bal2','fast','veg'],
+    habits:[['sleep','Сон 7+ часов'],['walk','Прогулка 30 минут']],
+    d:'Мягкий вход для новичка: три тренировки в неделю, обычная еда без жёстких запретов, вода и сон. Цель — привычка, а не рекорды.'},
+  {id:'recomp6',n:'Рельеф за 6 недель',goal:'lose',wk:6,kf:.92,pk:2,fk:.8,prog:{gym:['ppl','ul4','sl5'],home:['hiit','home3'],fight:['mma','kick','box']},menus:['cut2','bal','cut','bal2'],
+    habits:[['sleep','Сон 7+ часов'],['steps','8 000+ шагов']],
+    d:'Меньше жира и больше мышц почти при том же весе: небольшой дефицит, высокий белок, силовые и интервальные тренировки. Следите за замерами, а не только за весами.'},
+  {id:'run9',n:'Бег 5 км: 9 недель',goal:'keep',wk:9,kf:.9,pk:1.6,fk:.9,prog:{gym:['c25k'],home:['c25k'],fight:['c25k']},menus:['bal','bal2','veg'],
+    habits:[['sleep','Сон 7+ часов'],['stretch','Растяжка 10 минут']],
+    d:'От нуля до 30 минут бега без остановки и минус пара килограммов: план «с дивана до 5 км» и лёгкий дефицит. Углеводы — в дни пробежек.'},
+  {id:'glute8',n:'Ягодицы и ноги: 8 недель',goal:'keep',wk:8,kf:1,pk:1.8,fk:.9,prog:{gym:['glute'],home:['glute2'],fight:['glute2']},menus:['bal','bal2','cut2'],
+    habits:[['sleep','Сон 7+ часов'],['steps','8 000+ шагов']],
+    d:'Упругие ягодицы и сильные ноги: 2–3 тренировки на низ, питание на поддержании с достаточным белком — мышцам есть из чего расти.'}
+];
+/* совет недели: по цели плана */
+const TRACK_WEEK={
+  lose:['Взвешивайтесь утром натощак и записывайте всё, что едите, даже перекусы. Честный дневник — половина результата.','Белок в каждый приём пищи: творог, яйца, мясо, рыба. Он дольше насыщает и бережёт мышцы.',
+    'Половина тарелки — овощи. Объём еды тот же, калорий меньше.','Сравнивайте вес по среднему за неделю, а не по одному дню: вода даёт скачки на 1–2 кг.',
+    'Вес стоит две недели — уберите ещё 100–150 ккал или добавьте 2 000 шагов в день.','Не срезайте калории ниже нормы плана: сила в зале должна держаться.',
+    'Одна «свободная» трапеза в неделю — нормально, если она вписана в недельную сумму.','Финиш: сделайте замеры и фото. Потом 2 недели на поддержании, чтобы закрепить результат.'],
+  gain:['Посчитайте, сколько едите сейчас: большинство «хардгейнеров» просто недоедают.','Добавьте калорий без лишнего объёма: орехи, арахисовая паста, масло в кашу.',
+    'Углеводы — вокруг тренировки: каша или рис за 1–3 часа до и после.','Вес должен расти на 0,25–0,5% в неделю. Быстрее — уменьшите профицит, медленнее — добавьте 200 ккал.',
+    'Записывайте рабочие веса: рост силы — главный признак, что растут мышцы.','Сон 8 часов: мышцы растут во время восстановления, а не на тренировке.',
+    'Белок перед сном — творог или казеин.','Замеры: талия должна расти заметно медленнее, чем руки и грудь.'],
+  keep:['Главное — не пропускать. Три тренировки в неделю лучше, чем пять через раз.','Полтора-два литра воды в день: держите бутылку на виду.',
+    'Завтрак с белком — меньше тяги к сладкому днём.','Добавьте 10 минут растяжки после тренировок.',
+    'Приготовьте еду на 2–3 дня вперёд — меньше срывов на фастфуд.','Подведите итоги: сравните замеры, фото и рабочие веса со стартом.']
+};
+
 const MEALS=[['b','Завтрак'],['l','Обед'],['d','Ужин'],['s','Перекус']];
 
 /* --- мотивация (написано для приложения, в духе историй — не цитаты) --- */
@@ -2435,10 +2492,10 @@ function setUbgFile(f){if(!f||!/^image\//.test(f.type)){toast('Выберите 
 const store={mode:'local',db:null,uid:null,dirty:new Set(),timer:null,chain:Promise.resolve(),ready:false,known:new Set()};
 const blankProfile=()=>({name:'',sex:'m',age:30,height:178,activity:1.55,goal:'keep',level:'beg',goalWeight:75,place:'home',days:[1,3,5],minutes:40,eq:[]});
 const blankSettings=()=>({sound:true,voice:true,skin:'berserk',ubgPage:false,bgv:true,voiceStyle:'auto',pl3d:false,bar:20});
-const blank=()=>({v:2,demo:false,profile:blankProfile(),weights:[],workouts:[],food:{},water:{},customFoods:[],favFoods:[],foodSets:[],settings:blankSettings(),plan:null,week:null,camp:null,ecl:null,prog:null,notes:{},customEx:[],routines:[]});
+const blank=()=>({v:2,demo:false,profile:blankProfile(),weights:[],workouts:[],food:{},water:{},customFoods:[],favFoods:[],foodSets:[],settings:blankSettings(),plan:null,week:null,camp:null,ecl:null,prog:null,track:null,notes:{},customEx:[],routines:[]});
 const monthOf=d=>'m-'+d.slice(0,7);
 function split(){
-  const docs={main:{v:2,demo:!!S.demo,profile:S.profile,weights:S.weights,settings:S.settings,customFoods:S.customFoods,favFoods:S.favFoods||[],foodSets:S.foodSets||[],plan:S.plan,week:S.week,camp:S.camp||null,ecl:S.ecl||null,prog:S.prog||null,notes:S.notes||{},customEx:S.customEx||[],routines:S.routines||[]}};
+  const docs={main:{v:2,demo:!!S.demo,profile:S.profile,weights:S.weights,settings:S.settings,customFoods:S.customFoods,favFoods:S.favFoods||[],foodSets:S.foodSets||[],plan:S.plan,week:S.week,camp:S.camp||null,ecl:S.ecl||null,prog:S.prog||null,track:S.track||null,notes:S.notes||{},customEx:S.customEx||[],routines:S.routines||[]}};
   const m=k=>docs[k]||(docs[k]={workouts:[],food:{},water:{}});
   S.workouts.forEach(w=>m(monthOf(w.d)).workouts.push(w));
   Object.entries(S.food).forEach(([d,a])=>{if(a.length)m(monthOf(d)).food[d]=a});
@@ -2492,13 +2549,16 @@ function sanitize(s){
     items:r.items.filter(i=>i&&idOk(i.ex)).slice(0,40).map(i=>({ex:i.ex,sets:Math.round(n(i.sets,1,20)||3),reps:Math.round(n(i.reps,1,200)||10),time:Math.round(n(i.time,5,3600)||45),rest:Math.round(n(i.rest,0,600)??60)}))}));
   if(s.camp){const c=obj(s.camp),done={};Object.entries(obj(c.done)).forEach(([k,v])=>{if(/^c\d-\d$/.test(k)&&dOk(v))done[k]=v});s.camp={start:dOk(c.start)?c.start:todayKey(),done,won:dOk(c.won)?c.won:null}}
   if(s.prog){const g=obj(s.prog);s.prog=typeof g.id==='string'&&progOf(g.id)?{id:g.id,start:dOk(g.start)?g.start:todayKey(),n:Math.round(n(g.n,0,10000)||0),last:dOk(g.last)?g.last:null,fin:dOk(g.fin)?g.fin:null}:null}
+  if(s.track){const t=obj(s.track),mk={};Object.entries(obj(t.marks)).forEach(([d,v])=>{if(!dOk(d))return;const o={};Object.keys(obj(v)).forEach(k=>{if(/^[a-z]{1,12}$/.test(k)&&v[k])o[k]=1});if(Object.keys(o).length)mk[d]=o});
+    const days=[...new Set(arr(t.days).map(Number).filter(d=>Number.isInteger(d)&&d>=0&&d<=6))];
+    s.track=typeof t.id==='string'&&trOf(t.id)&&dOk(t.start)?{id:t.id,start:t.start,place:PLACES[t.place]?t.place:'home',prog:typeof t.prog==='string'&&progOf(t.prog)?t.prog:null,days:days.length?days:[1,3,5],marks:mk,w0:n(t.w0,20,400)??null,fin:dOk(t.fin)?t.fin:null}:null}
   if(s.ecl){const e=obj(s.ecl);s.ecl=dOk(e.d)?{d:e.d,x:n(e.x,1,2)||1.5,used:dOk(e.used)?e.used:undefined}:null}
   if(s.plan){const w=dOk(s.plan.d)&&normW(s.plan.w);s.plan=w?{d:s.plan.d,w}:null}
   if(s.week){const k=obj(s.week);if(!dOk(k.start))s.week=null;else{const pl={};Object.entries(obj(k.plans)).forEach(([d,w])=>{const x=dOk(d)&&normW(w);if(x)pl[d]=x});s.week={start:k.start,plans:pl}}}
   return s}
 function merge(docs){
   const s=blank(),mn=(docs&&docs.main&&typeof docs.main==='object')?docs.main:{};
-  Object.assign(s,{demo:!!mn.demo,profile:pickKeys(mn.profile,blankProfile()),weights:mn.weights||[],settings:pickKeys(mn.settings,blankSettings()),customFoods:mn.customFoods||[],favFoods:mn.favFoods||[],foodSets:mn.foodSets||[],plan:mn.plan||null,week:mn.week||null,camp:mn.camp||null,ecl:mn.ecl||null,prog:mn.prog||null,notes:mn.notes||{},customEx:mn.customEx||[],routines:mn.routines||[]});
+  Object.assign(s,{demo:!!mn.demo,profile:pickKeys(mn.profile,blankProfile()),weights:mn.weights||[],settings:pickKeys(mn.settings,blankSettings()),customFoods:mn.customFoods||[],favFoods:mn.favFoods||[],foodSets:mn.foodSets||[],plan:mn.plan||null,week:mn.week||null,camp:mn.camp||null,ecl:mn.ecl||null,prog:mn.prog||null,track:mn.track||null,notes:mn.notes||{},customEx:mn.customEx||[],routines:mn.routines||[]});
   Object.entries(docs||{}).forEach(([k,d])=>{if(!k.startsWith('m-')||!d||typeof d!=='object')return;if(Array.isArray(d.workouts))d.workouts.forEach(w=>s.workouts.push(w));
     [['food',s.food],['water',s.water]].forEach(([f,t])=>{if(d[f]&&typeof d[f]==='object')Object.keys(d[f]).forEach(x=>{if(DRE.test(x))t[x]=d[f][x]})})});
   sanitize(s);regCustom(s.customEx);
@@ -2896,6 +2956,71 @@ function vPrograms(){const g=S.prog,fmtV=(id,v,x)=>EX[id].type==='time'||(x&&x.t
       ${days.map((d,i)=>{const o=d[2]||{},ids=d[1].map(x=>[progAlt(x[0],p.place),x]).filter(x=>x[0]),tag=o.m&&o.m!=='classic'?METHODS[o.m].n.toLowerCase()+(o.m==='circuit'&&o.rounds?' × '+o.rounds:''):'';
         return `<details class="progday" ${on&&cur===i&&!g.fin?'open':''}><summary><b>${esc(d[0])}</b>${on&&cur===i&&!g.fin?' <span class="chip on">следующая</span>':''}${tag?` <span class="chip">${esc(tag)}</span>`:''}<span class="small muted"> · ${ids.length} ${plural(ids.length,'упражнение','упражнения','упражнений')}</span></summary><ul class="exrows">${ids.map(([id,x])=>`<li><div class="thumb">${photo(id,'sm')}</div><div class="nm"><button data-act="ex" data-v="${id}">${esc(EX[id].name)}</button><div class="sr">${desc(id,x,o)}</div></div></li>`).join('')}</ul></details>`}).join('')}
       <div class="row">${on&&!g.fin?`<button class="btn primary" data-act="prog-go">${ic('play',16)} ${esc(days[cur][0])}</button><button class="btn ghost sm" data-act="prog-stop">Остановить</button>`:on?`<button class="btn primary" data-act="prog-again">Пройти ещё раз</button><button class="btn ghost sm" data-act="prog-stop">Закрыть</button>`:`<button class="btn primary" data-act="prog-start" data-v="${p.id}">Начать программу</button>`}</div></div>`}).join('')}</section>`}
+/* ---------- Планы: программа тренировок + питание, отслеживание по дням ---------- */
+const trOf=id=>TRACK_PLANS.find(p=>p.id===id),trLen=t=>t.len||t.wk*7,trGoal={lose:'Похудение',gain:'Масса',keep:'Форма'};
+/* программа плана под место, уровень и инвентарь */
+function trProg(t,place){const l=t.prog[place]||t.prog.home,eq=S.profile.eq||[],L=LVI[S.profile.level]||0,ok=id=>{const p=progOf(id);return p&&(p.place==='gym'||!(p.eq||[]).some(x=>!eq.includes(x)))};
+  return l.find(id=>ok(id)&&LVI[progOf(id).lv]<=L)||l.find(ok)||l[l.length-1]}
+const TR_DAYS={2:[2,5],3:[1,3,5],4:[1,2,4,5],5:[1,2,3,4,5],6:[1,2,3,4,5,6]};
+function trInfo(d){const tr=S.track,t=tr&&trOf(tr.id);if(!t||!d)return null;const i=Math.round((parseKey(d)-parseKey(tr.start))/864e5);if(i<0||i>=trLen(t))return null;return{tr,t,i,wk:Math.floor(i/7),train:tr.days.includes(parseKey(d).getDay())}}
+/* нормы дня по плану: в день тренировки +5% калорий (углеводы), в день отдыха −5% */
+function trTargets(t,train,base){const kcal=Math.round(base.tdee*t.kf*(train?1.05:.95)/10)*10,w=base.w,prot=Math.round(w*t.pk),fat=Math.round(w*t.fk);
+  return{bmr:base.bmr,tdee:base.tdee,kcal,prot,fat,carb:Math.max(0,Math.round((kcal-prot*4-fat*9)/4)),water:base.water+(train?500:0)}}
+/* статус дня: что сделано из чек-листа (тренировка, еда и вода считаются сами по дневнику) */
+function trDay(d){const ti=trInfo(d);if(!ti)return null;const{tr,t}=ti,tg=targets(d),tot=dayTot(d),nf=(S.food[d]||[]).length,mk=(tr.marks||{})[d]||{},wos=S.workouts.filter(w=>w.d===d),water=S.water[d]||0,items=[];
+  if(ti.train){const w=wos.find(x=>x.kind!=='cooldown');items.push({k:'train',n:'Тренировка',done:!!w,auto:1,val:w?w.title:''})}
+  else items.push({k:'rest',n:'Отдых: прогулка или растяжка',done:!!mk.rest||wos.length>0,val:wos.length?'записано':''});
+  items.push({k:'kcal',n:`Калории ${fmt(Math.round(tg.kcal*.9))}–${fmt(Math.round(tg.kcal*1.1))}`,done:nf>0&&Math.abs(tot.kcal-tg.kcal)<=tg.kcal*.1,auto:1,val:nf?fmt(tot.kcal)+' ккал':'нет записей'});
+  items.push({k:'prot',n:`Белок от ${fmt(Math.round(tg.prot*.9))} г`,done:tot.p>=tg.prot*.9,auto:1,val:fmt(tot.p)+' г'});
+  items.push({k:'water',n:`Вода ${fmt(tg.water)} мл`,done:water>=tg.water,auto:1,val:fmt(water)+' мл'});
+  if(ti.i%7===0)items.push({k:'weigh',n:'Взвеситься утром',done:S.weights.some(x=>x.d===d),auto:1});
+  (t.habits||[]).forEach(([k,n])=>items.push({k,n,done:!!mk[k]}));
+  const dn=items.filter(x=>x.done).length;return Object.assign(ti,{tg,items,dn,of:items.length,sc:dn/items.length})}
+function trStats(){const tr=S.track,t=trOf(tr.id),tk=todayKey(),n=Math.min(trLen(t),Math.round((parseKey(tk)-parseKey(tr.start))/864e5)+1);let good=0,wo=0,streak=0,run=0;
+  for(let i=0;i<n;i++){const d=addDays(tr.start,i),x=trDay(d);if(!x)continue;const ok=x.sc>=.8;if(ok)good++;if(x.train&&x.items[0].done)wo++;if(ok)run++;else if(d!==tk)run=0}streak=run;
+  const lw=lastW(),dw=tr.w0&&lw&&lw.d>=tr.start?r1(lw.w-tr.w0):null;return{n,good,wo,streak,dw}}
+const trMenu=(t,i)=>FOOD_MENUS.find(m=>m.id===t.menus[i%t.menus.length])||FOOD_MENUS[0];
+function trCard(){const tk=todayKey(),x=trDay(tk);if(!x){const tr=S.track,t=tr&&trOf(tr.id);return t&&tk>=tr.start?`<section class="panel camp-mini"><div class="row between"><span class="eyebrow">План пройден · ${esc(t.n)}</span></div><div class="row"><button class="btn primary" data-act="goto-plans">Итоги и новый план</button></div></section>`:''}
+  const w=x.train&&!x.items[0].done?progWorkout():null;
+  return `<section class="panel camp-mini"><div class="row between"><span class="eyebrow">План · ${esc(x.t.n)}</span><span class="small muted">день ${x.i+1} из ${trLen(x.t)} · ${x.train?'тренировка':'отдых'}</span></div><div class="bar"><i style="width:${(x.sc*100).toFixed(0)}%"></i></div>
+    <span class="small">Сегодня выполнено ${x.dn} из ${x.of}: ${x.items.filter(i=>!i.done).slice(0,3).map(i=>i.n.toLowerCase()).join(', ')||'всё сделано'}${x.items.some(i=>!i.done)&&x.items.filter(i=>!i.done).length>3?'…':''}</span>
+    <div class="row">${w?`<button class="btn primary" data-act="prog-go">${ic('play',16)} ${esc(progDay(progOf(S.prog.id),S.prog.n||0)[0])}</button>`:''}<button class="btn ${w?'ghost sm':'primary'}" data-act="goto-plans">Открыть день</button></div></section>`}
+function vPlans(){const tr=S.track,t=tr&&trOf(tr.id),place=S.profile.place,base=targets(todayKey(),1);
+  if(!t)return `<p class="muted" style="max-width:70ch">План — это программа тренировок и питание в одном расписании. На каждый день — своя задача: тренировка или отдых, норма калорий и белка (в дни тренировок углеводов больше), вода, меню дня и пара полезных привычек. Еду, воду и тренировки приложение отмечает само по дневнику, остальное — одним нажатием. Прогресс виден в календаре по дням.</p>
+    <section class="grid g2">${TRACK_PLANS.map(p=>{const pr=progOf(trProg(p,place)),a=trTargets(p,1,base),b=trTargets(p,0,base);
+      return `<div class="panel lift progc"><h2>${esc(p.n)}</h2><div class="row"><span class="chip on">${trGoal[p.goal]}</span><span class="chip">${p.len?p.len+' дней':p.wk+' '+plural(p.wk,'неделя','недели','недель')}</span>${placeChip(place)}</div><p class="muted">${esc(p.d)}</p>
+        <div class="stack small" style="gap:4px"><span><b>Тренировки:</b> ${esc(pr.n)} · ${esc(pr.per)}</span><span><b>Питание:</b> ${fmt(a.kcal)} ккал в день тренировки, ${fmt(b.kcal)} — в день отдыха · белок ${fmt(a.prot)} г</span>
+        <span><b>Каждый день:</b> тренировка или отдых, калории, белок, вода${(p.habits||[]).map(h=>', '+h[1].toLowerCase()).join('')}</span></div>
+        <div class="row"><button class="btn primary" data-act="tr-start" data-v="${p.id}">Начать план</button></div></div>`}).join('')}</section>
+    <p class="small muted">Нормы считаются по вашему весу, росту, возрасту и активности из профиля. Место тренировок тоже берётся из профиля — поменяйте его перед стартом, если нужно.</p>`;
+  const tk=todayKey(),len=trLen(t),st=trStats(),done=tk>addDays(tr.start,len-1),pr=progOf(tr.prog||S.prog&&S.prog.id);
+  if(done)return `<section class="panel lift"><span class="eyebrow">План пройден</span><h2>${esc(t.n)}</h2><div class="trst">${[['Дней выполнено',st.good+' из '+len],['Тренировок',st.wo],['Вес',st.dw==null?'—':(st.dw>0?'+':'')+fmt(st.dw,1)+' кг']].map(([l,v])=>`<div class="stat"><span class="eyebrow">${l}</span><span class="v num">${v}</span></div>`).join('')}</div>
+    <p class="muted">Сделайте замеры и фото в «Прогрессе», чтобы сравнить со стартом.</p><div class="row"><button class="btn primary" data-act="tr-again">Пройти ещё раз</button><button class="btn" data-act="tr-stop">Выбрать другой план</button></div></section>${trCal()}`;
+  const sel=ui.trDay&&trInfo(ui.trDay)?ui.trDay:tk,x=trDay(sel),future=sel>tk,mn=trMenu(t,x.i),tg=x.tg,tot=dayTot(sel);
+  const mb=(l,v,g,u)=>`<div class="stack" style="gap:4px"><div class="row between small"><b>${l}</b><span class="mono">${fmt(v)} / ${fmt(g)} ${u}</span></div><div class="bar ${v>g*1.1?'over':''}"><i style="width:${clamp(v/(g||1)*100,0,100)}%"></i></div></div>`;
+  const wo=x.train?(sel===tk&&!x.items[0].done&&pr&&S.prog&&S.prog.id===pr.id?`<p>Следующая тренировка программы «${esc(pr.n)}»: <b>${esc(progDay(pr,S.prog.n||0)[0])}</b></p><div class="row"><button class="btn primary" data-act="prog-go">${ic('play',16)} Начать тренировку</button></div>`
+      :x.items[0].done?`<p>✓ ${esc(x.items[0].val)}</p>`:future?`<p class="muted">По плану — тренировка программы «${esc(pr?pr.n:'')}».</p>`:`<p class="muted">Тренировка не записана.</p>`)
+    :`<p class="muted">День восстановления: прогулка 30–40 минут или лёгкая растяжка. Мышцы растут, пока вы отдыхаете.</p>${sel===tk?`<div class="row"><button class="btn" data-act="pl-cooldown">${ic('play',16)} Растяжка 10 минут</button></div>`:''}`;
+  return `<section class="panel lift"><div class="row between"><span class="eyebrow">План · ${trGoal[t.goal]}</span><button class="btn sm ghost" data-act="tr-stop">Завершить</button></div><h2>${esc(t.n)}</h2>
+    <div class="row between small"><span>День ${Math.min(st.n,len)} из ${len} · неделя ${Math.floor((st.n-1)/7)+1}</span><span class="muted">${pr?'Программа: '+esc(pr.n):''}</span></div><div class="bar"><i style="width:${(st.n/len*100).toFixed(1)}%"></i></div>
+    <div class="trst">${[['Дней выполнено',st.good],['Серия',st.streak+' '+plural(st.streak,'день','дня','дней')],['Вес',st.dw==null?'—':(st.dw>0?'+':'')+fmt(st.dw,1)+' кг']].map(([l,v])=>`<div class="stat"><span class="eyebrow">${l}</span><span class="v num">${v}</span></div>`).join('')}</div>
+    <p class="small"><b>Совет недели:</b> ${esc(TRACK_WEEK[t.goal][x.wk%TRACK_WEEK[t.goal].length])}</p></section>
+  <section class="panel lift trday"><div class="row between"><h2>${sel===tk?'Сегодня':future?'План на '+fmtD(sel,{weekday:'long',day:'numeric',month:'long'}):fmtD(sel,{weekday:'long',day:'numeric',month:'long'})}</h2><span class="chip ${x.train?'on':''}">День ${x.i+1} · ${x.train?'тренировка':'отдых'}</span></div>
+    <div class="stack"><h3>${x.train?'Тренировка':'Отдых'}</h3>${wo}</div>
+    <div class="stack"><h3>Питание · ${fmt(tg.kcal)} ккал</h3><span class="small muted">${x.train?'День тренировки — углеводов больше, ешьте плотно за 1–3 часа до и после.':'День отдыха — углеводов меньше, белок тот же.'}</span>
+      ${future?'':`<div class="mbars">${mb('Калории',tot.kcal,tg.kcal,'ккал')}${mb('Белки',tot.p,tg.prot,'г')}${mb('Жиры',tot.f,tg.fat,'г')}${mb('Углеводы',tot.c,tg.carb,'г')}</div>`}
+      <span class="small">Меню дня — <b>${esc(mn.n)}</b>: ${esc(mn.d)}</span>
+      <div class="row">${future?'':`<button class="btn primary sm" data-act="tr-menu" data-v="${sel}">${ic('plus',15)} Добавить меню дня</button><button class="btn sm" data-act="tr-food" data-v="${sel}">Открыть дневник</button>`}</div></div>
+    <div class="stack"><h3>Чек-лист · ${x.dn} из ${x.of}</h3><ul class="trcheck">${x.items.map(i=>`<li class="${i.done?'done':''}">${i.auto?`<span class="ck" aria-hidden="true">${i.done?'✓':''}</span>`:`<button class="ck" data-act="tr-mark" data-v="${i.k}" aria-pressed="${i.done}" aria-label="${esc(i.n)}" ${future?'disabled':''}>${i.done?'✓':''}</button>`}<span class="nm">${esc(i.n)}${i.val?` <span class="small muted">· ${esc(i.val)}</span>`:''}</span>${i.auto?'<span class="small muted">авто</span>':''}</li>`).join('')}</ul>
+      <span class="small muted">«Авто» отмечается само по дневнику питания, воде, весу и тренировкам.</span></div></section>
+  ${trCal()}
+  <section class="panel"><h3>Дни тренировок</h3><div class="row">${[1,2,3,4,5,6,0].map(d=>`<button class="chip ${tr.days.includes(d)?'on':''}" data-act="tr-day" data-v="${d}">${WDS[d]}</button>`).join('')}</div><span class="small muted">${pr?'Программа рассчитана на '+(pr.fr||3)+' '+plural(pr.fr||3,'тренировку','тренировки','тренировок')+' в неделю.':''}</span></section>`}
+/* календарь плана: цвет — сколько выполнено из чек-листа */
+function trCal(){const tr=S.track,t=trOf(tr.id),len=trLen(t),tk=todayKey(),sel=ui.trDay||tk,wks=Math.ceil(len/7);let h='';
+  for(let w=0;w<wks;w++){h+=`<div class="trw"><span class="small muted">Н${w+1}</span>`;for(let k=0;k<7;k++){const i=w*7+k;if(i>=len){h+='<span></span>';continue}const d=addDays(tr.start,i),x=d<=tk?trDay(d):null,tr1=tr.days.includes(parseKey(d).getDay());
+    const c=d>tk?'fut':x.sc>=.8?'full':x.sc>=.5?'half':x.sc>0?'low':'miss';h+=`<button class="trc ${c} ${d===tk?'today':''} ${d===sel?'sel':''}" data-act="tr-sel" data-v="${d}" aria-label="День ${i+1}, ${fmtD(d)}${x?': выполнено '+x.dn+' из '+x.of:''}">${parseKey(d).getDate()}${tr1?'<i></i>':''}</button>`}h+='</div>'}
+  return `<section class="panel"><div class="row between"><h3>Календарь плана</h3><span class="small muted">точка — день тренировки</span></div><div class="trcal">${h}</div>
+    <div class="row small muted"><span class="trc full sm"></span> 80%+ <span class="trc half sm"></span> половина <span class="trc low sm"></span> мало <span class="trc miss sm"></span> пропуск</div></section>`}
 function campCard(){const c=S.camp;if(!c||c.won)return '';const nx=campNext();if(!nx)return '';const xs=campSessions(),dn=xs.filter(x=>c.done[x.id]).length;
   return `<section class="panel camp-mini"><div class="row between"><span class="eyebrow">Путь к Затмению · неделя ${nx.wi+1} «${esc(CAMP[nx.wi].n)}»</span><span class="small muted">${dn} / ${xs.length}</span></div><div class="bar"><i style="width:${(dn/xs.length*100).toFixed(1)}%"></i></div>
     <div class="row"><button class="btn primary" data-act="camp-go" data-v="${nx.id}">${ic('play',16)} ${nx.boss?'Бой с боссом':'Тренировка '+(nx.k+1)+' из 3'}</button><button class="btn ghost sm" data-act="goto-camp">Вся кампания</button></div></section>`}
@@ -3088,12 +3213,13 @@ const totalXP=()=>{const n={},cd={};let t=0;S.workouts.forEach(w=>{if(w.kind==='
 function rankOf(xp){let i=0;RANKS.at.forEach((t,k)=>{if(xp>=t)i=k});const nx=RANKS.at[i+1];return{i,name:RANKS[sk()][i],next:nx!=null?RANKS[sk()][i+1]:null,nextAt:nx,frac:nx?(xp-RANKS.at[i])/(nx-RANKS.at[i]):1}}
 function weekStreak(){const tgt=Math.max(1,S.profile.days.length),c={};S.workouts.forEach(w=>{const m=mondayOf(w.d);c[m]=(c[m]||0)+1});let m=mondayOf(todayKey()),n=0;if((c[m]||0)>=tgt)n++;m=addDays(m,-7);while((c[m]||0)>=tgt&&n<520){n++;m=addDays(m,-7)}return n}
 const lastW=()=>S.weights.length?S.weights[S.weights.length-1]:null;
-function targets(){
+function targets(d,base){
   const p=S.profile,w=(lastW()||{}).w||75;
   const bmr=10*w+6.25*p.height-5*p.age+(p.sex==='m'?5:-161),tdee=bmr*p.activity;
   const kcal=Math.round((p.goal==='lose'?tdee*.85:p.goal==='gain'?tdee*1.1:tdee)/10)*10;
   const prot=Math.round(w*(p.goal==='lose'?2:1.8)),fat=Math.round(w*.9),carb=Math.max(0,Math.round((kcal-prot*4-fat*9)/4));
-  return{bmr:Math.round(bmr),tdee:Math.round(tdee),kcal,prot,fat,carb,water:Math.round(w*30/250)*250};
+  const b={bmr:Math.round(bmr),tdee:Math.round(tdee),kcal,prot,fat,carb,water:Math.round(w*30/250)*250,w};if(base)return b;
+  const ti=trInfo(d||todayKey());return ti?Object.assign(trTargets(ti.t,ti.train,b),{w,plan:ti}):b;
 }
 function dayTot(d){const t={kcal:0,p:0,f:0,c:0};(S.food[d]||[]).forEach(e=>{t.kcal+=e.kcal;t.p+=e.p;t.f+=e.f;t.c+=e.c});return t}
 function lastKg(exId){for(let i=S.workouts.length-1;i>=0;i--){const e=S.workouts[i].ex.find(x=>x.id===exId);if(e){const s=e.sets.filter(x=>x.kg);if(s.length)return s[s.length-1].kg}}return 0}
@@ -3250,7 +3376,7 @@ function celebrate(){if(!fxOn())return;const k=skin(),c=document.createElement('
 }
 let lastNav='';
 const TAB_ORDER=['today','train','timer','food','progress','profile'];
-const SUB_ORDER={train:['build','mine','camp','programs','challenges','library'],progress:['body','photos','exercises','muscles','report','history','awards']};
+const SUB_ORDER={train:['build','mine','plans','camp','programs','challenges','library'],progress:['body','photos','exercises','muscles','report','history','awards']};
 const navKey=()=>ui.tab+'/'+(ui.tab==='train'?ui.trainSub:ui.tab==='progress'?ui.progSub:'');
 
 function render(){
@@ -3346,7 +3472,7 @@ function vToday(){
   const wPrev=S.weights.filter(x=>x.d<=addDays(tk,-7)).pop(),dW=lw&&wPrev?r1(lw.w-wPrev.w):null;
   const chl=CHALLENGES[sk()],ch=chl[weekNo()%chl.length],chDone=S.workouts.filter(x=>x.chId===ch.id).length;
   const ach=achievements();
-  return header(isDay?'Сегодня — в бой':'Сегодня — отдых')+installHTML()+plResumeCard()+artBanner()+eclCard()+campCard()+progCard()+
+  return header(isDay?'Сегодня — в бой':'Сегодня — отдых')+installHTML()+plResumeCard()+artBanner()+eclCard()+campCard()+trCard()+(trInfo(todayKey())?'':progCard())+
   `<section class="panel rank"><span class="badge">${rk.i+1}</span><div class="stack" style="gap:6px"><div class="row between"><b style="font:var(--h-weight) 20px/1.1 var(--f-display);text-transform:uppercase;letter-spacing:var(--h-track)">${esc(rk.name)}</b><span class="small muted mono">${fmt(xp)} XP</span></div><div class="bar"><i style="width:${(rk.frac*100).toFixed(1)}%"></i></div><span class="small muted">${rk.next?`До ранга «${esc(rk.next)}» — ${fmt(rk.nextAt-xp)} XP`:'Высший ранг. Дальше только легенды.'}</span></div>
     <div class="stack" style="align-items:center;gap:0;text-align:center"><span class="num" style="font-size:28px;line-height:1">${streak}</span><span class="small muted" style="line-height:1.2">${plural(streak,'неделя','недели','недель')}<br>подряд</span></div></section>
   <section class="panel lift hero"><div class="stack" style="gap:14px">
@@ -3376,9 +3502,9 @@ const achHTML=([t,s,ok])=>`<div class="${ok?'':'no'}"><span class="plate ${ok?'y
 /* ---------- Тренировки ---------- */
 function vTrain(){
   const sub=ui.trainSub;
-  return header('Тренировки','Конструктор · мои · кампания · программы · испытания')+
-  `<div class="seg" role="group" aria-label="Раздел">${[['build','Конструктор'],['mine','Мои'],['camp','Кампания'],['programs','Программы'],['challenges','Испытания'],['library','Упражнения']].map(([k,n])=>`<button data-act="trainSub" data-v="${k}" aria-pressed="${sub===k}">${n}</button>`).join('')}</div>`+
-  (sub==='build'?vBuilder():sub==='mine'?vMine():sub==='camp'?vCamp():sub==='programs'?vPrograms():sub==='challenges'?vChallenges():vLibrary());
+  return header('Тренировки','Конструктор · мои · планы · программы · испытания')+
+  `<div class="seg" role="group" aria-label="Раздел">${[['build','Конструктор'],['mine','Мои'],['plans','Планы'],['camp','Кампания'],['programs','Программы'],['challenges','Испытания'],['library','Упражнения']].map(([k,n])=>`<button data-act="trainSub" data-v="${k}" aria-pressed="${sub===k}">${n}</button>`).join('')}</div>`+
+  (sub==='build'?vBuilder():sub==='mine'?vMine():sub==='plans'?vPlans():sub==='camp'?vCamp():sub==='programs'?vPrograms():sub==='challenges'?vChallenges():vLibrary());
 }
 function vBuilder(){return recovHTML()+vBuilderMain()}
 function vBuilderMain(){
@@ -3626,7 +3752,7 @@ const lastG=n=>{const tk=todayKey();for(let i=0;i<60;i++){const e=(S.food[addDay
 const kcalLine=e=>`${fmt(e.kcal)} ккал · Б ${fmt(e.p)} · Ж ${fmt(e.f)} · У ${fmt(e.c)}`;
 const addEntry=(d,e)=>{(S.food[d]||(S.food[d]=[])).push(e);touch(d)};
 function vFood(){
-  const d=ui.foodDate||todayKey(),tk=todayKey(),tg=targets(),t=dayTot(d),items=S.food[d]||[],water=S.water[d]||0,yd=addDays(d,-1),yest=S.food[yd]||[];
+  const d=ui.foodDate||todayKey(),tk=todayKey(),tg=targets(d),t=dayTot(d),items=S.food[d]||[],water=S.water[d]||0,yd=addDays(d,-1),yest=S.food[yd]||[];
   const C=2*Math.PI*52,fr=clamp(t.kcal/tg.kcal,0,1),over=t.kcal>tg.kcal;
   const mb=(l,v,g)=>`<div class="stack" style="gap:4px"><div class="row between small"><b>${l}</b><span class="mono">${fmt(v)} / ${g} г</span></div><div class="bar ${v>g*1.1?'over':''}"><i style="width:${clamp(v/g*100,0,100)}%"></i></div></div>`;
   const glasses=Math.max(8,Math.ceil(tg.water/250)),full=Math.round(water/250);
@@ -3634,6 +3760,8 @@ function vFood(){
   return header('Питание',d===tk?'Сегодня · '+fmtD(d):WDL[parseKey(d).getDay()]+' · '+fmtD(d))+
   `<div class="row"><button class="btn iconbtn" data-act="fdate" data-v="-1" aria-label="Предыдущий день">${ic('left')}</button><span class="num" style="font-size:20px;min-width:150px;text-align:center">${d===tk?'Сегодня':fmtD(d,{weekday:'short',day:'numeric',month:'short'})}</span><button class="btn iconbtn" data-act="fdate" data-v="1" aria-label="Следующий день" ${d>=tk?'disabled':''}>${ic('right')}</button>
     ${!items.length&&yest.length?`<button class="btn sm" data-act="f-copy">Повторить меню вчерашнего дня</button>`:''}</div>
+  ${(()=>{const x=trInfo(d);return x?`<section class="panel camp-mini"><div class="row between"><span class="eyebrow">План · ${esc(x.t.n)} · день ${x.i+1}</span><span class="chip ${x.train?'on':''}">${x.train?'тренировка':'отдых'}</span></div><span class="small">${x.train?'День тренировки: калорий и углеводов больше.':'День отдыха: калорий чуть меньше, белок тот же.'} Норма — ${fmt(tg.kcal)} ккал, белок ${fmt(tg.prot)} г. Меню дня — «${esc(trMenu(x.t,x.i).n)}».</span>
+    <div class="row"><button class="btn sm primary" data-act="tr-menu" data-v="${d}">${ic('plus',15)} Добавить меню дня</button><button class="btn sm ghost" data-act="goto-plans" data-v="${d}">Чек-лист дня</button></div></section>`:''})()}
   <section class="grid g2">
     <div class="panel lift macro"><div style="position:relative;width:150px"><svg viewBox="0 0 120 120" style="width:150px;transform:rotate(-90deg)"><circle class="ring-bg" cx="60" cy="60" r="52" stroke-width="10"/><circle class="ring-fg ${over?'over':''}" cx="60" cy="60" r="52" stroke-width="10" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C*(1-fr)).toFixed(1)}"/></svg>
         <div style="position:absolute;inset:0;display:grid;place-items:center;text-align:center"><div><div class="num" style="font-size:30px;line-height:1">${fmt(t.kcal)}</div><div class="small muted">из ${fmt(tg.kcal)} ккал</div></div></div></div>
@@ -3690,11 +3818,11 @@ function faCalc(){const f=foodByName(ui.fa.pick);if(!f)return '<div class="row b
   return `<div class="stack" style="gap:8px"><div class="fpor" role="group" aria-label="Порция">${faPortions(f).map(([l,w])=>`<button class="chip ${g===w?'on':''}" data-act="fa-por" data-v="${w}">${esc(l)}${/ г$/.test(l)?'':' · '+fmt(w)+' г'}</button>`).join('')}</div>
     <div class="row between"><span><b>${esc(f.n)}</b>, ${fmt(g)} г — <span class="mono">${kcalLine(e)}</span></span><button class="btn primary" data-act="fa-add">Добавить</button></div></div>`}
 /* готовые меню: пропорционально подгоняются под вашу норму калорий */
-function menuScaled(mn){const tg=targets(),base=mn.items.reduce((a,[m,n,g])=>{const f=foodByName(n);return a+(f?f.k*g/100:0)},0),k=clamp(tg.kcal/(base||1),.7,1.6);
+function menuScaled(mn,kc){const tg={kcal:kc||targets().kcal},base=mn.items.reduce((a,[m,n,g])=>{const f=foodByName(n);return a+(f?f.k*g/100:0)},0),k=clamp(tg.kcal/(base||1),.7,1.6);
   return mn.items.map(([m,n,g])=>[m,n,Math.max(5,Math.round(g*k/5)*5)]).filter(x=>foodByName(x[1]))}
-function menusHTML(d){const tg=targets();
+function menusHTML(d){const tg=targets(d);
   return `<section class="panel"><details class="fmenus"><summary><b>Готовые меню на день</b><span class="small muted"> · подстраиваются под вашу норму ${fmt(tg.kcal)} ккал</span></summary>
-    <div class="grid g2" style="margin-top:10px">${FOOD_MENUS.map(mn=>{const it=menuScaled(mn),e=it.map(([m,n,g])=>foodEntry(foodByName(n),g,m)),t=e.reduce((a,x)=>({kcal:a.kcal+x.kcal,p:a.p+x.p,f:a.f+x.f,c:a.c+x.c}),{kcal:0,p:0,f:0,c:0});
+    <div class="grid g2" style="margin-top:10px">${FOOD_MENUS.map(mn=>{const it=menuScaled(mn,tg.kcal),e=it.map(([m,n,g])=>foodEntry(foodByName(n),g,m)),t=e.reduce((a,x)=>({kcal:a.kcal+x.kcal,p:a.p+x.p,f:a.f+x.f,c:a.c+x.c}),{kcal:0,p:0,f:0,c:0});
       return `<div class="panel lift" style="gap:6px"><h3>${esc(mn.n)}</h3><p class="small muted">${esc(mn.d)}</p><div class="mono small">${kcalLine(t)}</div>
         <ul class="fmenu">${MEALS.map(([m,nm])=>{const l=it.filter(x=>x[0]===m);return l.length?`<li><b>${nm}:</b> ${l.map(([,n,g])=>esc(n.toLowerCase())+' '+g+' г').join(', ')}</li>`:''}).join('')}</ul>
         <div class="row"><button class="btn sm primary" data-act="fm-add" data-v="${mn.id}">${ic('plus',15)} Добавить в день</button></div></div>`}).join('')}</div>
@@ -3853,7 +3981,7 @@ function vAwards(){
 
 /* ---------- Профиль ---------- */
 function vProfile(){
-  const p=S.profile,tg=targets();
+  const p=S.profile,tg=targets(todayKey(),1);
   const sel=(id,v,opts)=>`<select class="input" id="${id}" data-pf="${id.slice(3)}">${opts.map(([k,l])=>`<option value="${k}" ${String(v)===String(k)?'selected':''}>${l}</option>`).join('')}</select>`;
   return header('Профиль','Параметры, тренировки и оформление')+
   `<section class="panel lift"><h3>Оформление</h3><div class="skins">${SKINS.map(([k,n,d])=>`<button class="skin-opt" data-act="skin" data-v="${k}" aria-pressed="${skin()===k}"><span class="sw sw-${k}"></span><b>${n}</b><small>${d}</small></button>`).join('')}</div>
@@ -4188,6 +4316,19 @@ const ACT={
   'prog-go':()=>{const w=progWorkout();if(w)startWorkout(w)},
   'prog-stop':()=>ask('Остановить программу? Тренировки останутся в истории.','Остановить',()=>{S.prog=null;touch('main');render()}),
   'goto-prog':()=>{ui.tab='train';ui.trainSub='programs';render();window.scrollTo(0,0)},
+  'goto-plans':v=>{ui.tab='train';ui.trainSub='plans';ui.trDay=v&&v!==todayKey()?v:null;render();window.scrollTo(0,0)},
+  'tr-start':v=>{const t=trOf(v);if(!t)return;const place=S.profile.place,pid=trProg(t,place),pr=progOf(pid),go=()=>{const fr=pr.fr||3,pd=S.profile.days,days=pd.length&&Math.abs(pd.length-fr)<=1?[...pd]:(TR_DAYS[fr]||TR_DAYS[3]).slice();
+      S.track={id:v,start:todayKey(),place,prog:pid,days,marks:{},w0:(lastW()||{}).w||null,fin:null};if(!S.prog||S.prog.id!==pid||S.prog.fin)S.prog={id:pid,start:todayKey(),n:0};ui.trDay=null;touch('main');render();window.scrollTo(0,0);toast('План «'+t.n+'» начат — сегодня день 1')};
+    if(S.track&&trInfo(todayKey()))ask('Сейчас идёт другой план. Начать «'+t.n+'» с сегодняшнего дня?','Начать',go);
+    else if(S.prog&&S.prog.id!==pid&&!S.prog.fin&&progOf(S.prog.id))ask(`В план входит программа «${pr.n}». Текущая программа «${progOf(S.prog.id).n}» будет заменена — тренировки в истории останутся.`,'Начать',go);else go()},
+  'tr-stop':()=>ask('Завершить план? Записи тренировок и питания останутся.','Завершить',()=>{S.track=null;ui.trDay=null;touch('main');render()}),
+  'tr-again':()=>{const id=S.track.id;S.track=null;ACT['tr-start'](id)},
+  'tr-mark':v=>{const d=ui.trDay||todayKey();if(d>todayKey()||!S.track)return;const m=S.track.marks||(S.track.marks={}),o=m[d]||(m[d]={});if(o[v])delete o[v];else o[v]=1;if(!Object.keys(o).length)delete m[d];touch('main');render()},
+  'tr-day':v=>{const d=+v,a=S.track.days;S.track.days=a.includes(d)?(a.length>1?a.filter(x=>x!==d):a):[...a,d].sort();touch('main');render()},
+  'tr-sel':v=>{ui.trDay=v===todayKey()?null:v;render()},
+  'tr-menu':v=>{const x=trInfo(v);if(!x)return;const mn=trMenu(x.t,x.i),go=()=>{menuScaled(mn,targets(v).kcal).forEach(([m,n,g])=>addEntry(v,foodEntry(foodByName(n),g,m)));render();toast('Меню «'+mn.n+'» добавлено — поправьте порции под себя')};
+    if((S.food[v]||[]).length)ask('В этом дне уже есть записи. Добавить меню к ним?','Добавить',go);else go()},
+  'tr-food':v=>{ui.tab='food';ui.foodDate=v===todayKey()?null:v;ui.fa=null;ui.fe=null;render();window.scrollTo(0,0)},
   'cx-new':()=>cxForm(),
   'cx-save':()=>{const g=id=>document.getElementById(id),name=g('cx-n').value.trim();if(!name){toast('Введите название');g('cx-n').focus();return}
     const pl=[...document.querySelectorAll('.cx-pl:checked')].map(x=>x.value).join('')||'hg',id='u'+Date.now().toString(36);
@@ -4263,7 +4404,7 @@ const ACT={
   'fs-add':v=>{const x=(S.foodSets||[]).find(q=>q.id===v);if(!x||!ui.fa)return;const d=ui.foodDate||todayKey();x.items.forEach(i=>addEntry(d,Object.assign({},i,{id:newId(),meal:ui.fa.meal})));toast('Добавлен набор: '+x.n);render()},
   'fs-del':v=>ask('Удалить набор? Записи в дневнике останутся.','Удалить',()=>{S.foodSets=(S.foodSets||[]).filter(x=>x.id!==v);touch('main');render()}),
   'f-copym':v=>{const d=ui.foodDate||todayKey();(S.food[addDays(d,-1)]||[]).filter(x=>x.meal===v).forEach(x=>addEntry(d,Object.assign({},x,{id:newId()})));render();toast('Повторено как вчера')},
-  'fm-add':v=>{const mn=FOOD_MENUS.find(x=>x.id===v);if(!mn)return;const d=ui.foodDate||todayKey(),go=()=>{menuScaled(mn).forEach(([m,n,g])=>addEntry(d,foodEntry(foodByName(n),g,m)));render();toast('Меню «'+mn.n+'» добавлено — поправьте порции под себя')};
+  'fm-add':v=>{const mn=FOOD_MENUS.find(x=>x.id===v);if(!mn)return;const d=ui.foodDate||todayKey(),go=()=>{menuScaled(mn,targets(d).kcal).forEach(([m,n,g])=>addEntry(d,foodEntry(foodByName(n),g,m)));render();toast('Меню «'+mn.n+'» добавлено — поправьте порции под себя')};
     if((S.food[d]||[]).length)ask('В этом дне уже есть записи. Добавить меню к ним?','Добавить',go);else go()},
   fe:v=>{const x=(S.food[ui.foodDate||todayKey()]||[]).find(q=>q.id===v);if(!x)return;ui.fe={id:v,g:x.g,k:x.kcal,meal:x.meal};render();const i=document.getElementById(x.g?'fe-g':'fe-k');if(i&&!matchMedia('(pointer:coarse)').matches)i.select()},
   'fe-meal':v=>{ui.fe.meal=v;document.querySelectorAll('[data-act="fe-meal"]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===v))},'fe-cancel':()=>{ui.fe=null;render()},
@@ -4331,7 +4472,7 @@ function importFile(f){if(f.size>80e6){toast('Файл слишком больш
   const r=new FileReader();r.onload=()=>{let d,st;try{d=JSON.parse(r.result);st=d&&typeof d==='object'?(d.state||d):null;if(!st||typeof st!=='object'||!st.profile||!Array.isArray(st.workouts))throw 0}catch(e){toast('Это не файл резервной копии «Подхода»');return}
   const ph=Array.isArray(d.photos)?normPhotos(d.photos):null;
   ask(`Заменить текущие записи данными из файла?${ph&&ph.length?' Фото прогресса тоже заменятся ('+ph.length+').':' Фото на этом устройстве останутся.'}`,'Заменить',()=>{let ns;
-    try{ns=merge({main:{profile:st.profile,weights:st.weights,settings:st.settings,customFoods:st.customFoods,favFoods:st.favFoods,foodSets:st.foodSets,plan:null,week:null,camp:st.camp,ecl:st.ecl,prog:st.prog,notes:st.notes,customEx:st.customEx,routines:st.routines},'m-import':{workouts:st.workouts,food:st.food,water:st.water}})}catch(e){toast('Файл повреждён — данные не загружены');return}
+    try{ns=merge({main:{profile:st.profile,weights:st.weights,settings:st.settings,customFoods:st.customFoods,favFoods:st.favFoods,foodSets:st.foodSets,plan:null,week:null,camp:st.camp,ecl:st.ecl,prog:st.prog,track:st.track,notes:st.notes,customEx:st.customEx,routines:st.routines},'m-import':{workouts:st.workouts,food:st.food,water:st.water}})}catch(e){toast('Файл повреждён — данные не загружены');return}
     const old=Object.keys(split());S=ns;S.demo=false;new Set([...old,...store.known,...Object.keys(split())]).forEach(k=>touch(k));
     if(ph&&ph.length){PHOTOS=ph;OURL.clear();savePhotos()}
     render();toast('Данные загружены')})};r.readAsText(f)}
