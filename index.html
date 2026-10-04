@@ -2,7 +2,7 @@
 <html lang="ru" data-skin="berserk">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-iATiD9dPBM8w4Mzy72zmKx/bKGpxllEBRUZm+VdzX0w=' 'sha256-VBX+3Sad2E12h3zNvKEjxP5DnkSdTC1E1mTfFsFKvzA=' 'sha256-LmFhfPRkdhtjKCaBuTCFNmDSPqdlHR/HYhLjqNGWhJM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-iATiD9dPBM8w4Mzy72zmKx/bKGpxllEBRUZm+VdzX0w=' 'sha256-4DxsfNPIn8XQIuL6pLe4X3EpJSMirFdr0CKvlPDpwJQ=' 'sha256-LmFhfPRkdhtjKCaBuTCFNmDSPqdlHR/HYhLjqNGWhJM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0A0909">
 <meta name="description" content="Дневник тренировок: программы по уровням, техника с фото, таймеры, питание, вес и отчёты.">
@@ -537,6 +537,8 @@ ul.warn li::before{content:"";position:absolute;left:2px;top:.55em;width:8px;hei
 .fset{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}.fset:first-child{border-top:0}
 .fmenu{margin:0;padding-left:18px;font-size:13px;display:flex;flex-direction:column;gap:3px}
 .fmenus>summary{cursor:pointer}
+.bkeys{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px;font-size:14px}
+.progc.hi{outline:2px solid var(--accent);outline-offset:2px}
 .trst{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.trst .v{font-size:22px}
 .trday>.stack{padding-top:10px;border-top:1px solid var(--line)}
 .trcheck{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
@@ -1179,7 +1181,11 @@ brisk:X('Быстрая ходьба',['Кардио'],'hf','run','beg','time','
 cobra:X('Кобра',['Растяжка','Пресс'],'hgf','cool','beg','time','Коврик',['Лягте на живот, ладони под плечами.','Мягко выпрямите руки и поднимите грудь, таз остаётся на полу.','Плечи опущены, шея продолжает линию позвоночника.'],['Плечи у ушей','Резкий прогиб'],'Спокойное глубокое дыхание.','Опора на предплечья.','Полное выпрямление рук.',{nophoto:1}),
 pigeon:X('Поза голубя',['Растяжка','Ягодицы'],'hgf','cool','mid','time','Коврик',['Из упора выведите одно колено вперёд, голень поперёк коврика.','Вторую ногу вытяните назад.','Опустите таз и наклонитесь вперёд на предплечья.'],['Таз перекошен','Боль в колене — сразу выходите'],'Глубокое дыхание, на выдохе чуть ниже.','Подушка под таз.','Грудью к полу.',{note:'на каждую сторону',nophoto:1}),
 hipFlexor:X('Растяжка сгибателей бедра',['Растяжка','Ноги'],'hgf','cool','beg','time','Коврик',['Встаньте в выпад на колено, передняя голень вертикальна.','Подкрутите таз и подайте его вперёд — натяжение спереди бедра задней ноги.','Можно поднять руку вверх.'],['Прогиб в пояснице вместо подачи таза'],'Ровное дыхание.','Меньше шаг.','Взять стопу задней ноги рукой.',{note:'на каждую сторону',nophoto:1}),
-butterfly:X('Бабочка',['Растяжка','Ноги'],'hgf','cool','beg','time','Коврик',['Сядьте, соедините стопы, колени разведите в стороны.','Держитесь за стопы, спина прямая.','Мягко опускайте колени к полу и наклоняйтесь вперёд.'],['Круглая спина','Давление руками на колени рывками'],'На выдохе расслабляйтесь глубже.','Сидите на подушке.','Наклон грудью к стопам.',{nophoto:1})
+butterfly:X('Бабочка',['Растяжка','Ноги'],'hgf','cool','beg','time','Коврик',['Сядьте, соедините стопы, колени разведите в стороны.','Держитесь за стопы, спина прямая.','Мягко опускайте колени к полу и наклоняйтесь вперёд.'],['Круглая спина','Давление руками на колени рывками'],'На выдохе расслабляйтесь глубже.','Сидите на подушке.','Наклон грудью к стопам.',{nophoto:1}),
+checkKick:X('Защита от лоу-кика голенью',['Бой','Ноги'],'f','def','beg','time','Без инвентаря',['Боевая стойка, руки у лица.','Поднимите переднее колено вверх и чуть наружу, носок на себя — удар принимается голенью, а не бедром.','Корпус прямой, вес на опорной ноге, руки не опускаются.','Поставьте ногу обратно в стойку и сразу ответьте ударом.'],['Поворот спиной к удару','Опускание рук при подъёме ноги','Подставка бедром вместо голени'],'Короткий выдох при подставке.','Медленно, держась рукой за опору.','Подставка и сразу встречный удар — тип или двойка.',{nophoto:1}),
+padWork:X('Работа на лапах',['Бой','Плечи'],'f','box','mid','time','Лапы и партнёр (или мешок)',['Партнёр держит лапы и называет связки.','Бейте точно в центр лапы, сразу возвращая руки к лицу.','Двигайтесь вместе с партнёром, не стойте на месте.','Нет партнёра — те же связки на мешке или в тени.'],['Удары «в пустоту» с перерасходом сил','Руки падают после серии','Нет работы ног'],'Короткий выдох на каждом ударе.','Одиночные удары и двойки.','Длинные серии с защитой по команде.',{nophoto:1}),
+dbShadow:X('Бой с тенью с гантелями',['Бой','Плечи'],'fh','box','mid','time','Лёгкие гантели 0,5–2 кг',['Возьмите лёгкие гантели и встаньте в боевую стойку.','Бейте прямые удары в спокойном темпе, полностью разгибая руку.','Руки после удара возвращаются к подбородку.','Затем раунд без гантелей — руки станут «лёгкими».'],['Тяжёлые гантели — удар ломается, страдают локти','Удары с размахом','Плечи поднимаются к ушам'],'Выдох на каждом ударе.','Без гантелей.','Серии по 20 секунд в максимальном темпе.',{w:1,eq:['db'],nophoto:1}),
+ropeSlip:X('Нырки под верёвкой',['Бой','Ноги'],'f','def','beg','time','Натянутая верёвка или резинка на уровне плеч',['Натяните верёвку на уровне плеч и встаньте рядом в стойке.','Двигайтесь вдоль верёвки, ныряя под неё дугой «U» — за счёт ног, а не наклона спины.','После нырка сразу вернитесь в стойку и сделайте шаг.'],['Наклон спиной вместо приседа','Взгляд в пол','Руки опускаются'],'Ровное дыхание, выдох при нырке.','Без верёвки, медленно.','Нырок и двойка после каждого прохода.',{nophoto:1})
 };
 Object.setPrototypeOf(EX,null);
 const GROUPS=['Все','Ноги','Грудь','Спина','Плечи','Руки','Кор','Кардио','Бой','Растяжка'];
@@ -1363,7 +1369,10 @@ const TRACK_PLANS=[
     d:'От нуля до 30 минут бега без остановки и минус пара килограммов: план «с дивана до 5 км» и лёгкий дефицит. Углеводы — в дни пробежек.'},
   {id:'glute8',n:'Ягодицы и ноги: 8 недель',goal:'keep',wk:8,kf:1,pk:1.8,fk:.9,prog:{gym:['glute'],home:['glute2'],fight:['glute2']},menus:['bal','bal2','cut2'],
     habits:[['sleep','Сон 7+ часов'],['steps','8 000+ шагов']],
-    d:'Упругие ягодицы и сильные ноги: 2–3 тренировки на низ, питание на поддержании с достаточным белком — мышцам есть из чего расти.'}
+    d:'Упругие ягодицы и сильные ноги: 2–3 тренировки на низ, питание на поддержании с достаточным белком — мышцам есть из чего расти.'},
+  {id:'fight8',n:'Боец: форма и вес за 8 недель',goal:'fight',wk:8,kf:.9,pk:2,fk:.9,prog:{gym:['fsc','box'],home:['mtcl','boxcl'],fight:['mtcl','boxcl']},menus:['bal','cut2','bal2','fast'],
+    habits:[['sleep','Сон 8 часов'],['stretch','Растяжка 10 минут']],
+    d:'Техника, раунды и дорожная работа плюс питание бойца по рекомендациям спортивной науки: белок 2 г на кг, углеводы под нагрузку, плавное снижение веса без сгонки водой.'}
 ];
 /* совет недели: по цели плана */
 const TRACK_WEEK={
@@ -1375,6 +1384,10 @@ const TRACK_WEEK={
     'Углеводы — вокруг тренировки: каша или рис за 1–3 часа до и после.','Вес должен расти на 0,25–0,5% в неделю. Быстрее — уменьшите профицит, медленнее — добавьте 200 ккал.',
     'Записывайте рабочие веса: рост силы — главный признак, что растут мышцы.','Сон 8 часов: мышцы растут во время восстановления, а не на тренировке.',
     'Белок перед сном — творог или казеин.','Замеры: талия должна расти заметно медленнее, чем руки и грудь.'],
+  fight:['Белок — около 2 г на кг веса, углеводы — не меньше 3–4 г на кг: без них не выдержать раунды.','Худейте заранее и плавно: 0,5–1% веса в неделю. Резкая сгонка водой режет силу и выносливость.',
+    'Пейте до, во время и после тренировки: потеря 2% веса с потом уже снижает выносливость.','После тренировки — белок и углеводы в течение пары часов.',
+    'Скакалка или бег понемногу каждый день: дыхание решает в последнем раунде.','Растяжка бёдер и плеч — удары ногами выше и безопаснее.',
+    'Проверьте себя: шесть раундов боя с тенью по три минуты — где тяжелее всего?','Финиш: сравните вес, время раундов и самочувствие со стартом.'],
   keep:['Главное — не пропускать. Три тренировки в неделю лучше, чем пять через раз.','Полтора-два литра воды в день: держите бутылку на виду.',
     'Завтрак с белком — меньше тяги к сладкому днём.','Добавьте 10 минут растяжки после тренировок.',
     'Приготовьте еду на 2–3 дня вперёд — меньше срывов на фастфуд.','Подведите итоги: сравните замеры, фото и рабочие веса со стартом.']
@@ -1476,6 +1489,43 @@ const METHOD_FOR={home:['classic','circuit','superset','ladder','pyramid','emom'
 /* --- испытания: свои у каждой темы --- */
 /* ---------- программы (как в Lyfta: готовые планы с «следующей тренировкой») ----------
    элемент дня: [упражнение, подходы, повторы или секунды, отдых]; вес подбирает прогрессия: всё сделал — в следующий раз тяжелее */
+/* --- фазы программ, которые меняются по неделям (v27) --- */
+const BOX_P=[
+  [['Стойка, джеб, ноги',[['footwork',3,120,30],['jabCross',3,180,60],['shadow',3,180,60],['rope',3,120,45],['pushup|kneePush',3,15,45],['plank',2,45,30]]],
+   ['Защита',[['footwork',2,120,30],['slipRoll',3,180,60],['parry',3,180,60],['slipCounter',2,180,60],['ropeSlip',3,120,45],['crunch',3,20,30]]],
+   ['Дорожная работа',[['jog',1,1500,60],['shadow',3,180,60],['burpee',3,10,30],['hollowHold|plank',3,30,30]]]],
+  [['Связки',[['footwork',2,120,30],['shadow',3,180,60],['hook',3,180,60],['uppercut',3,180,60],['bag|padWork|shadow',4,180,60],['pushup',3,15,45]]],
+   ['Сила удара',[['dbShadow',4,120,60],['bodyShots',3,180,60],['overhand',3,120,60],['bag|shadow',4,180,60],['twist',3,20,30]]],
+   ['Бег и ОФП',[['jog',1,1800,60],['burpee',4,10,30],['skater',3,20,30],['jumpSquat',3,15,30],['sidePlank',3,30,20]]]],
+  [['Раунды на мешке',[['footwork',2,120,30],['bag|shadow',6,180,60],['bagSprint|highKnees',4,30,30],['plank',3,60,30]]],
+   ['Тень и защита',[['shadow',6,180,60],['slipCounter',3,180,60],['ropeSlip',3,120,45],['crunch',3,25,30]]],
+   ['Интервалы',[['jog',1,1200,60],['highKnees',8,20,10,{ra:60}],['burpee',3,12,30]]]]
+];
+const MT_P=[
+  [['Стойка и тип',[['footwork',2,120,30],['frontKick',3,120,60],['jabCross',3,180,60],['lowKick',3,120,60],['rope',3,120,45],['plank',2,45,30]]],
+   ['Колени и клинч',[['knee',3,120,60],['clinchKnee',3,120,60],['checkKick',3,90,45],['shadow',2,180,60],['crunch',3,20,30]]],
+   ['Бег и растяжка',[['jog',1,1500,60],['shadow',2,180,60],['hipFlexor',2,40,15],['butterfly',2,40,15]]]],
+  [['Удары ногами',[['footwork',2,120,30],['roundhouse',3,120,60],['switchKick|roundhouse',3,120,60],['checkKick',3,90,45],['bagKicks|shadow',4,180,60]]],
+   ['Локти и связки',[['elbow',3,120,60],['hook',3,120,60],['uppercut',2,120,60],['clinchKnee',3,120,60],['bag|shadow',3,180,60]]],
+   ['Бег и ОФП',[['jog',1,1800,60],['skater',3,20,30],['burpee',3,12,30],['twist',3,20,30]]]],
+  [['Раунды на мешке',[['bagKicks|shadow',6,180,60],['bagSprint|highKnees',4,30,30],['knee',3,60,30]]],
+   ['Тень: все удары',[['shadow',5,180,60],['highKick|roundhouse',3,120,60],['sprawl',3,30,20],['sidePlank',3,40,20]]],
+   ['Интервалы',[['jog',1,1200,60],['highKnees',8,20,10,{ra:60}],['jumpSquat',3,15,30]]]]
+];
+const BLK_P=[
+  [['Накопление А',[['bbSquat',4,8,120],['bbBench',4,8,120],['bbRow',4,10,90],['rdl',3,10,90],['plank',3,45,40]]],['Накопление Б',[['deadlift',4,6,150],['milPress',4,8,120],['pullup|latPull',4,8,90],['bulgarian|dbLunge',3,10,75],['hangRaise|legRaise',3,12,45]]],
+   ['Накопление В',[['frontSquat|legPress',4,8,120],['inclinePress',4,10,90],['cableRow',4,10,75],['hipThrust',3,10,75],['facePull',3,15,45]]]],
+  [['Преобразование А',[['bbSquat',5,4,180],['boxJump|jumpSquat',4,4,90],['bbBench',5,4,180],['bbRow',4,6,120]]],['Преобразование Б',[['deadlift',5,3,210],['broadJump|jumpSquat',4,4,90],['milPress',5,4,150],['pullup|latPull',4,5,120]]],
+   ['Преобразование В',[['frontSquat|bbSquat',4,4,150],['plyoPush|pushup',4,6,90],['powerClean|kbSwing',5,3,120],['abWheel|hangRaise',3,10,60]]]],
+  [['Реализация А',[['bbSquat',4,2,210],['boxJump|jumpSquat',3,3,90],['bbBench',4,2,210]]],['Реализация Б',[['deadlift',3,2,240],['broadJump|jumpSquat',3,3,90],['milPress',4,2,180]]],
+   ['Реализация В',[['powerClean|kbSwing',4,2,150],['plyoPush|pushup',3,5,90],['pullup|latPull',3,3,120]]]],
+  [['Проверка: присед и жим',[['bbSquat',3,1,240],['bbBench',3,1,240]]],['Проверка: становая и жим стоя',[['deadlift',3,1,240],['milPress',3,1,180]]],['Восстановление',[['brisk',1,1200,0],['worldGreatest',2,40,15],['pigeon',2,40,15],['catStretch',2,40,15]]]]
+];
+const MESO=(s,dl)=>{const x=dl?' · разгрузка':'';return[['Верх А'+x,[['bbBench',s,8,120],['bbRow',s,10,90],['ohp',s,12,75],['latPull',s,12,75],['latRaise',s,15,45],['dbCurl',s,12,45]]],['Низ А'+x,[['bbSquat',s,8,150],['rdl',s,10,120],['legPress',s,12,90],['legCurl',s,12,60],['calf',s,15,45]]],
+  ['Верх Б'+x,[['inclinePress',s,10,90],['cableRow',s,12,75],['dbFly|cableCross',s,15,60],['pullup|latPull',s,10,90],['revFly',s,15,45],['pushdown',s,15,45]]],['Низ Б'+x,[['hackSquat|legPress',s,10,120],['hipThrust',s,10,90],['bulgarian|dbLunge',s,12,75],['legExt',s,15,60],['seatedCalf|calf',s,15,45]]]]};
+const SIX=(p,u,q,l,b,h,r)=>[['Отжимания и пресс',[[p,3,r[0],90],[l,3,r[1],75],['hollowHold|plank',2,40,45]]],['Присед и тяга',[[q,3,r[2],90],[u,3,r[3],90],['birdDog',2,10,45]]],['Мост и жим вверх ногами',[[b,3,r[4],75],[h,3,r[5],90],['superman',2,12,45]]]];
+const SIX_P=[SIX('kneePush','invRow','squat','reverseCrunch','bridge','pikePush',[12,15,20,8,15,6]),SIX('pushup','negPullup','sumoSquat|squat','legRaise','sglBridge','pikePush',[12,12,20,5,12,8]),
+  SIX('closePush|pushup','chinup|negPullup','bulgarian|reverseLunge','hangRaise|legRaise','sglBridge','pikePush',[10,10,10,6,15,10]),SIX('archerPush|closePush','pullup|chinup','pistol|bulgarian|reverseLunge','hangPike|hangRaise','sglBridge','handstandPush|pikePush',[6,6,6,6,20,5])];
 const PROGRAMS=[
   {id:'sl5',n:'Сильные 5×5',place:'gym',lv:'beg',fr:3,wk:12,per:'3 раза в неделю, через день',d:'Линейная прогрессия для силы: три базовых движения со штангой, 5 подходов по 5. Все повторы сделаны — в следующий раз +2,5 кг (присед и тяга — +5 кг). Три тренировки подряд вес не идёт — разгрузка −10%.',
     days:[['Тренировка А',[['bbSquat',5,5,180],['bbBench',5,5,180],['bbRow',5,5,150]]],['Тренировка Б',[['bbSquat',5,5,180],['milPress',5,5,180],['deadlift|sumoDl',1,5,240]]]]},
@@ -1553,7 +1603,22 @@ const PROGRAMS=[
   {id:'push100',n:'100 отжиманий',place:'home',lv:'beg',fr:3,wk:6,per:'3 раза в неделю, 15 минут',d:'Классический вызов: за шесть недель прийти к сотне отжиманий за тренировку. Пять подходов, последний — на максимум; всё сделано — в следующий раз на 2 повтора больше.',
     days:[['Отжимания',[['pushup|kneePush',5,10,60,{amrap:1}],['closePush|pushup',2,10,60],['plank',3,40,30]]],['Отжимания + кор',[['pushup|kneePush',5,12,60,{amrap:1}],['widePush|pushup',2,10,60],['shoulderTap',3,20,30]]]]},
   {id:'glute2',n:'Ягодицы дома',place:'home',lv:'beg',fr:3,wk:8,per:'3 раза в неделю',d:'Ягодичные и бёдра без зала: мосты, выпады, отведения и стульчик. Прогрессия повторами и временем; с резинкой или гантелями — ещё эффективнее.',
-    days:[['День А',[['bridge',4,15,45],['reverseLunge',3,12,60],['fireHydrant',3,15,30],['sumoSquat|squat',3,15,60],['wallSit',3,40,45]]],['День Б',[['sglBridge|bridge',3,12,45],['sideLunge',3,10,60],['gluteKick',3,15,30],['stepUp',3,12,60],['birdDog',3,10,30]]]]}
+    days:[['День А',[['bridge',4,15,45],['reverseLunge',3,12,60],['fireHydrant',3,15,30],['sumoSquat|squat',3,15,60],['wallSit',3,40,45]]],['День Б',[['sglBridge|bridge',3,12,45],['sideLunge',3,10,60],['gluteKick',3,15,30],['stepUp',3,12,60],['birdDog',3,10,30]]]]},
+  /* --- v27: программы по классическим методикам (книги — в разделе «Методики») --- */
+  {id:'boxcl',n:'Бокс: классическая школа',place:'fight',lv:'beg',fr:3,wk:12,fixr:1,src:'Дэмпси «Championship Fighting», Градополов «Бокс»',per:'3 раза в неделю',d:'Двенадцать недель по старой школе: сначала стойка, джеб, ноги и защита, потом связки и сила удара, в конце — соревновательные раунды. В каждой фазе — дорожная работа (бег), как у боксёров прошлого века.',
+    days:BOX_P[0],byWeek:[0,0,0,0,1,1,1,1,2,2,2,2].map(i=>BOX_P[i])},
+  {id:'mtcl',n:'Тайский бокс: школа',place:'fight',lv:'mid',fr:3,wk:12,fixr:1,src:'Бойкин «Muay Thai Kickboxing», Дельп «Muay Thai Basics»',per:'3 раза в неделю',d:'Восемь орудий тайского бокса по фазам: тип и лоу, колени и клинч, потом удары ногами в корпус, локти и связки, в конце — раунды на мешке. Защита от лоу-кика голенью — с первой недели.',
+    days:MT_P[0],byWeek:[0,0,0,0,1,1,1,1,2,2,2,2].map(i=>MT_P[i])},
+  {id:'fsc',n:'ОФП бойца',place:'gym',lv:'mid',fr:3,wk:8,src:'Зациорский «Наука и практика силовой тренировки», Верхошанский',per:'2–3 раза в неделю, вместе с техникой',d:'Сила и взрыв для единоборств: мало повторов в базе (сила без лишней массы), прыжки и броски мяча (скорость), кор на вращение и отдельный день кондиций. Хорошо сочетается с тренировками по технике.',
+    days:[['Сила',[['powerClean|deadlift',4,3,150],['bbSquat|frontSquat',4,5,150],['pullup|latPull',4,6,120],['milPress|ohp',3,6,120],['landmine180|pallof',3,10,60]]],
+      ['Взрыв и кор',[['boxJump|jumpSquat',4,5,90],['medBallSlam',4,8,60],['bbBench|pushup',4,6,120],['bbRow|tbarRow',4,8,90],['abWheel|hangRaise',3,10,60]]],
+      ['Кондиции',[['rowErg',6,60,60],['bike',6,30,30],['burpee',4,10,45],['sprawl',4,30,30],['farmer',3,40,60]]]]},
+  {id:'block',n:'Блочная периодизация',place:'gym',lv:'adv',fr:3,wk:12,src:'Верхошанский, Зациорский',per:'3 раза в неделю',d:'Три блока подряд: накопление (недели 1–5, большой объём на 8–10 повторов), преобразование (6–9, тяжелее на 3–5 повторов и прыжки), реализация (10–11, 2–3 повтора и взрыв при малом объёме), неделя 12 — проверка максимума. Каждый блок опирается на следы предыдущего.',
+    days:BLK_P[0],byWeek:[0,0,0,0,0,1,1,1,1,2,2,3].map(i=>BLK_P[i])},
+  {id:'meso',n:'Мезоцикл на массу',place:'gym',lv:'mid',fr:4,wk:10,src:'Израэтел «Scientific Principles of Hypertrophy Training», Шёнфельд',per:'4 раза в неделю',d:'Два цикла по 5 недель: каждую неделю в каждом упражнении на подход больше (2 → 3 → 4 → 5), 1–3 повтора в запасе, на пятой неделе — разгрузка. Так объём растёт от минимально нужного к максимально переносимому.',
+    days:MESO(2),byWeek:[2,3,4,5,0,2,3,4,5,0].map(s=>s?MESO(s):MESO(2,1))},
+  {id:'six',n:'Шесть движений с весом тела',place:'home',lv:'beg',fr:3,wk:16,eq:['bar'],src:'Уэйд «Convict Conditioning», Лоу «Overcoming Gravity»',per:'3 раза в неделю',d:'Шесть главных движений — отжимания, приседания, подтягивания, подъёмы ног, мосты и жимы вверх ногами. Каждые 4 недели — следующая ступень сложности: от отжиманий с колен до лучника, от приседаний до пистолетика.',
+    days:SIX_P[0],byWeek:[0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3].map(i=>SIX_P[i])}
 ];
 /* ориентировочные нормативы силы: во сколько раз вес больше собственного (новичок · любитель · средний · продвинутый · элита) */
 const STR_STD={bbSquat:{n:'Присед со штангой',m:[.75,1.25,1.5,2.25,2.75],f:[.5,.75,1.25,1.5,2]},bbBench:{n:'Жим лёжа',m:[.5,.75,1.25,1.5,2],f:[.25,.5,.75,1,1.5]},
@@ -1701,6 +1766,35 @@ function genCooldown(seed){
   for(let i=0;i<5&&pool.length;i++){const idx=Math.floor(R()*pool.length);const id=pool.splice(idx,1)[0];items.push({ex:id,sets:1,time:40,rest:5})}
   return{id:newId(),title:'Заминка и растяжка',place:'home',focus:'cool',lv:'beg',minutes:5,method:'classic',kind:'cooldown',items};
 }
+
+/* ---------- методики: проверенные книги и документы. Пересказ главных идей — своими словами; p — программы, pl — план в приложении ---------- */
+const BOOK_CATS=[['gym','Зал и сила'],['home','Дом и вес тела'],['fight','Бокс и единоборства'],['food','Питание'],['sci','Наука и периодизация']];
+const BOOKS=[
+  {c:'gym',t:'Starting Strength',a:'Марк Риппетоу',y:2005,d:'Самое известное руководство для новичка в зале: техника приседа, жимов, становой и взятия на грудь и простая линейная прогрессия.',k:['Новичку нужны не десятки упражнений, а пять базовых движений со штангой','Вес растёт каждую тренировку, пока это возможно, — главный рычаг первых месяцев','Техника строится от положения штанги над серединой стопы'],p:['ss3','sl5']},
+  {c:'gym',t:'5/3/1',a:'Джим Вендлер',y:2009,d:'Простая система для тех, кто уже вышел из новичков: один главный подъём в день и медленный, но долгий рост.',k:['Работа от тренировочного максимума — 90% от реального','Медленная прогрессия: +2,5 кг на жимы и +5 кг на ноги за месяц, зато годами','Последний подход — на максимум повторов: так видно рост силы'],p:['w531']},
+  {c:'gym',t:'The Muscle and Strength Pyramid: Training',a:'Эрик Хелмс и соавторы',y:2015,d:'Приоритеты тренировки «пирамидой»: что важнее всего, а что — мелочи.',k:['Сначала постоянство и разумная нагрузка, потом объём и интенсивность, потом подбор упражнений','10–20 рабочих подходов на мышцу в неделю — рабочий диапазон для большинства','Отслеживание тяжести подхода (повторы в запасе, RPE) защищает от перетренированности'],p:['ul4','phul']},
+  {c:'gym',t:'Анатомия силовых упражнений',a:'Фредерик Делавье',y:1998,d:'Атлас: какие мышцы работают в каждом упражнении и как меняется нагрузка от хвата, угла и стойки.',k:['Небольшая смена хвата или угла смещает нагрузку на другую часть мышцы','Большие базовые движения нагружают сразу много мышц — основа тренировки','Изолирующие упражнения — для отстающих мест'],p:['bro5','arnold']},
+  {c:'gym',t:'Simple & Sinister',a:'Павел Цацулин',y:2013,d:'Минимальная гиревая программа: махи и турецкие подъёмы почти каждый день.',k:['Мало упражнений, но идеальная техника и регулярность','Тренировка не должна выжимать досуха — сила копится от практики','Цели по времени: 100 махов за 5 минут и 10 подъёмов за 10 минут'],p:['kbss']},
+  {c:'home',t:'Overcoming Gravity',a:'Стивен Лоу',y:2011,d:'Подробная система тренировок с весом тела: от отжиманий до гимнастических элементов, с прогрессиями и профилактикой травм.',k:['Каждое движение — лестница прогрессий: усложняйте рычаг, а не добавляйте вес','Сухожилия адаптируются медленнее мышц — не прыгайте через ступени','Тренировка строится парами «тяга + жим»'],p:['bwrr','six','pull1']},
+  {c:'home',t:'Convict Conditioning',a:'Пол Уэйд',y:2009,d:'Шесть главных движений с весом тела и по десять ступеней сложности в каждом.',k:['Отжимания, приседания, подтягивания, подъёмы ног, мосты и жимы в стойке на руках','Переход на следующую ступень — только когда текущая выполняется чисто и с запасом','Медленный темп и полная амплитуда важнее количества повторов'],p:['six']},
+  {c:'home',t:'You Are Your Own Gym',a:'Марк Лорен',y:2010,d:'Программы без инвентаря от тренера спецподразделений: короткие, интенсивные, с разными методиками.',k:['Лесенки, суперсеты и тренировки на время делают вес тела серьёзной нагрузкой','Короткие тренировки 30 минут 4 раза в неделю','Прогрессия — через сложность варианта и плотность работы'],p:['home3','push100','min7']},
+  {c:'home',t:'Растяжка (Stretching)',a:'Боб Андерсон',y:1980,d:'Классика о растяжке: спокойные позы, без рывков и боли.',k:['Растягивайтесь мягко: лёгкое натяжение, 20–30 секунд, без пружинящих движений','Растяжка после тренировки помогает восстановлению и подвижности','Дыхание медленное и спокойное'],p:[]},
+  {c:'fight',t:'Championship Fighting',a:'Джек Дэмпси',y:1950,d:'Чемпион мира в тяжёлом весе объясняет, откуда берётся сила удара: из падения веса тела, шага и разворота, а не из рук.',k:['«Падающий шаг»: удар двигает вес тела вперёд','Атакующая защита: уклон и сразу контрудар','Дорожная работа — бег — основа выносливости боксёра'],p:['boxcl','box']},
+  {c:'fight',t:'Бокс',a:'К. В. Градополов',y:1965,d:'Классический советский учебник: техника, тактика и методика подготовки боксёров.',k:['Подготовка делится на общую и специальную (ОФП и СФП)','Техника ставится от стойки и передвижений к ударам и защитам','Бой с тенью, снаряды и условные бои — основные средства тренировки'],p:['boxcl']},
+  {c:'fight',t:'How to Box',a:'Джо Луис',y:1948,d:'Короткое практичное пособие легендарного чемпиона о базе бокса.',k:['Короткие прямые удары из правильной стойки','Ноги и баланс важнее силы рук','Джеб — главный удар: им начинают и им строят атаку'],p:['box']},
+  {c:'fight',t:'Muay Thai Kickboxing',a:'Чед Бойкин',y:2002,d:'Подробный путеводитель по тайскому боксу: удары руками, ногами, коленями и локтями, кондиции и тактика.',k:['Восемь орудий: кулаки, локти, колени и голени','Кондиционная работа — бег, скакалка и раунды на мешке','Защита от лоу-кика голенью ставится с первых занятий'],p:['mtcl','kick']},
+  {c:'fight',t:'Muay Thai Basics',a:'Кристоф Дельп',y:2005,d:'Понятная база тайского бокса для начинающих.',k:['Сначала стойка, баланс и шаг — потом удары','Короткие связки «рука — нога» на каждом занятии','Растяжка бёдер — для высоких ударов ногами'],p:['mtcl']},
+  {c:'fight',t:'Muay Thai Unleashed',a:'Эрих Краусс, Глен Кордоза',y:2006,d:'Продвинутые приёмы: ловля ударов, клинч, спарринг и работа на мешке.',k:['Клинч и колени — отдельный раздел подготовки','Работа на мешке — раундами, как в бою','Контратаки после ловли удара ногой'],p:['mtcl','mma']},
+  {c:'fight',t:'Training and Fighting Skills',a:'Бенни Уркидес',y:1981,d:'Непобеждённый чемпион по кикбоксингу о тренировках и мышлении бойца.',k:['Тренировка должна быть похожа на бой: раунды, темп, давление','Удары ногами и руками связываются в единые серии','Ум бойца тренируется так же, как тело'],p:['kick']},
+  {c:'food',t:'Позиции ISSN: белок и время приёма пищи',a:'Международное общество спортивного питания',y:2017,d:'Научные позиции о белке и времени приёма пищи для тех, кто тренируется.',k:['Белок 1,4–2,0 г на кг веса в день хватает большинству тренирующихся','20–40 г белка в приём пищи каждые 3–4 часа','Общая суточная норма важнее точного времени приёма'],pl:['mass12','cut8']},
+  {c:'food',t:'Позиция ISSN: питание и сгонка веса в единоборствах',a:'Международное общество спортивного питания',y:2025,d:'Как бойцу держать вес и безопасно готовиться к взвешиванию.',k:['При снижении веса белок в приоритете, чтобы сохранить мышцы','Углеводы не ниже 3–4 г, жиры не ниже 0,5–1 г на кг веса','Резкая сгонка водой опасна: худеть нужно заранее и плавно'],pl:['fight8']},
+  {c:'food',t:'The Muscle and Strength Pyramid: Nutrition',a:'Эрик Хелмс и соавторы',y:2015,d:'Приоритеты питания: что действительно влияет на результат.',k:['Главное — баланс калорий, потом белок и остальные макронутриенты','Время приёма, добавки и «чистые» продукты — на вершине, то есть мелочи','Темп похудения 0,5–1% веса в неделю бережёт мышцы'],pl:['cut8','recomp6']},
+  {c:'food',t:'The Renaissance Diet 2.0',a:'Майк Израэтел и соавторы',y:2020,d:'Питание под цель для спортсменов: калории, белок, углеводы вокруг тренировок.',k:['Углеводов больше в дни тренировок и вокруг них','Фазы: похудение и набор чередуются с поддержанием','Изменения калорий — небольшими шагами, по фактическому весу'],pl:['mass12','cut8']},
+  {c:'sci',t:'Наука и практика силовой тренировки',a:'В. М. Зациорский, У. Кремер',y:1995,d:'Учебник о том, как устроена сила и как её развивать: методы максимальных и динамических усилий, периодизация.',k:['Три метода: максимальные усилия, повторные усилия, динамические усилия','Тренировочный эффект — это баланс «фитнес — усталость»','Нагрузку меняют волнами, а не одинаково изо дня в день'],p:['block','fsc','w531']},
+  {c:'sci',t:'Основы специальной силовой подготовки в спорте',a:'Ю. В. Верхошанский',y:1977,d:'Классика советской спортивной науки: блоки нагрузки и прыжковые методы.',k:['Концентрированная нагрузка на одно качество работает лучше смешанной','Блоки: накопление → преобразование → реализация','Прыжки и взрывная работа превращают силу в скорость'],p:['block','fsc']},
+  {c:'sci',t:'Science and Development of Muscle Hypertrophy',a:'Брэд Шёнфельд',y:2016,d:'Научный разбор того, отчего растут мышцы: объём, интенсивность, отдых.',k:['10–20 подходов на мышцу в неделю — рабочий диапазон','Расти можно в широком диапазоне повторов, если подход близок к отказу','Мышцу полезно тренировать дважды в неделю'],p:['meso','ppl6','phul']},
+  {c:'sci',t:'Scientific Principles of Hypertrophy Training',a:'Майк Израэтел и соавторы',y:2021,d:'Как строить мезоциклы на массу: от минимального объёма к максимальному и разгрузка.',k:['Объём растёт от недели к неделе: +1–2 подхода на мышцу','Подходы с 1–3 повторами в запасе, к концу цикла — ближе к отказу','После 4–6 недель — разгрузка с половиной объёма'],p:['meso']}
+];
 
 /* ================= 3D-показ техники: собственный движок манекена (canvas 2D, без библиотек) =================
    Скелет с прямой и обратной кинематикой, ключевые позы для каждого движения, вращение пальцем, скорость,
@@ -2019,10 +2113,14 @@ const HF={y:.52,z:-.12,ll:{w:[.13,.08,.42]},rl:{w:[-.12,.1,-.6],q:[0,-1,.3]},pt:
 tp('hipFlexor',{k:[HF,{...HF,z:-.02,y:.49,sp:-6,ra:{c:[-.12,.62,.02]}}],t:[2,2],v:80,pr:['mat']});
 tp('butterfly',{k:[{y:.12,pit:4,l:[.04,.08,.36],lq:[1,.25,.15],to:40,aw:[.07,.1,.36],aq:[.8,-.3,-.2]},{y:.12,pit:28,sp:10,nk:-10,l:[.04,.08,.36],lq:[1,.1,.15],to:40,aw:[.07,.1,.4],aq:[.8,-.3,-.2]}],t:[2,2],v:88,e:24,pr:['mat']});
 
+const CHK=fs({y:.97,st:4,ll:{w:[.22,.5,.26],q:[1,.3,.4]},pt:.2});
+tp('checkKick',{k:[FS,CHK,FS,fs({st:-14,la:{c:[.04,.13,.64],q:[.4,-1,0]}})],t:[.25,.35,.25,.3],v:-40,e:12});
+tp('dbShadow',{k:[FS,JAB,FS,CRS],t:[.2,.3,.2,.35],v:70,e:10,pr:['dbv']});
+
 /* ---------- какое упражнение каким движением показать ---------- */
 const MAP=Object.assign(Object.create(null),{widePush:'widePush',handstandPush:'handstandPush',gluteKick:'gluteKick',kneePush:'kneePush',bench:'bench',
   pushup:'pushup',pullup:'pullup',chinup:'chinup',hangRaise:'hangRaise',hangPike:'hangPike',rearDeltRow:'facePull',
-  sidePlank:'sidePlank',calfMachine:'calfMachine',invRow:'invRow',frogSitup:'frogSitup',thruster:'thruster',jog:'run'});
+  sidePlank:'sidePlank',calfMachine:'calfMachine',invRow:'invRow',frogSitup:'frogSitup',thruster:'thruster',jog:'run',padWork:'bag',ropeSlip:'slipRoll'});
 const BYPAT=Object.assign(Object.create(null),{squat:'squat',lunge:'lunge',hinge:'rdl',glutes:'bridge',calf:'calf',legIso:'legExt',push:'pushup',pushV:'ohp',pull:'row',pullV:'pullup',shoulders:'latRaise',arms:'dbCurl',core:'crunch',back:'superman',cardio:'highKnees',plyo:'jumpSquat',carry:'farmer',cool:'hamstringStretch',warm:'neckRoll',warmup:'warmup',fwarm:'footwork',box:'jabCross',kick:'roundhouse',bag:'bag',def:'slipRoll',grap:'sprawl',run:'run'});
 function keyOf(id){if(typeof id!=='string')return null;if(T[id])return id;if(MAP[id]&&T[MAP[id]])return MAP[id];const e=typeof EX!=='undefined'&&EX[id];if(!e)return null;if(e.like&&e.like!==id)return keyOf(e.like);return BYPAT[e.pat]||null}
 const has=id=>!!keyOf(id);
@@ -2060,7 +2158,7 @@ Object.assign(MID,{frontSquat:['quads glutes','abs adduct lowback traps'],hackSq
   pistol:['quads glutes','adduct hams abs calves'],wallSit:['quads','glutes'],nordic:['hams','glutes calves'],fireHydrant:['glutes','abs'],negPullup:['lats biceps','midback fore'],deadHang:['fore lats','midback'],
   reverseLunge:['glutes quads','hams adduct'],sideLunge:['quads glutes adduct',''],bicycle:['abs obl',''],vUp:['abs','quads obl'],birdDog:['lowback glutes','abs delts'],hollowHold:['abs','quads obl'],
   shoulderTap:['abs obl','delts triceps'],skater:['glutes quads','calves adduct'],calfHome:['calves',''],abWheel:['abs','lats obl triceps'],jog:['quads calves','glutes hams'],brisk:['calves quads','glutes'],
-  cobra:['abs',''],pigeon:['glutes',''],hipFlexor:['quads',''],butterfly:['adduct','']});
+  cobra:['abs',''],pigeon:['glutes',''],hipFlexor:['quads',''],butterfly:['adduct',''],checkKick:['quads abs','obl glutes calves'],padWork:['delts triceps obl','chest abs calves'],dbShadow:['delts triceps','obl chest'],ropeSlip:['quads obl','calves abs']});
 const MC=Object.create(null);
 function musc(id){if(MC[id])return MC[id];const e=typeof EX!=='undefined'&&typeof id==='string'&&EX[id];if(!e)return{p:[],s:[]};const src=MID[id]||(e.like&&MID[e.like])||MP[e.pat]||['',''];
   const sp=s=>s.split(' ').filter(Boolean),p=sp(src[0]),ps=new Set(p),r={p,s:sp(src[1]).filter(x=>!ps.has(x))};if(!e.custom)MC[id]=r;return r}
@@ -2924,7 +3022,7 @@ const W531=[[[65,75,85],[5,5,5]],[[70,80,90],[3,3,3]],[[75,85,95],[5,3,1]],[[40,
 function tmOf(id){const from=addDays(todayKey(),-120);let b=0;S.workouts.forEach(w=>{if(w.d<from)return;w.ex.forEach(e=>{if(e.id===id)e.sets.forEach(x=>{if(!x.wu&&!x.drop&&x.r&&x.r<=12)b=Math.max(b,e1Of(x))})})});return b*.9}
 function progWorkout(){const g=S.prog,pr=g&&progOf(g.id);if(!pr)return null;const n=g.n||0,day=progDay(pr,n),wk=progWeek(pr,n),o=day[2]||{},cw=(wk-1)%4;let wave=false;
   const items=day[1].map(([a,st,v,r,x])=>{x=x||{};const id=progAlt(a,pr.place);if(!id)return null;const e=EX[id],it={ex:id,sets:st,rest:r};
-    if(e.type==='time'||x.t){it.time=v;if(isRound(id))it.sets=st+Math.min(3,Math.floor((wk-1)/2))}
+    if(e.type==='time'||x.t){it.time=v;if(isRound(id)&&!pr.fixr)it.sets=st+Math.min(3,Math.floor((wk-1)/2))}
     else{it.reps=v;if(pr.place==='gym'&&e.w&&isBar(id)&&!ISO.has(id)&&v<=8)it.ramp=[[40,5],[60,3],[80,2]]}
     if(x.amrap&&!it.time)it.fail=1;if(x.ra!=null)it.restAfter=x.ra;
     if(x.w&&!it.time){const[p,rp]=W531[cw];wave=true;Object.assign(it,{sets:3,pctBy:p.slice(),repsBy:rp.slice(),reps:rp[0]});if(cw<3)it.fail=1;else delete it.ramp}
@@ -2949,15 +3047,15 @@ function vPrograms(){const g=S.prog,fmtV=(id,v,x)=>EX[id].type==='time'||(x&&x.t
   return `<p class="muted" style="max-width:70ch">Готовые планы на недели вперёд — от классических программ для новичков до известных схем вроде 5/3/1, PHUL и «с дивана до 5 км». Приложение помнит, какая тренировка следующая, само прибавляет вес, повторы или время, когда в прошлый раз всё выполнено, и снижает вес после трёх неудач подряд. Упражнения подбираются под ваш уровень и инвентарь.</p>
   <div class="seg" role="group" aria-label="Где тренироваться">${[['all','Все'],['gym','Зал'],['home','Дом'],['fight','Бой']].map(([k,t])=>`<button data-act="prf" data-v="${k}" aria-pressed="${pf===k}">${t} <span class="muted">${k==='all'?PROGRAMS.length:PROGRAMS.filter(p=>p.place===k).length}</span></button>`).join('')}</div>
   <section class="grid g2">${list.map(p=>{const on=g&&g.id===p.id,n=on?g.n||0:0,days=progDays(p,n),cur=progIdx(p,n),tot=progTotal(p),need=(p.eq||[]).filter(x=>!eq.includes(x));
-    return `<div class="panel lift progc ${on?'on':''}"><div class="row between"><h2>${esc(p.n)}</h2>${on?`<span class="chip on">${g.fin?'Пройдена':'Идёт · неделя '+Math.min(progWeek(p,n),p.wk)+' из '+p.wk}</span>`:''}</div>
-      <div class="row">${placeChip(p.place)}${lvChip(p.lv)}<span class="chip">${esc(p.per)}</span><span class="chip">${p.wk} ${plural(p.wk,'неделя','недели','недель')} · ${tot} ${plural(tot,'тренировка','тренировки','тренировок')}</span>${need.length&&p.place!=='gym'?`<span class="chip warn">Нужно: ${need.map(x=>(EQUIP.find(e=>e[0]===x)||[x,x])[1].toLowerCase()).join(', ')}</span>`:''}</div><p class="muted">${esc(p.d)}</p>
+    return `<div class="panel lift progc ${on?'on':''} ${ui.progHi===p.id?'hi':''}" id="prog-${p.id}"><div class="row between"><h2>${esc(p.n)}</h2>${on?`<span class="chip on">${g.fin?'Пройдена':'Идёт · неделя '+Math.min(progWeek(p,n),p.wk)+' из '+p.wk}</span>`:''}</div>
+      <div class="row">${placeChip(p.place)}${lvChip(p.lv)}<span class="chip">${esc(p.per)}</span><span class="chip">${p.wk} ${plural(p.wk,'неделя','недели','недель')} · ${tot} ${plural(tot,'тренировка','тренировки','тренировок')}</span>${need.length&&p.place!=='gym'?`<span class="chip warn">Нужно: ${need.map(x=>(EQUIP.find(e=>e[0]===x)||[x,x])[1].toLowerCase()).join(', ')}</span>`:''}</div><p class="muted">${esc(p.d)}</p>${p.src?`<p class="small"><b>По методике:</b> ${esc(p.src)}</p>`:''}
       ${on?`<div class="bar"><i style="width:${(Math.min(1,n/tot)*100).toFixed(1)}%"></i></div>`:''}
       ${p.byWeek?`<p class="small"><b>Неделя ${Math.min(progWeek(p,n),p.wk)} из ${p.wk}.</b> <span class="muted">План меняется каждую неделю.</span></p>`:''}
       ${days.map((d,i)=>{const o=d[2]||{},ids=d[1].map(x=>[progAlt(x[0],p.place),x]).filter(x=>x[0]),tag=o.m&&o.m!=='classic'?METHODS[o.m].n.toLowerCase()+(o.m==='circuit'&&o.rounds?' × '+o.rounds:''):'';
         return `<details class="progday" ${on&&cur===i&&!g.fin?'open':''}><summary><b>${esc(d[0])}</b>${on&&cur===i&&!g.fin?' <span class="chip on">следующая</span>':''}${tag?` <span class="chip">${esc(tag)}</span>`:''}<span class="small muted"> · ${ids.length} ${plural(ids.length,'упражнение','упражнения','упражнений')}</span></summary><ul class="exrows">${ids.map(([id,x])=>`<li><div class="thumb">${photo(id,'sm')}</div><div class="nm"><button data-act="ex" data-v="${id}">${esc(EX[id].name)}</button><div class="sr">${desc(id,x,o)}</div></div></li>`).join('')}</ul></details>`}).join('')}
       <div class="row">${on&&!g.fin?`<button class="btn primary" data-act="prog-go">${ic('play',16)} ${esc(days[cur][0])}</button><button class="btn ghost sm" data-act="prog-stop">Остановить</button>`:on?`<button class="btn primary" data-act="prog-again">Пройти ещё раз</button><button class="btn ghost sm" data-act="prog-stop">Закрыть</button>`:`<button class="btn primary" data-act="prog-start" data-v="${p.id}">Начать программу</button>`}</div></div>`}).join('')}</section>`}
 /* ---------- Планы: программа тренировок + питание, отслеживание по дням ---------- */
-const trOf=id=>TRACK_PLANS.find(p=>p.id===id),trLen=t=>t.len||t.wk*7,trGoal={lose:'Похудение',gain:'Масса',keep:'Форма'};
+const trOf=id=>TRACK_PLANS.find(p=>p.id===id),trLen=t=>t.len||t.wk*7,trGoal={lose:'Похудение',gain:'Масса',keep:'Форма',fight:'Бой'};
 /* программа плана под место, уровень и инвентарь */
 function trProg(t,place){const l=t.prog[place]||t.prog.home,eq=S.profile.eq||[],L=LVI[S.profile.level]||0,ok=id=>{const p=progOf(id);return p&&(p.place==='gym'||!(p.eq||[]).some(x=>!eq.includes(x)))};
   return l.find(id=>ok(id)&&LVI[progOf(id).lv]<=L)||l.find(ok)||l[l.length-1]}
@@ -2988,7 +3086,7 @@ function trCard(){const tk=todayKey(),x=trDay(tk);if(!x){const tr=S.track,t=tr&&
 function vPlans(){const tr=S.track,t=tr&&trOf(tr.id),place=S.profile.place,base=targets(todayKey(),1);
   if(!t)return `<p class="muted" style="max-width:70ch">План — это программа тренировок и питание в одном расписании. На каждый день — своя задача: тренировка или отдых, норма калорий и белка (в дни тренировок углеводов больше), вода, меню дня и пара полезных привычек. Еду, воду и тренировки приложение отмечает само по дневнику, остальное — одним нажатием. Прогресс виден в календаре по дням.</p>
     <section class="grid g2">${TRACK_PLANS.map(p=>{const pr=progOf(trProg(p,place)),a=trTargets(p,1,base),b=trTargets(p,0,base);
-      return `<div class="panel lift progc"><h2>${esc(p.n)}</h2><div class="row"><span class="chip on">${trGoal[p.goal]}</span><span class="chip">${p.len?p.len+' дней':p.wk+' '+plural(p.wk,'неделя','недели','недель')}</span>${placeChip(place)}</div><p class="muted">${esc(p.d)}</p>
+      return `<div class="panel lift progc" id="plan-${p.id}"><h2>${esc(p.n)}</h2><div class="row"><span class="chip on">${trGoal[p.goal]}</span><span class="chip">${p.len?p.len+' дней':p.wk+' '+plural(p.wk,'неделя','недели','недель')}</span>${placeChip(place)}</div><p class="muted">${esc(p.d)}</p>
         <div class="stack small" style="gap:4px"><span><b>Тренировки:</b> ${esc(pr.n)} · ${esc(pr.per)}</span><span><b>Питание:</b> ${fmt(a.kcal)} ккал в день тренировки, ${fmt(b.kcal)} — в день отдыха · белок ${fmt(a.prot)} г</span>
         <span><b>Каждый день:</b> тренировка или отдых, калории, белок, вода${(p.habits||[]).map(h=>', '+h[1].toLowerCase()).join('')}</span></div>
         <div class="row"><button class="btn primary" data-act="tr-start" data-v="${p.id}">Начать план</button></div></div>`}).join('')}</section>
@@ -3021,6 +3119,13 @@ function trCal(){const tr=S.track,t=trOf(tr.id),len=trLen(t),tk=todayKey(),sel=u
     const c=d>tk?'fut':x.sc>=.8?'full':x.sc>=.5?'half':x.sc>0?'low':'miss';h+=`<button class="trc ${c} ${d===tk?'today':''} ${d===sel?'sel':''}" data-act="tr-sel" data-v="${d}" aria-label="День ${i+1}, ${fmtD(d)}${x?': выполнено '+x.dn+' из '+x.of:''}">${parseKey(d).getDate()}${tr1?'<i></i>':''}</button>`}h+='</div>'}
   return `<section class="panel"><div class="row between"><h3>Календарь плана</h3><span class="small muted">точка — день тренировки</span></div><div class="trcal">${h}</div>
     <div class="row small muted"><span class="trc full sm"></span> 80%+ <span class="trc half sm"></span> половина <span class="trc low sm"></span> мало <span class="trc miss sm"></span> пропуск</div></section>`}
+/* методики: книги и научные позиции, по которым собраны программы и планы */
+function vBooks(){const c=ui.bkCat||'all',l=BOOKS.filter(b=>c==='all'||b.c===c),cn=Object.fromEntries(BOOK_CATS);
+  return `<p class="muted" style="max-width:70ch">Проверенные книги и научные позиции, на которых построены программы, планы и советы приложения. Коротко — о чём книга и её главные идеи своими словами; ниже — что из неё уже есть в приложении. Сами книги стоит прочитать целиком.</p>
+  <div class="seg" role="group" aria-label="Тема">${[['all','Все'],...BOOK_CATS].map(([k,n])=>`<button data-act="bk-cat" data-v="${k}" aria-pressed="${c===k}">${n}</button>`).join('')}</div>
+  <section class="grid g2">${l.map(b=>`<div class="panel lift book"><div class="row between"><span class="eyebrow">${esc(cn[b.c])}</span><span class="small muted mono">${b.y}</span></div><h2>${esc(b.t)}</h2><span class="small"><b>${esc(b.a)}</b></span><p class="muted">${esc(b.d)}</p>
+    <ul class="bkeys">${b.k.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+    ${(b.p||[]).length||(b.pl||[]).length?`<div class="stack" style="gap:6px"><span class="small muted">В приложении:</span><div class="row">${(b.p||[]).filter(progOf).map(id=>`<button class="chip" data-act="bk-prog" data-v="${id}">${ic('play',13)} ${esc(progOf(id).n)}</button>`).join('')}${(b.pl||[]).filter(trOf).map(id=>`<button class="chip" data-act="bk-plan" data-v="${id}">План: ${esc(trOf(id).n)}</button>`).join('')}</div></div>`:''}</div>`).join('')}</section>`}
 function campCard(){const c=S.camp;if(!c||c.won)return '';const nx=campNext();if(!nx)return '';const xs=campSessions(),dn=xs.filter(x=>c.done[x.id]).length;
   return `<section class="panel camp-mini"><div class="row between"><span class="eyebrow">Путь к Затмению · неделя ${nx.wi+1} «${esc(CAMP[nx.wi].n)}»</span><span class="small muted">${dn} / ${xs.length}</span></div><div class="bar"><i style="width:${(dn/xs.length*100).toFixed(1)}%"></i></div>
     <div class="row"><button class="btn primary" data-act="camp-go" data-v="${nx.id}">${ic('play',16)} ${nx.boss?'Бой с боссом':'Тренировка '+(nx.k+1)+' из 3'}</button><button class="btn ghost sm" data-act="goto-camp">Вся кампания</button></div></section>`}
@@ -3376,7 +3481,7 @@ function celebrate(){if(!fxOn())return;const k=skin(),c=document.createElement('
 }
 let lastNav='';
 const TAB_ORDER=['today','train','timer','food','progress','profile'];
-const SUB_ORDER={train:['build','mine','plans','camp','programs','challenges','library'],progress:['body','photos','exercises','muscles','report','history','awards']};
+const SUB_ORDER={train:['build','mine','plans','camp','programs','challenges','library','books'],progress:['body','photos','exercises','muscles','report','history','awards']};
 const navKey=()=>ui.tab+'/'+(ui.tab==='train'?ui.trainSub:ui.tab==='progress'?ui.progSub:'');
 
 function render(){
@@ -3503,8 +3608,8 @@ const achHTML=([t,s,ok])=>`<div class="${ok?'':'no'}"><span class="plate ${ok?'y
 function vTrain(){
   const sub=ui.trainSub;
   return header('Тренировки','Конструктор · мои · планы · программы · испытания')+
-  `<div class="seg" role="group" aria-label="Раздел">${[['build','Конструктор'],['mine','Мои'],['plans','Планы'],['camp','Кампания'],['programs','Программы'],['challenges','Испытания'],['library','Упражнения']].map(([k,n])=>`<button data-act="trainSub" data-v="${k}" aria-pressed="${sub===k}">${n}</button>`).join('')}</div>`+
-  (sub==='build'?vBuilder():sub==='mine'?vMine():sub==='plans'?vPlans():sub==='camp'?vCamp():sub==='programs'?vPrograms():sub==='challenges'?vChallenges():vLibrary());
+  `<div class="seg" role="group" aria-label="Раздел">${[['build','Конструктор'],['mine','Мои'],['plans','Планы'],['camp','Кампания'],['programs','Программы'],['challenges','Испытания'],['library','Упражнения'],['books','Методики']].map(([k,n])=>`<button data-act="trainSub" data-v="${k}" aria-pressed="${sub===k}">${n}</button>`).join('')}</div>`+
+  (sub==='build'?vBuilder():sub==='mine'?vMine():sub==='plans'?vPlans():sub==='camp'?vCamp():sub==='programs'?vPrograms():sub==='challenges'?vChallenges():sub==='books'?vBooks():vLibrary());
 }
 function vBuilder(){return recovHTML()+vBuilderMain()}
 function vBuilderMain(){
@@ -4316,6 +4421,9 @@ const ACT={
   'prog-go':()=>{const w=progWorkout();if(w)startWorkout(w)},
   'prog-stop':()=>ask('Остановить программу? Тренировки останутся в истории.','Остановить',()=>{S.prog=null;touch('main');render()}),
   'goto-prog':()=>{ui.tab='train';ui.trainSub='programs';render();window.scrollTo(0,0)},
+  'bk-cat':v=>{ui.bkCat=v;render()},
+  'bk-prog':v=>{ui.tab='train';ui.trainSub='programs';ui.prf='all';ui.progHi=v;render();const el=document.getElementById('prog-'+v);if(el)el.scrollIntoView({block:'start'});setTimeout(()=>{ui.progHi=null},100)},
+  'bk-plan':v=>{ui.tab='train';ui.trainSub='plans';render();const el=document.getElementById('plan-'+v);if(el&&!S.track){el.scrollIntoView({block:'start'});el.classList.add('hi')}else window.scrollTo(0,0)},
   'goto-plans':v=>{ui.tab='train';ui.trainSub='plans';ui.trDay=v&&v!==todayKey()?v:null;render();window.scrollTo(0,0)},
   'tr-start':v=>{const t=trOf(v);if(!t)return;const place=S.profile.place,pid=trProg(t,place),pr=progOf(pid),go=()=>{const fr=pr.fr||3,pd=S.profile.days,days=pd.length&&Math.abs(pd.length-fr)<=1?[...pd]:(TR_DAYS[fr]||TR_DAYS[3]).slice();
       S.track={id:v,start:todayKey(),place,prog:pid,days,marks:{},w0:(lastW()||{}).w||null,fin:null};if(!S.prog||S.prog.id!==pid||S.prog.fin)S.prog={id:pid,start:todayKey(),n:0};ui.trDay=null;touch('main');render();window.scrollTo(0,0);toast('План «'+t.n+'» начат — сегодня день 1')};
