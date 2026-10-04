@@ -2,7 +2,7 @@
 <html lang="ru" data-skin="berserk">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-iATiD9dPBM8w4Mzy72zmKx/bKGpxllEBRUZm+VdzX0w=' 'sha256-4DxsfNPIn8XQIuL6pLe4X3EpJSMirFdr0CKvlPDpwJQ=' 'sha256-LmFhfPRkdhtjKCaBuTCFNmDSPqdlHR/HYhLjqNGWhJM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-iATiD9dPBM8w4Mzy72zmKx/bKGpxllEBRUZm+VdzX0w=' 'sha256-CF44LCsgiujuuBwmIpGGQWmnviaC0rvXULmMBlRF0Zg=' 'sha256-LmFhfPRkdhtjKCaBuTCFNmDSPqdlHR/HYhLjqNGWhJM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0A0909">
 <meta name="description" content="Дневник тренировок: программы по уровням, техника с фото, таймеры, питание, вес и отчёты.">
@@ -2410,7 +2410,15 @@ function mount(el){const id=el.dataset.m3d,key=keyOf(id);if(!key)return null;con
     toggle(){st.play=!st.play;st.last=0;if(st.play)kick();return st.play},speed(v){st.sp=v},view(v){if(v==='def'){st.yaw=tpl.v;st.el=tpl.e}else{const q=VIEWS[v];st.yaw=q[0];st.el=q[1]}paint()},st,paint};
   LIVE.add(el);el._m3dKick=kick;kick();return api}
 if(typeof document!=='undefined')document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')for(const el of LIVE)if(el._m3d)el._m3d.kick()});
-function mountAll(root){sweep();if(!root)return;root.querySelectorAll('[data-m3d]').forEach(el=>{if(!el._m3d)el._m3d=mount(el)})}
+function mountAll(root){sweep();if(!root)return;root.querySelectorAll('[data-m3d]').forEach(el=>{if(!el._m3d)el._m3d=mount(el)});lazyThumbs(root)}
+/* превью рисуются, только когда попадают на экран, по одному за раз — список из сотни упражнений открывается сразу */
+let thIO=null;const thQ=[];let thBusy=false;
+function thPump(){if(thBusy)return;const img=thQ.shift();if(!img)return;thBusy=true;(window.requestIdleCallback||(f=>setTimeout(f,16)))(()=>{thBusy=false;if(img.isConnected){const s=thumb(img.dataset.thid);if(s)img.src=s}thPump()})}
+function lazyThumbs(root){const els=root.querySelectorAll('img[data-th]');if(!els.length)return;
+  const q=img=>{img.dataset.thid=img.dataset.th;img.removeAttribute('data-th');thQ.push(img);thPump()};
+  if(!('IntersectionObserver' in window)){els.forEach(q);return}
+  thIO=thIO||new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){thIO.unobserve(e.target);q(e.target)}}),{rootMargin:'400px'});els.forEach(el=>thIO.observe(el))}
+const thumbReady=(id,w=330,h=220)=>{colors();return !!TH[id+'|'+colKey+'|'+w+'x'+h]};
 function html(id,o={}){if(!has(id))return '';const m=musc(id),nm=k=>MUS[k],nmE=esc3(EX[id]?EX[id].name:'');
   return `<div class="m3d ${o.cls||''}" data-m3d="${esc3(id)}"${o.h?` data-h="${+o.h||0}"`:''}><div class="m3d-stage"><canvas role="img" tabindex="0" aria-label="3D-показ техники: ${nmE}. Стрелки поворачивают манекен"></canvas>
     ${o.legend===false||!m.p.length?'':`<div class="m3d-leg small"><span><i class="p"></i>${m.p.map(nm).join(', ')}</span>${m.s.length?`<span><i class="s"></i>${m.s.map(nm).join(', ')}</span>`:''}</div>`}
@@ -2485,7 +2493,7 @@ function bodyMap(val,o={}){ // val: {muscle: 0..1} или {p:[..],s:[..]}
     <text x="50" y="199" text-anchor="middle" class="mm-t">спереди</text><text x="168" y="199" text-anchor="middle" class="mm-t">сзади</text></svg>`}
 const esc3=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-return{has,keyOf,mount,mountAll,html,act,thumb,draw,musc,MUS,bodyMap,poseAt,solve,ground,T,exitFull,
+return{has,keyOf,mount,mountAll,html,act,thumb,thumbReady,draw,musc,MUS,bodyMap,poseAt,solve,ground,T,exitFull,
   debug:{T,N,solve,ground,poseAt,norms,fitOf,keyOf}};
 })();
 
@@ -2946,6 +2954,7 @@ function swapIn(w,i){const it=w.items[i],e=EX[it.ex],have=new Set(w.items.map(x=
   let pool=Object.keys(EX).filter(id=>!have.has(id)&&!EX[id].hidden&&EX[id].pat===e.pat&&exOk(id,w.place,w.lv,eq));
   if(!pool.length){const gs=e.grp.map(grpOf);pool=Object.keys(EX).filter(id=>!have.has(id)&&!EX[id].hidden&&EX[id].type===e.type&&EX[id].grp.some(g=>gs.includes(grpOf(g)))&&exOk(id,w.place,w.lv,eq))}
   if(!pool.length){toast('Замены под ваш инвентарь не нашлось');return false}
+  {const k=PLACES[w.place].k,best=pool.filter(id=>EX[id].pl.includes(k)&&!!EX[id].w===!!e.w);if(best.length)pool=best}
   const id=rand(pool),d=dose(id,{place:w.place,focus:w.focus,lv:w.lv,idx:i,R:Math.random,goal:S.profile.goal});
   const keep=['prog','routine','repeat','challenge'].includes(w.kind)||!!w.campId;
   if(keep||(w.method&&!['classic','rounds'].includes(w.method))){d.sets=it.sets;d.rest=it.rest;if(it.restAfter!=null)d.restAfter=it.restAfter;
@@ -3354,7 +3363,7 @@ function funFact(w){const v=w.vol||0;if(v>=1500)return`Ты поднял ${fmt(v
 /* ---------- photos ---------- */
 const hasVideo=id=>typeof VIDEO!=='undefined'&&VIDEO.has(id);
 const VIDEO_DL=(()=>{try{return 'serviceWorker' in navigator&&'caches' in window&&location.protocol.startsWith('http')}catch(e){return false}})();
-const photo=(id,cls='')=>{if(EX[id].nophoto){const src=M3D.thumb(id);return `<div class="ph one m3dth ${cls}" role="img" aria-label="${esc(EX[id].name)}">${src?`<img src="${src}" alt="" decoding="async">`:''}<span class="tag">3D</span></div>`}const vid=hasVideo(id)&&!cls.includes('sm')?`<span class="vbadge">${ic('play',12)} видео</span>`:'';
+const photo=(id,cls='')=>{if(EX[id].nophoto){const rd=M3D.thumbReady(id),src=rd?M3D.thumb(id):'';return `<div class="ph one m3dth ${cls}" role="img" aria-label="${esc(EX[id].name)}">${src?`<img src="${src}" alt="" decoding="async">`:M3D.has(id)?`<img data-th="${id}" alt="" decoding="async">`:''}<span class="tag">3D</span></div>`}const vid=hasVideo(id)&&!cls.includes('sm')?`<span class="vbadge">${ic('play',12)} видео</span>`:'';
   return EX[id].one?`<div class="ph one ${cls}" role="img" aria-label="${esc(EX[id].name)}">${vid}<img src="img/${id}-0.jpg" alt="" decoding="async"><span class="tag">${esc(EX[id].grp[0])}</span></div>`
   :`<div class="ph ${cls}" role="img" aria-label="${esc(EX[id].name)}: исходное и конечное положение">${vid}<img class="a" src="img/${id}-0.jpg" alt="" decoding="async"><img class="b" src="img/${id}-1.jpg" alt="" decoding="async"><span class="tag a">1 · старт</span><span class="tag b">2 · финиш</span><span class="scrub"><i></i></span></div>`};
 function frames(id,o={}){
@@ -4409,7 +4418,7 @@ const ACT={
   'rt-rm':v=>{ui.rt.items.splice(+v,1);render()},
   'rt-add':()=>rtPicker(),
   'rt-pick':(v,el)=>{const a=ui.rt.items,i=a.findIndex(x=>x.ex===v);if(i>=0){a.splice(i,1);el.classList.remove('on');el.querySelector('.pkadd').textContent='+'}else{const e=EX[v];a.push(e.type==='time'?{ex:v,sets:3,time:45,rest:45}:{ex:v,sets:3,reps:e.w?10:12,rest:e.w?90:60});el.classList.add('on');el.querySelector('.pkadd').textContent='✓'}const n=document.getElementById('pk-n');if(n)n.textContent=a.length},
-  'pk-g':(v,el)=>{if(!ui.pk)return;ui.pk.g=v;document.querySelectorAll('#pk-g .chip').forEach(b=>b.classList.toggle('on',b===el));document.getElementById('pk-list').innerHTML=pickList()},
+  'pk-g':(v,el)=>{if(!ui.pk)return;ui.pk.g=v;document.querySelectorAll('#pk-g .chip').forEach(b=>b.classList.toggle('on',b===el));{const l=document.getElementById('pk-list');l.innerHTML=pickList();M3D.mountAll(l)}},
   'rt-pick-done':()=>{closeModal();render()},
   'rt-save':()=>{const r=ui.rt;r.name=(r.name||'').trim()||'Моя тренировка';if(!r.items.length){toast('Добавьте хотя бы одно упражнение');return}S.routines=S.routines||[];const i=S.routines.findIndex(x=>x.id===r.id);if(i>=0)S.routines[i]=r;else S.routines.push(r);ui.rt=null;touch('main');render();toast('Сохранено в «Мои»')},
   'save-rt':v=>{const w=v==='draft'?ui.draft:PL&&PL.w;if(!w)return;S.routines=S.routines||[];S.routines.push(rtFromW(w));touch('main');toast('Сохранено: Тренировки → Мои')},
@@ -4597,7 +4606,7 @@ document.addEventListener('input',e=>{const t=e.target;
   if(t.dataset.fc)ui.fa['c'+t.dataset.fc]=t.value;
   if(t.dataset.fq&&ui.fa)ui.fa['q'+t.dataset.fq]=t.value;
   if(t.dataset.fe&&ui.fe)ui.fe[t.dataset.fe]=parseFloat(String(t.value).replace(',','.'))||0;
-  if(t.id==='pk-q'&&ui.pk){ui.pk.q=t.value;const l=document.getElementById('pk-list');if(l)l.innerHTML=pickList()}
+  if(t.id==='pk-q'&&ui.pk){ui.pk.q=t.value;const l=document.getElementById('pk-list');if(l){l.innerHTML=pickList();M3D.mountAll(l)}}
   if(t.dataset.rt&&ui.rt){const k=t.dataset.rt,v=parseInt(t.value)||1;ui.rt[k]=k==='name'?t.value.slice(0,50):k==='warm'?(t.checked?1:0):k==='rounds'?clamp(v,1,12):clamp(v,10,600)}
   if(t.dataset.rti&&ui.rt){const[i,k]=t.dataset.rti.split(':'),it=ui.rt.items[+i],lim={sets:20,reps:200,time:3600,rest:600};if(it&&lim[k])it[k]=clamp(parseInt(t.value)||1,k==='rest'?0:1,lim[k])}
   if(t.dataset.note){S.notes=S.notes||{};const v=t.value.slice(0,300);if(v.trim())S.notes[t.dataset.note]=v;else delete S.notes[t.dataset.note];touch('main')}
